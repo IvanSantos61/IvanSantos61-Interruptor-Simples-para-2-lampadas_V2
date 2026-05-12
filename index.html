@@ -1,204 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sequência de Instalação - FioCerto</title>
-    <style>
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            background-color: #050505;
-            color: #ffd700;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-        }
-
-        #projeto-container {
-            position: relative;
-            width: 95vw;
-            max-width: 1920px;
-            aspect-ratio: 1920 / 1080;
-            background-color: #000;
-            border: 2px solid #333;
-            margin-top: 10px;
-        }
-
-        .camada-full {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .fio-camada { z-index: 10; pointer-events: none; }
-
-        /* Pontos de Interação */
-        .ponto-clique {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            border: 3px solid #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
-            display: none;
-        }
-
-        /* Cores por tipo de condutor */
-        .ponto-fase { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 10px #ff0000; }
-        .ponto-neutro { background: rgba(0, 150, 255, 0.8); box-shadow: 0 0 10px #0096ff; }
-
-        .ponto-clique.verde {
-            background: #00ff00 !important;
-            box-shadow: 0 0 20px #00ff00;
-            border-color: #fff;
-        }
-
-        #painel-status {
-            margin-top: 15px;
-            padding: 10px 30px;
-            background: #111;
-            border-radius: 5px;
-            border-bottom: 3px solid #ffd700;
-            text-align: center;
-            min-width: 450px;
-        }
-    </style>
-</head>
-<body>
-
-    <div id="painel-status">
-        <strong id="fio-atual">INICIANDO...</strong><br>
-        <span id="instrucao">Aguarde o carregamento.</span>
-    </div>
-
-    <div id="projeto-container">
-        <img src="ambiente.jpg" class="camada-full" style="z-index: 1;">
-        
-        <div id="camadas-fios"></div>
-
-        <div id="ponto-A" class="ponto-clique"></div>
-        <div id="ponto-B" class="ponto-clique"></div>
-    </div>
-
-    <script>
-        const camadasFios = document.getElementById('camadas-fios');
-        const pontoA = document.getElementById('ponto-A');
-        const pontoB = document.getElementById('ponto-B');
-        const txtFio = document.getElementById('fio-atual');
-        const txtInstrucao = document.getElementById('instrucao');
-
-        // Sequência ordenada de instalação
-        // Você deve ajustar os valores de 'top' e 'left' conforme a sua imagem ambiente.jpg
+// Sequência atualizada: FASE 1 -> NEUTRO 1 -> FASE 2 -> NEUTRO 2 -> FASE 3 -> RETORNO 1
         const etapas = [
             {
                 nome: "FASE 1",
                 pasta: "FASE1",
                 quadro: "quadro0024.png",
                 cor: "ponto-fase",
-                posA: { top: "30%", left: "20%" },
-                posB: { top: "50%", left: "40%" }
+                posA: { top: "30.00%", left: "20.00%" },
+                posB: { top: "50.00%", left: "40.00%" }
             },
             {
                 nome: "NEUTRO 1",
                 pasta: "NEUTRO1",
                 quadro: "quadro0054.png",
                 cor: "ponto-neutro",
-                posA: { top: "20%", left: "15%" },
-                posB: { top: "50%", left: "45%" }
+                posA: { top: "20.00%", left: "15.00%" },
+                posB: { top: "50.00%", left: "45.00%" }
             },
             {
                 nome: "FASE 2",
                 pasta: "FASE2",
                 quadro: "quadro0024.png",
                 cor: "ponto-fase",
-                posA: { top: "30%", left: "25%" },
-                posB: { top: "60%", left: "40%" }
+                posA: { top: "30.00%", left: "25.00%" },
+                posB: { top: "60.00%", left: "40.00%" }
             },
             {
                 nome: "NEUTRO 2",
                 pasta: "NEUTRO2",
                 quadro: "quadro0024.png",
                 cor: "ponto-neutro",
-                posA: { top: "20%", left: "20%" },
-                posB: { top: "60%", left: "45%" }
+                posA: { top: "20.00%", left: "20.00%" },
+                posB: { top: "60.00%", left: "45.00%" }
+            },
+            {
+                nome: "FASE 3",
+                pasta: "FASE3",
+                quadro: "quadro0030.png", // Até o 30 conforme sua lista
+                cor: "ponto-fase",
+                posA: { top: "30.00%", left: "30.00%" },
+                posB: { top: "70.00%", left: "40.00%" }
+            },
+            {
+                nome: "RETORNO 1",
+                pasta: "RETORNO1",
+                quadro: "quadro0036.png", // Até o 36 conforme sua lista
+                cor: "ponto-retorno",    // Usando a classe de cor de retorno
+                posA: { top: "45.00%", left: "60.00%" },
+                posB: { top: "70.00%", left: "60.00%" }
             }
         ];
-
-        let etapaAtual = 0;
-
-        function iniciarEtapa() {
-            const config = etapas[etapaAtual];
-            
-            txtFio.innerText = `INSTALANDO: ${config.nome}`;
-            txtInstrucao.innerText = `Clique no ponto de SAÍDA do cabo ${config.nome}.`;
-
-            // Configura Ponto A (Saída)
-            pontoA.className = `ponto-clique ${config.cor}`;
-            pontoA.style.top = config.posA.top;
-            pontoA.style.left = config.posA.left;
-            pontoA.style.display = "block";
-
-            // Configura Ponto B (Chegada - oculto até clicar no A)
-            pontoB.className = `ponto-clique ${config.cor}`;
-            pontoB.style.top = config.posB.top;
-            pontoB.style.left = config.posB.left;
-            pontoB.style.display = "none";
-        }
-
-        pontoA.addEventListener('click', function() {
-            this.classList.add('verde');
-            txtInstrucao.innerText = "Excelente! Agora clique no ponto de CHEGADA.";
-            pontoB.style.display = "block";
-        });
-
-        pontoB.addEventListener('click', function() {
-            this.classList.add('verde');
-            
-            const config = etapas[etapaAtual];
-            
-            // Cria a imagem do fio em escala real
-            const imgFio = document.createElement('img');
-            imgFio.src = `${config.pasta}/${config.quadro}`;
-            imgFio.className = "camada-full fio-camada";
-            camadasFios.appendChild(imgFio);
-
-            // Transição para a próxima etapa
-            setTimeout(() => {
-                pontoA.style.display = "none";
-                pontoB.style.display = "none";
-                pontoA.classList.remove('verde');
-                pontoB.classList.remove('verde');
-
-                etapaAtual++;
-                if (etapaAtual < etapas.length) {
-                    iniciarEtapa();
-                } else {
-                    txtFio.innerHTML = "<span style='color:#00ff00'>✓ INSTALAÇÃO COMPLETA</span>";
-                    txtInstrucao.innerText = "Todos os circuitos foram dimensionados e instalados.";
-                }
-            }, 800);
-        });
-
-        // Inicialização
-        iniciarEtapa();
-
-        // Ferramenta de mapeamento (ajuda a preencher os valores de top/left acima)
-        document.getElementById('projeto-container').onclick = function(e) {
-            if(e.target.classList.contains('ponto-clique')) return;
-            const rect = this.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`Coordenada sugerida -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
-        };
-    </script>
-</body>
-</html>
