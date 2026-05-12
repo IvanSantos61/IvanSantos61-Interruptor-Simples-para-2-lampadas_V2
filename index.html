@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Posicionamento - Simulador</title>
+    <style>
+        /* Estilo profissional de alto contraste */
+        body {
+            margin: 0;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
 
+        h2 { color: #ffd700; text-transform: uppercase; letter-spacing: 2px; }
+
+        #canvas-container {
+            position: relative;
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            line-height: 0;
+            cursor: crosshair;
+        }
+
+        #ambiente-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            display: block;
+        }
+
+        /* Classe base para os fios */
+        .fio {
+            position: absolute;
+            pointer-events: none; /* Não interfere no clique de teste */
+            z-index: 10;
+        }
+
+        /* Identificação visual para o teste */
+        .fase { filter: drop-shadow(0 0 5px #ff0000); }
+        .neutro { filter: drop-shadow(0 0 5px #00ffff); }
+        .retorno { filter: drop-shadow(0 0 5px #ffd700); }
+
+        .controles {
+            margin-top: 15px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 5px;
+            border-left: 5px solid #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Ajuste de Fiação - Ambiente</h2>
+    
+    <div id="canvas-container">
+        <!-- Imagem de Fundo -->
+        <img src="ambiente.jpg" id="ambiente-img" alt="Cenário">
+
+        <!-- EXEMPLOS DE POSICIONAMENTO -->
+        <!-- Você deve ajustar o 'top' e 'left' conforme os testes -->
+        <img src="FASE1/fio.png" class="fio fase" id="fase1" style="top: 20%; left: 30%; width: 50px;">
+        <img src="NEUTRO1/fio.png" class="fio neutro" id="neutro1" style="top: 40%; left: 50%; width: 50px;">
+        <img src="RETORNO1/fio.png" class="fio retorno" id="retorno1" style="top: 60%; left: 70%; width: 50px;">
+    </div>
+
+    <div class="controles">
+        <p><strong>Dica:</strong> Clique na imagem para obter as coordenadas <strong>top/left</strong> no Console (F12).</p>
+        <div id="coordenadas-display">Coordenadas: -</div>
+    </div>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const display = document.getElementById('coordenadas-display');
+
+        // Função para ajudar a encontrar a posição exata
+        container.addEventListener('click', function(e) {
+            const rect = container.getBoundingClientRect();
+            
+            // Calcula a porcentagem para manter a responsividade
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+            const coordString = `top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`;
+            
+            display.innerHTML = `<strong>Último clique:</strong> ${coordString}`;
+            console.log(`Posição para o CSS: ${coordString}`);
+            
+            // Feedback visual rápido
+            const marker = document.createElement('div');
+            marker.style.position = 'absolute';
+            marker.style.top = y + '%';
+            marker.style.left = x + '%';
+            marker.style.width = '5px';
+            marker.style.height = '5px';
+            marker.style.background = 'white';
+            marker.style.borderRadius = '50%';
+            marker.style.zIndex = '100';
+            container.appendChild(marker);
+            setTimeout(() => marker.remove(), 1000);
+        });
+    </script>
+</body>
+</html>
