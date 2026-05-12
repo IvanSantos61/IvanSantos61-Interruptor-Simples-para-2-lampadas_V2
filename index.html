@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador FioCerto - Sequência Completa</title>
+    <title>Simulador FioCerto - Sequência Ivan</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -53,7 +53,7 @@
             display: none;
         }
 
-        /* Identificação por Cores */
+        /* Cores dos Condutores */
         .ponto-fase { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 10px #ff0000; }
         .ponto-neutro { background: rgba(0, 150, 255, 0.8); box-shadow: 0 0 10px #0096ff; }
         .ponto-retorno { background: rgba(255, 165, 0, 0.8); box-shadow: 0 0 10px #ffa500; }
@@ -78,7 +78,7 @@
 <body>
 
     <div id="painel-status">
-        <strong id="fio-atual">CARREGANDO...</strong><br>
+        <strong id="fio-atual">INICIANDO...</strong><br>
         <span id="instrucao">Aguarde.</span>
     </div>
 
@@ -98,8 +98,7 @@
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
-        // Sequência de Instalação Ivan - 2026
-        // Ajuste as coordenadas conforme sua necessidade no ambiente.jpg
+        // NOVA SEQUÊNCIA DEFINIDA: FASE 1 -> NEUTRO 1 -> FASE 2 -> NEUTRO 2 -> FASE 3 -> RETORNO 1 -> NEUTRO 3 -> RETORNO 2
         const etapas = [
             {
                 nome: "FASE 1",
@@ -148,6 +147,22 @@
                 cor: "ponto-retorno",
                 posA: { top: "45%", left: "60%" },
                 posB: { top: "70%", left: "60%" }
+            },
+            {
+                nome: "NEUTRO 3",
+                pasta: "NEUTRO3",
+                quadro: "quadro0030.png",
+                cor: "ponto-neutro",
+                posA: { top: "20%", left: "25%" },
+                posB: { top: "70%", left: "45%" }
+            },
+            {
+                nome: "RETORNO 2",
+                pasta: "RETORNO2",
+                quadro: "quadro0030.png",
+                cor: "ponto-retorno",
+                posA: { top: "45%", left: "65%" },
+                posB: { top: "80%", left: "65%" }
             }
         ];
 
@@ -180,7 +195,6 @@
             this.classList.add('verde');
             
             const config = etapas[etapaAtual];
-            
             const imgFio = document.createElement('img');
             imgFio.src = `${config.pasta}/${config.quadro}`;
             imgFio.className = "camada-full fio-camada";
@@ -196,21 +210,21 @@
                 if (etapaAtual < etapas.length) {
                     iniciarEtapa();
                 } else {
-                    txtFio.innerHTML = "<span style='color:#00ff00'>✓ ETAPA CONCLUÍDA</span>";
-                    txtInstrucao.innerText = "Fios Fases, Neutros e Retorno 1 instalados.";
+                    txtFio.innerHTML = "<span style='color:#00ff00'>✓ INSTALAÇÃO FINALIZADA</span>";
+                    txtInstrucao.innerText = "Todos os circuitos (Fases, Neutros e Retornos) foram instalados.";
                 }
             }, 800);
         });
 
         iniciarEtapa();
 
-        // Ferramenta de auxílio para coordenadas (Exibe no console F12)
+        // Utilitário de coordenadas no console (F12)
         document.getElementById('projeto-container').onclick = function(e) {
             if(e.target.classList.contains('ponto-clique')) return;
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`Coordenada sugerida -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
+            console.log(`Coordenada para o código -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
     </script>
 </body>
