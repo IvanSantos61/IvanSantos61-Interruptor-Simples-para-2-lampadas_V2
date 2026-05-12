@@ -3,128 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instalação Ordenada - FioCerto</title>
+    <title>Teste de Escala Real - FioCerto</title>
     <style>
+        * { box-sizing: border-box; }
+        
         body {
             margin: 0;
-            background-color: #0d0d0d;
+            background-color: #050505;
             color: #ffd700;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            overflow: hidden;
             height: 100vh;
         }
 
-        #cenario-container {
+        h2 { margin: 10px 0; text-transform: uppercase; font-size: 1.2rem; }
+
+        /* Container que mantém a proporção 16:9 */
+        #projeto-container {
             position: relative;
-            line-height: 0;
+            width: 95vw;
+            max-width: 1920px;
+            aspect-ratio: 1920 / 1080;
+            background-color: #000;
             border: 2px solid #333;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        #ambiente-img {
-            max-width: 90vw;
-            max-height: 80vh;
-            display: block;
-        }
-
-        /* Estilo dos pontos de conexão (âncoras) */
-        .ponto {
+        /* Todas as imagens (fundo e fios) devem ocupar 100% do container */
+        .camada-full {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #fff;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Garante que a proporção 1920x1080 seja respeitada */
+        }
+
+        #ambiente-img { z-index: 1; }
+        .fio-camada { z-index: 10; pointer-events: none; }
+
+        /* Pontos de Interação */
+        .ponto-clique {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 3px solid #fff;
             border-radius: 50%;
-            background: rgba(255, 0, 0, 0.5); /* Inicia avermelhado */
+            background: rgba(255, 0, 0, 0.6);
             cursor: pointer;
             z-index: 100;
             transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .ponto.ativo {
-            background: #2ecc71; /* Verde ao clicar */
+        .ponto-clique.verde {
+            background: #00ff00;
+            box-shadow: 0 0 15px #00ff00;
             border-color: #fff;
-            box-shadow: 0 0 15px #2ecc71;
         }
 
-        /* Ocultar elementos inicialmente */
         .hidden { display: none; }
 
-        /* Fio FASE1 */
-        #fio-fase1 {
-            position: absolute;
-            z-index: 10;
-            pointer-events: none;
+        #mensagem-instrucao {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #111;
+            border-radius: 4px;
+            border-bottom: 2px solid #ffd700;
         }
     </style>
 </head>
 <body>
 
-    <div id="cenario-container">
-        <img src="ambiente.jpg" id="ambiente-img">
+    <h2>Simulador de Instalação: FASE 1</h2>
 
-        <!-- Pontos de Interação -->
-        <div id="ponto-saida" class="ponto" style="top: 30%; left: 20%;"></div>
-        <div id="ponto-chegada" class="ponto hidden" style="top: 30%; left: 60%;"></div>
+    <div id="projeto-container">
+        <!-- Imagem de Fundo (1920x1080) -->
+        <img src="ambiente.jpg" id="ambiente-img" class="camada-full">
 
-        <!-- O Fio que será revelado -->
-        <div id="fase1-container"></div>
+        <!-- Container onde o fio será injetado -->
+        <div id="fio-fase1-container"></div>
+
+        <!-- Pontos de Saída e Chegada (Ajuste as coordenadas 'top' e 'left' conforme sua imagem) -->
+        <div id="btn-saida" class="ponto-clique" style="top: 30%; left: 20%;"></div>
+        <div id="btn-chegada" class="ponto-clique hidden" style="top: 50%; left: 80%;"></div>
     </div>
 
-    <p id="instrucao" style="margin-top: 20px; font-weight: bold;">
-        Clique no ponto de SAÍDA para iniciar a fiação.
-    </p>
+    <div id="mensagem-instrucao">
+        Clique no <strong>ponto vermelho</strong> para iniciar a passagem do cabo.
+    </div>
 
     <script>
-        const pontoSaida = document.getElementById('ponto-saida');
-        const pontoChegada = document.getElementById('ponto-chegada');
-        const instrucao = document.getElementById('instrucao');
-        const containerFio = document.getElementById('fase1-container');
+        const btnSaida = document.getElementById('btn-saida');
+        const btnChegada = document.getElementById('btn-chegada');
+        const msg = document.getElementById('mensagem-instrucao');
+        const fioContainer = document.getElementById('fio-fase1-container');
 
-        // Configuração da FASE1 (Ajuste aqui conforme os seus quadros)
-        const totalQuadrosFase1 = 24; 
-        const pastaFase1 = "FASE1";
+        // Configurações do Projeto
+        const CONFIG = {
+            pasta: "FASE1",
+            quadroFinal: "quadro0024.png" // Ajuste para o último frame da sua sequência
+        };
 
-        // 1. Clique na Saída
-        pontoSaida.addEventListener('click', function() {
-            this.classList.add('ativo');
-            instrucao.innerText = "Excelente. Agora clique no ponto de CHEGADA.";
+        // 1. Ação ao clicar no Ponto de Saída
+        btnSaida.addEventListener('click', function() {
+            this.classList.add('verde');
+            msg.innerHTML = "Saída conectada. Agora clique no <strong>ponto de chegada</strong>.";
             
-            // Revela o próximo ponto após um pequeno delay
+            // Mostra o segundo ponto
             setTimeout(() => {
-                pontoChegada.classList.remove('hidden');
-            }, 300);
+                btnChegada.classList.remove('hidden');
+            }, 400);
         });
 
-        // 2. Clique na Chegada
-        pontoChegada.addEventListener('click', function() {
-            this.classList.add('ativo');
-            instrucao.innerText = "Fio FASE1 instalado com sucesso!";
+        // 2. Ação ao clicar no Ponto de Chegada
+        btnChegada.addEventListener('click', function() {
+            this.classList.add('verde');
+            msg.innerHTML = "<span style='color: #00ff00;'>Fio FASE 1 instalado com sucesso!</span>";
 
-            // Renderiza o fio (usando o quadro final para representar o fio completo)
-            renderizarFioCompleto();
+            // Instala o fio em escala real
+            completarFiacao();
 
-            // Remove os pontos após a conclusão
+            // Limpa os pontos após a conclusão
             setTimeout(() => {
-                pontoSaida.classList.add('hidden');
-                pontoChegada.classList.add('hidden');
-            }, 800);
+                btnSaida.classList.add('hidden');
+                btnChegada.classList.add('hidden');
+            }, 1000);
         });
 
-        function renderizarFioCompleto() {
-            // Aqui carregamos o último quadro da sequência (fio passado por todo o trecho)
-            // Ou podemos criar um loop para mostrar a animação de "correr o fio"
+        function completarFiacao() {
+            // Criamos a imagem do fio
             const imgFio = document.createElement('img');
-            imgFio.src = `${pastaFase1}/quadro0024.png`; // Mostra ele já passado
-            imgFio.id = "fio-fase1";
+            imgFio.src = `${CONFIG.pasta}/${CONFIG.quadroFinal}`;
+            imgFio.className = "camada-full fio-camada"; // Mesma classe do fundo = Escala Perfeita
             
-            // O posicionamento do fio deve ser o mesmo que você encontrou nos testes anteriores
-            imgFio.style.cssText = "top: 15%; left: 20%; width: 50%;"; 
-            
-            containerFio.appendChild(imgFio);
+            fioContainer.appendChild(imgFio);
         }
+
+        // Função auxiliar para você achar as coordenadas dos pontos (clique no console)
+        document.getElementById('projeto-container').onclick = function(e) {
+            if(e.target.classList.contains('ponto-clique')) return;
+            const rect = this.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            console.log(`Coordenada para o botão -> top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`);
+        };
     </script>
 </body>
 </html>
