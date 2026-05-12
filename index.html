@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador FioCerto - Sequência Ivan</title>
+    <title>FioCerto - Efeito de Passagem</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -39,7 +39,6 @@
 
         .fio-camada { z-index: 10; pointer-events: none; }
 
-        /* Pontos de Interação */
         .ponto-clique {
             position: absolute;
             width: 25px;
@@ -53,7 +52,6 @@
             display: none;
         }
 
-        /* Cores dos Condutores */
         .ponto-fase { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 10px #ff0000; }
         .ponto-neutro { background: rgba(0, 150, 255, 0.8); box-shadow: 0 0 10px #0096ff; }
         .ponto-retorno { background: rgba(255, 165, 0, 0.8); box-shadow: 0 0 10px #ffa500; }
@@ -79,14 +77,12 @@
 
     <div id="painel-status">
         <strong id="fio-atual">INICIANDO...</strong><br>
-        <span id="instrucao">Aguarde.</span>
+        <span id="instrucao">Aguarde o carregamento do cenário.</span>
     </div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="camada-full" style="z-index: 1;">
-        
         <div id="camadas-fios"></div>
-
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
@@ -98,97 +94,25 @@
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
-        // SEQUÊNCIA: F1 -> N1 -> F2 -> N2 -> F3 -> R1 -> N3 -> R2 -> R3 -> N4
         const etapas = [
-            {
-                nome: "FASE 1",
-                pasta: "FASE1",
-                quadro: "quadro0024.png",
-                cor: "ponto-fase",
-                posA: { top: "30%", left: "20%" },
-                posB: { top: "50%", left: "40%" }
-            },
-            {
-                nome: "NEUTRO 1",
-                pasta: "NEUTRO1",
-                quadro: "quadro0054.png",
-                cor: "ponto-neutro",
-                posA: { top: "20%", left: "15%" },
-                posB: { top: "50%", left: "45%" }
-            },
-            {
-                nome: "FASE 2",
-                pasta: "FASE2",
-                quadro: "quadro0024.png",
-                cor: "ponto-fase",
-                posA: { top: "30%", left: "25%" },
-                posB: { top: "60%", left: "40%" }
-            },
-            {
-                nome: "NEUTRO 2",
-                pasta: "NEUTRO2",
-                quadro: "quadro0024.png",
-                cor: "ponto-neutro",
-                posA: { top: "20%", left: "20%" },
-                posB: { top: "60%", left: "45%" }
-            },
-            {
-                nome: "FASE 3",
-                pasta: "FASE3",
-                quadro: "quadro0030.png",
-                cor: "ponto-fase",
-                posA: { top: "30%", left: "30%" },
-                posB: { top: "70%", left: "40%" }
-            },
-            {
-                nome: "RETORNO 1",
-                pasta: "RETORNO1",
-                quadro: "quadro0036.png",
-                cor: "ponto-retorno",
-                posA: { top: "45%", left: "60%" },
-                posB: { top: "70%", left: "60%" }
-            },
-            {
-                nome: "NEUTRO 3",
-                pasta: "NEUTRO3",
-                quadro: "quadro0030.png",
-                cor: "ponto-neutro",
-                posA: { top: "20%", left: "25%" },
-                posB: { top: "70%", left: "45%" }
-            },
-            {
-                nome: "RETORNO 2",
-                pasta: "RETORNO2",
-                quadro: "quadro0030.png",
-                cor: "ponto-retorno",
-                posA: { top: "45%", left: "65%" },
-                posB: { top: "80%", left: "65%" }
-            },
-            {
-                nome: "RETORNO 3",
-                pasta: "RETORNO3",
-                quadro: "quadro0030.png",
-                cor: "ponto-retorno",
-                posA: { top: "45%", left: "70%" },
-                posB: { top: "80%", left: "70%" }
-            },
-            {
-                nome: "NEUTRO 4",
-                pasta: "NEUTRO4",
-                quadro: "quadro0024.png",
-                cor: "ponto-neutro",
-                posA: { top: "20%", left: "30%" },
-                posB: { top: "80%", left: "45%" }
-            }
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "30%", left: "20%" }, posB: { top: "50%", left: "40%" } },
+            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "20%", left: "15%" }, posB: { top: "50%", left: "45%" } },
+            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "30%", left: "25%" }, posB: { top: "60%", left: "40%" } },
+            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "20%", left: "20%" }, posB: { top: "60%", left: "45%" } },
+            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "30%", left: "30%" }, posB: { top: "70%", left: "40%" } },
+            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "45%", left: "60%" }, posB: { top: "70%", left: "60%" } },
+            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "20%", left: "25%" }, posB: { top: "70%", left: "45%" } },
+            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "45%", left: "65%" }, posB: { top: "80%", left: "65%" } },
+            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "45%", left: "70%" }, posB: { top: "80%", left: "70%" } },
+            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "20%", left: "30%" }, posB: { top: "80%", left: "45%" } }
         ];
 
         let etapaAtual = 0;
 
         function iniciarEtapa() {
             const config = etapas[etapaAtual];
-            
             txtFio.innerText = `INSTALANDO: ${config.nome}`;
-            txtInstrucao.innerText = `Clique no ponto de SAÍDA do cabo ${config.nome}.`;
+            txtInstrucao.innerText = `Clique no ponto de SAÍDA (Início da fiação).`;
 
             pontoA.className = `ponto-clique ${config.cor}`;
             pontoA.style.top = config.posA.top;
@@ -201,35 +125,52 @@
             pontoB.style.display = "none";
         }
 
+        function animarPassagemCabo(config, callback) {
+            let quadroAtual = 0;
+            const imgFio = document.createElement('img');
+            imgFio.className = "camada-full fio-camada";
+            camadasFios.appendChild(imgFio);
+
+            const timer = setInterval(() => {
+                const num = quadroAtual.toString().padStart(4, '0');
+                imgFio.src = `${config.pasta}/quadro${num}.png`;
+                
+                if (quadroAtual >= config.max) {
+                    clearInterval(timer);
+                    if (callback) callback();
+                }
+                quadroAtual++;
+            }, 40); // 40ms = ~25 quadros por segundo
+        }
+
         pontoA.addEventListener('click', function() {
             this.classList.add('verde');
-            txtInstrucao.innerText = "Excelente! Agora clique no ponto de CHEGADA.";
+            txtInstrucao.innerText = "Ponto de saída ok! Agora clique na CHEGADA para passar o cabo.";
             pontoB.style.display = "block";
         });
 
         pontoB.addEventListener('click', function() {
             this.classList.add('verde');
+            txtInstrucao.innerText = "Passando fiação...";
             
             const config = etapas[etapaAtual];
-            const imgFio = document.createElement('img');
-            imgFio.src = `${config.pasta}/${config.quadro}`;
-            imgFio.className = "camada-full fio-camada";
-            camadasFios.appendChild(imgFio);
 
-            setTimeout(() => {
-                pontoA.style.display = "none";
-                pontoB.style.display = "none";
-                pontoA.classList.remove('verde');
-                pontoB.classList.remove('verde');
+            animarPassagemCabo(config, () => {
+                setTimeout(() => {
+                    pontoA.style.display = "none";
+                    pontoB.style.display = "none";
+                    pontoA.classList.remove('verde');
+                    pontoB.classList.remove('verde');
 
-                etapaAtual++;
-                if (etapaAtual < etapas.length) {
-                    iniciarEtapa();
-                } else {
-                    txtFio.innerHTML = "<span style='color:#00ff00'>✓ INSTALAÇÃO FINALIZADA</span>";
-                    txtInstrucao.innerText = "Todos os circuitos foram posicionados corretamente.";
-                }
-            }, 800);
+                    etapaAtual++;
+                    if (etapaAtual < etapas.length) {
+                        iniciarEtapa();
+                    } else {
+                        txtFio.innerHTML = "<span style='color:#00ff00'>✓ SISTEMA CONCLUÍDO</span>";
+                        txtInstrucao.innerText = "Toda a fiação foi instalada com sucesso.";
+                    }
+                }, 600);
+            });
         });
 
         iniciarEtapa();
