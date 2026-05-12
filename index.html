@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FioCerto - Efeito de Passagem</title>
+    <title>Simulador FioCerto - Precisão Total</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -15,6 +15,7 @@
             flex-direction: column;
             align-items: center;
             height: 100vh;
+            overflow: hidden; /* Evita barras de rolagem estranhas no zoom */
         }
 
         #projeto-container {
@@ -23,7 +24,7 @@
             max-width: 1920px;
             aspect-ratio: 1920 / 1080;
             background-color: #000;
-            border: 2px solid #333;
+            border: 0.2vw solid #333; /* Borda escala com a tela */
             margin-top: 10px;
             box-shadow: 0 0 40px rgba(0,0,0,0.9);
         }
@@ -39,45 +40,57 @@
 
         .fio-camada { z-index: 10; pointer-events: none; }
 
+        /* --- CORREÇÃO DO ZOOM --- */
         .ponto-clique {
             position: absolute;
-            width: 25px;
-            height: 25px;
-            border: 3px solid #fff;
+            /* Tamanho relativo à largura do container */
+            width: 1.8%; 
+            aspect-ratio: 1 / 1;
+            
+            /* Borda escala com a largura da viewport */
+            border: 0.2vw solid #fff; 
             border-radius: 50%;
             cursor: pointer;
             z-index: 100;
+            
+            /* Garante que o centro da bolinha seja a coordenada exata */
             transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
+            
+            transition: all 0.2s ease;
             display: none;
         }
 
-        .ponto-fase { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 10px #ff0000; }
-        .ponto-neutro { background: rgba(0, 150, 255, 0.8); box-shadow: 0 0 10px #0096ff; }
-        .ponto-retorno { background: rgba(255, 165, 0, 0.8); box-shadow: 0 0 10px #ffa500; }
+        /* Cores com brilho escalonável */
+        .ponto-fase { background: rgba(255, 0, 0, 0.7); box-shadow: 0 0 1vw #ff0000; }
+        .ponto-neutro { background: rgba(0, 150, 255, 0.7); box-shadow: 0 0 1vw #0096ff; }
+        .ponto-retorno { background: rgba(255, 165, 0, 0.7); box-shadow: 0 0 1vw #ffa500; }
 
         .ponto-clique.verde {
             background: #00ff00 !important;
-            box-shadow: 0 0 20px #00ff00;
-            border-color: #fff;
+            box-shadow: 0 0 1.5vw #00ff00 !important;
+        }
+
+        .ponto-clique:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            filter: brightness(1.2);
         }
 
         #painel-status {
             margin-top: 15px;
-            padding: 10px 30px;
+            padding: 1vw 2vw;
             background: #111;
             border-radius: 5px;
-            border-bottom: 3px solid #ffd700;
+            border-bottom: 0.3vw solid #ffd700;
             text-align: center;
-            min-width: 450px;
+            min-width: 30%;
         }
     </style>
 </head>
 <body>
 
     <div id="painel-status">
-        <strong id="fio-atual">INICIANDO...</strong><br>
-        <span id="instrucao">Aguarde o carregamento do cenário.</span>
+        <strong id="fio-atual" style="font-size: 1.2vw;">AGUARDANDO...</strong><br>
+        <span id="instrucao" style="font-size: 1vw;">Iniciando simulador.</span>
     </div>
 
     <div id="projeto-container">
@@ -95,16 +108,16 @@
         const txtInstrucao = document.getElementById('instrucao');
 
         const etapas = [
-            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "80%", left: "40%" } },
-            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76%", left: "41%" } },
-            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "55.5%" } },
-            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76%", left: "49%" }, posB: { top: "31%", left: "54%" } },
-            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" } },
-            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" } },
-            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54%" }, posB: { top: "23%", left: "91%" } },
-            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "14%", left: "57%" }, posB: { top: "25%", left: "89%" } },
-            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" } },
-            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" } }
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "30%", left: "20%" }, posB: { top: "50%", left: "40%" } },
+            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "20%", left: "15%" }, posB: { top: "50%", left: "45%" } },
+            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "30%", left: "25%" }, posB: { top: "60%", left: "40%" } },
+            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "20%", left: "20%" }, posB: { top: "60%", left: "45%" } },
+            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "30%", left: "30%" }, posB: { top: "70%", left: "40%" } },
+            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "45%", left: "60%" }, posB: { top: "70%", left: "60%" } },
+            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "20%", left: "25%" }, posB: { top: "70%", left: "45%" } },
+            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "45%", left: "65%" }, posB: { top: "80%", left: "65%" } },
+            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "45%", left: "70%" }, posB: { top: "80%", left: "70%" } },
+            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "20%", left: "30%" }, posB: { top: "80%", left: "45%" } }
         ];
 
         let etapaAtual = 0;
@@ -112,7 +125,7 @@
         function iniciarEtapa() {
             const config = etapas[etapaAtual];
             txtFio.innerText = `INSTALANDO: ${config.nome}`;
-            txtInstrucao.innerText = `Clique no ponto de SAÍDA (Início da fiação).`;
+            txtInstrucao.innerText = `Toque no ponto de SAÍDA do cabo.`;
 
             pontoA.className = `ponto-clique ${config.cor}`;
             pontoA.style.top = config.posA.top;
@@ -140,48 +153,46 @@
                     if (callback) callback();
                 }
                 quadroAtual++;
-            }, 40); // 40ms = ~25 quadros por segundo
+            }, 40); 
         }
 
-        pontoA.addEventListener('click', function() {
-            this.classList.add('verde');
-            txtInstrucao.innerText = "Ponto de saída ok! Agora clique na CHEGADA para passar o cabo.";
+        pontoA.addEventListener('click', (e) => {
+            e.stopPropagation();
+            pontoA.classList.add('verde');
+            txtInstrucao.innerText = "Agora toque no ponto de DESTINO.";
             pontoB.style.display = "block";
         });
 
-        pontoB.addEventListener('click', function() {
-            this.classList.add('verde');
-            txtInstrucao.innerText = "Passando fiação...";
+        pontoB.addEventListener('click', (e) => {
+            e.stopPropagation();
+            pontoB.classList.add('verde');
+            txtInstrucao.innerText = "Passando condutor...";
             
-            const config = etapas[etapaAtual];
-
-            animarPassagemCabo(config, () => {
+            animarPassagemCabo(etapas[etapaAtual], () => {
                 setTimeout(() => {
                     pontoA.style.display = "none";
                     pontoB.style.display = "none";
                     pontoA.classList.remove('verde');
                     pontoB.classList.remove('verde');
-
                     etapaAtual++;
-                    if (etapaAtual < etapas.length) {
-                        iniciarEtapa();
-                    } else {
-                        txtFio.innerHTML = "<span style='color:#00ff00'>✓ SISTEMA CONCLUÍDO</span>";
-                        txtInstrucao.innerText = "Toda a fiação foi instalada com sucesso.";
+                    if (etapaAtual < etapas.length) iniciarEtapa();
+                    else {
+                        txtFio.innerHTML = "✓ INSTALAÇÃO COMPLETA";
+                        txtInstrucao.innerText = "FioCerto: Circuitos dimensionados e instalados.";
                     }
                 }, 600);
             });
         });
 
-        iniciarEtapa();
-
+        // Coletor de coordenadas melhorado (independente de zoom)
         document.getElementById('projeto-container').onclick = function(e) {
-            if(e.target.classList.contains('ponto-clique')) return;
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
+            console.log(`Nova Coordenada -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
+
+        iniciarEtapa();
     </script>
 </body>
 </html>
