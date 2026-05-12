@@ -98,7 +98,7 @@
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
-        // NOVA SEQUÊNCIA DEFINIDA: FASE 1 -> NEUTRO 1 -> FASE 2 -> NEUTRO 2 -> FASE 3 -> RETORNO 1 -> NEUTRO 3 -> RETORNO 2
+        // SEQUÊNCIA: F1 -> N1 -> F2 -> N2 -> F3 -> R1 -> N3 -> R2 -> R3 -> N4
         const etapas = [
             {
                 nome: "FASE 1",
@@ -163,6 +163,22 @@
                 cor: "ponto-retorno",
                 posA: { top: "45%", left: "65%" },
                 posB: { top: "80%", left: "65%" }
+            },
+            {
+                nome: "RETORNO 3",
+                pasta: "RETORNO3",
+                quadro: "quadro0030.png",
+                cor: "ponto-retorno",
+                posA: { top: "45%", left: "70%" },
+                posB: { top: "80%", left: "70%" }
+            },
+            {
+                nome: "NEUTRO 4",
+                pasta: "NEUTRO4",
+                quadro: "quadro0024.png",
+                cor: "ponto-neutro",
+                posA: { top: "20%", left: "30%" },
+                posB: { top: "80%", left: "45%" }
             }
         ];
 
@@ -211,20 +227,19 @@
                     iniciarEtapa();
                 } else {
                     txtFio.innerHTML = "<span style='color:#00ff00'>✓ INSTALAÇÃO FINALIZADA</span>";
-                    txtInstrucao.innerText = "Todos os circuitos (Fases, Neutros e Retornos) foram instalados.";
+                    txtInstrucao.innerText = "Todos os circuitos foram posicionados corretamente.";
                 }
             }, 800);
         });
 
         iniciarEtapa();
 
-        // Utilitário de coordenadas no console (F12)
         document.getElementById('projeto-container').onclick = function(e) {
             if(e.target.classList.contains('ponto-clique')) return;
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`Coordenada para o código -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
+            console.log(`top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
     </script>
 </body>
