@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste de Fiação - FioCerto SMT</title>
+    <title>Instalação Ordenada - FioCerto</title>
     <style>
         body {
             margin: 0;
@@ -13,99 +13,117 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            height: 100vh;
         }
 
         #cenario-container {
             position: relative;
-            border: 2px solid #444;
-            background-color: #000;
             line-height: 0;
-            cursor: crosshair;
+            border: 2px solid #333;
         }
 
         #ambiente-img {
-            max-width: 85vw;
-            height: auto;
+            max-width: 90vw;
+            max-height: 80vh;
             display: block;
         }
 
-        /* Configuração dos Fios */
-        .fio {
+        /* Estilo dos pontos de conexão (âncoras) */
+        .ponto {
             position: absolute;
-            z-index: 10;
-            pointer-events: none; /* Clique passa para o container */
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.5); /* Inicia avermelhado */
+            cursor: pointer;
+            z-index: 100;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
         }
 
-        /* Estilo visual para debug */
-        .fase { filter: drop-shadow(0 0 5px #ff0000); }
-        .neutro { filter: drop-shadow(0 0 5px #00ffff); }
-        .retorno { filter: drop-shadow(0 0 5px #ffa500); }
+        .ponto.ativo {
+            background: #2ecc71; /* Verde ao clicar */
+            border-color: #fff;
+            box-shadow: 0 0 15px #2ecc71;
+        }
 
-        .painel-ajuda {
-            margin-top: 20px;
-            padding: 15px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            text-align: center;
+        /* Ocultar elementos inicialmente */
+        .hidden { display: none; }
+
+        /* Fio FASE1 */
+        #fio-fase1 {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <h2>Posicionamento de Quadros - Teste</h2>
-
     <div id="cenario-container">
-        <!-- Imagem de Fundo -->
         <img src="ambiente.jpg" id="ambiente-img">
 
-        <!-- FASES -->
-        <img src="FASE1/quadro0000.png" class="fio fase" id="fase1" style="top: 10%; left: 10%;">
-        <img src="FASE2/quadro0000.png" class="fio fase" id="fase2" style="top: 15%; left: 10%;">
-        <img src="FASE3/quadro0000.png" class="fio fase" id="fase3" style="top: 20%; left: 10%;">
+        <!-- Pontos de Interação -->
+        <div id="ponto-saida" class="ponto" style="top: 30%; left: 20%;"></div>
+        <div id="ponto-chegada" class="ponto hidden" style="top: 30%; left: 60%;"></div>
 
-        <!-- NEUTROS -->
-        <img src="NEUTRO1/quadro0000.png" class="fio neutro" id="neutro1" style="top: 30%; left: 10%;">
-        <img src="NEUTRO2/quadro0000.png" class="fio neutro" id="neutro2" style="top: 35%; left: 10%;">
-        <img src="NEUTRO3/quadro0000.png" class="fio neutro" id="neutro3" style="top: 40%; left: 10%;">
-
-        <!-- RETORNOS -->
-        <img src="RETORNO1/quadro0000.png" class="fio retorno" id="retorno1" style="top: 55%; left: 10%;">
-        <img src="RETORNO2/quadro0000.png" class="fio retorno" id="retorno2" style="top: 60%; left: 10%;">
-        <img src="RETORNO3/quadro0000.png" class="fio retorno" id="retorno3" style="top: 65%; left: 10%;">
+        <!-- O Fio que será revelado -->
+        <div id="fase1-container"></div>
     </div>
 
-    <div class="painel-ajuda">
-        <p id="coord-info">Clique na imagem para capturar a posição do eletroduto.</p>
-        <small>Dica: Use as coordenadas geradas para mover os quadros no código.</small>
-    </div>
+    <p id="instrucao" style="margin-top: 20px; font-weight: bold;">
+        Clique no ponto de SAÍDA para iniciar a fiação.
+    </p>
 
     <script>
-        const container = document.getElementById('cenario-container');
-        const info = document.getElementById('coord-info');
+        const pontoSaida = document.getElementById('ponto-saida');
+        const pontoChegada = document.getElementById('ponto-chegada');
+        const instrucao = document.getElementById('instrucao');
+        const containerFio = document.getElementById('fase1-container');
 
-        container.addEventListener('click', function(e) {
-            const rect = container.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
+        // Configuração da FASE1 (Ajuste aqui conforme os seus quadros)
+        const totalQuadrosFase1 = 24; 
+        const pastaFase1 = "FASE1";
 
-            const resultado = `top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`;
-            info.innerHTML = `<strong>Coordenada:</strong> ${resultado}`;
-            console.log(resultado);
+        // 1. Clique na Saída
+        pontoSaida.addEventListener('click', function() {
+            this.classList.add('ativo');
+            instrucao.innerText = "Excelente. Agora clique no ponto de CHEGADA.";
             
-            // Criar um marcador temporário no local do clique
-            const dot = document.createElement('div');
-            dot.style.cssText = `position:absolute; width:6px; height:6px; background:white; border-radius:50%; top:${y}%; left:${x}%; z-index:100;`;
-            container.appendChild(dot);
-            setTimeout(() => dot.remove(), 2000);
+            // Revela o próximo ponto após um pequeno delay
+            setTimeout(() => {
+                pontoChegada.classList.remove('hidden');
+            }, 300);
         });
 
-        // Função útil para você testar outros quadros via Console (F12)
-        // Exemplo de uso: trocarQuadro('fase1', 'FASE1', 12)
-        function trocarQuadro(idElemento, pasta, numero) {
-            const numFormatado = numero.toString().padStart(4, '0');
-            document.getElementById(idElemento).src = `${pasta}/quadro${numFormatado}.png`;
+        // 2. Clique na Chegada
+        pontoChegada.addEventListener('click', function() {
+            this.classList.add('ativo');
+            instrucao.innerText = "Fio FASE1 instalado com sucesso!";
+
+            // Renderiza o fio (usando o quadro final para representar o fio completo)
+            renderizarFioCompleto();
+
+            // Remove os pontos após a conclusão
+            setTimeout(() => {
+                pontoSaida.classList.add('hidden');
+                pontoChegada.classList.add('hidden');
+            }, 800);
+        });
+
+        function renderizarFioCompleto() {
+            // Aqui carregamos o último quadro da sequência (fio passado por todo o trecho)
+            // Ou podemos criar um loop para mostrar a animação de "correr o fio"
+            const imgFio = document.createElement('img');
+            imgFio.src = `${pastaFase1}/quadro0024.png`; // Mostra ele já passado
+            imgFio.id = "fio-fase1";
+            
+            // O posicionamento do fio deve ser o mesmo que você encontrou nos testes anteriores
+            imgFio.style.cssText = "top: 15%; left: 20%; width: 50%;"; 
+            
+            containerFio.appendChild(imgFio);
         }
     </script>
 </body>
