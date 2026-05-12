@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instalação Sequencial - FioCerto</title>
+    <title>Sequência de Instalação - FioCerto</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -49,16 +49,17 @@
             z-index: 100;
             transform: translate(-50%, -50%);
             transition: all 0.3s ease;
-            display: none; /* Escondidos por padrão */
+            display: none;
         }
 
-        /* Cores baseadas no tipo de fio atual */
-        .ponto-fase { background: rgba(255, 0, 0, 0.7); }
-        .ponto-neutro { background: rgba(0, 150, 255, 0.7); }
+        /* Cores por tipo de condutor */
+        .ponto-fase { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 10px #ff0000; }
+        .ponto-neutro { background: rgba(0, 150, 255, 0.8); box-shadow: 0 0 10px #0096ff; }
 
         .ponto-clique.verde {
             background: #00ff00 !important;
-            box-shadow: 0 0 15px #00ff00;
+            box-shadow: 0 0 20px #00ff00;
+            border-color: #fff;
         }
 
         #painel-status {
@@ -68,24 +69,22 @@
             border-radius: 5px;
             border-bottom: 3px solid #ffd700;
             text-align: center;
-            min-width: 400px;
+            min-width: 450px;
         }
     </style>
 </head>
 <body>
 
     <div id="painel-status">
-        <strong id="fio-atual">INSTALANDO: FASE 1</strong><br>
-        <span id="instrucao">Clique no ponto de saída.</span>
+        <strong id="fio-atual">INICIANDO...</strong><br>
+        <span id="instrucao">Aguarde o carregamento.</span>
     </div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="camada-full" style="z-index: 1;">
         
-        <!-- Camadas de Fios -->
         <div id="camadas-fios"></div>
 
-        <!-- Pontos de Clique (Ajuste as coordenadas conforme seu cenário) -->
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
@@ -97,67 +96,82 @@
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
-        // Definição das etapas da instalação
+        // Sequência ordenada de instalação
+        // Você deve ajustar os valores de 'top' e 'left' conforme a sua imagem ambiente.jpg
         const etapas = [
             {
                 nome: "FASE 1",
                 pasta: "FASE1",
                 quadro: "quadro0024.png",
-                corClasse: "ponto-fase",
-                posA: { top: "30%", left: "20%" }, // Exemplo: Saída do Disjuntor
-                posB: { top: "50%", left: "40%" }  // Exemplo: Entrada da Tomada
+                cor: "ponto-fase",
+                posA: { top: "30%", left: "20%" },
+                posB: { top: "50%", left: "40%" }
             },
             {
                 nome: "NEUTRO 1",
                 pasta: "NEUTRO1",
                 quadro: "quadro0054.png",
-                corClasse: "ponto-neutro",
-                posA: { top: "20%", left: "10%" }, // Exemplo: Barramento Neutro
-                posB: { top: "50%", left: "45%" }  // Exemplo: Neutro na Tomada
+                cor: "ponto-neutro",
+                posA: { top: "20%", left: "15%" },
+                posB: { top: "50%", left: "45%" }
+            },
+            {
+                nome: "FASE 2",
+                pasta: "FASE2",
+                quadro: "quadro0024.png",
+                cor: "ponto-fase",
+                posA: { top: "30%", left: "25%" },
+                posB: { top: "60%", left: "40%" }
+            },
+            {
+                nome: "NEUTRO 2",
+                pasta: "NEUTRO2",
+                quadro: "quadro0024.png",
+                cor: "ponto-neutro",
+                posA: { top: "20%", left: "20%" },
+                posB: { top: "60%", left: "45%" }
             }
         ];
 
         let etapaAtual = 0;
 
-        function carregarEtapa() {
+        function iniciarEtapa() {
             const config = etapas[etapaAtual];
             
-            // Atualiza Texto
             txtFio.innerText = `INSTALANDO: ${config.nome}`;
-            txtInstrucao.innerText = "Clique no ponto de SAÍDA.";
+            txtInstrucao.innerText = `Clique no ponto de SAÍDA do cabo ${config.nome}.`;
 
-            // Configura Ponto A
-            pontoA.className = `ponto-clique ${config.corClasse}`;
+            // Configura Ponto A (Saída)
+            pontoA.className = `ponto-clique ${config.cor}`;
             pontoA.style.top = config.posA.top;
             pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
 
-            // Configura Ponto B (escondido até A ser clicado)
-            pontoB.className = `ponto-clique ${config.corClasse}`;
+            // Configura Ponto B (Chegada - oculto até clicar no A)
+            pontoB.className = `ponto-clique ${config.cor}`;
             pontoB.style.top = config.posB.top;
             pontoB.style.left = config.posB.left;
             pontoB.style.display = "none";
         }
 
-        // Clique no Ponto A
         pontoA.addEventListener('click', function() {
             this.classList.add('verde');
-            txtInstrucao.innerText = "Agora clique no ponto de CHEGADA.";
+            txtInstrucao.innerText = "Excelente! Agora clique no ponto de CHEGADA.";
             pontoB.style.display = "block";
         });
 
-        // Clique no Ponto B
         pontoB.addEventListener('click', function() {
             this.classList.add('verde');
             
-            // Renderiza o fio completado
             const config = etapas[etapaAtual];
+            
+            // Cria a imagem do fio em escala real
             const imgFio = document.createElement('img');
             imgFio.src = `${config.pasta}/${config.quadro}`;
             imgFio.className = "camada-full fio-camada";
             camadasFios.appendChild(imgFio);
 
-            // Prepara próxima etapa
+            // Transição para a próxima etapa
             setTimeout(() => {
                 pontoA.style.display = "none";
                 pontoB.style.display = "none";
@@ -166,23 +180,24 @@
 
                 etapaAtual++;
                 if (etapaAtual < etapas.length) {
-                    carregarEtapa();
+                    iniciarEtapa();
                 } else {
-                    txtFio.innerText = "INSTALAÇÃO CONCLUÍDA!";
-                    txtInstrucao.innerText = "Todos os cabos foram passados.";
+                    txtFio.innerHTML = "<span style='color:#00ff00'>✓ INSTALAÇÃO COMPLETA</span>";
+                    txtInstrucao.innerText = "Todos os circuitos foram dimensionados e instalados.";
                 }
             }, 800);
         });
 
-        // Inicializa o app
-        carregarEtapa();
+        // Inicialização
+        iniciarEtapa();
 
-        // Utilitário de coordenadas no console
+        // Ferramenta de mapeamento (ajuda a preencher os valores de top/left acima)
         document.getElementById('projeto-container').onclick = function(e) {
+            if(e.target.classList.contains('ponto-clique')) return;
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
+            console.log(`Coordenada sugerida -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
     </script>
 </body>
