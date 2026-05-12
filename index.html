@@ -3,107 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste de Posicionamento - Simulador</title>
+    <title>Teste de Fiação - FioCerto SMT</title>
     <style>
-        /* Estilo profissional de alto contraste */
         body {
             margin: 0;
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d0d;
+            color: #ffd700;
+            font-family: sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
         }
 
-        h2 { color: #ffd700; text-transform: uppercase; letter-spacing: 2px; }
-
-        #canvas-container {
+        #cenario-container {
             position: relative;
-            border: 2px solid #333;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 2px solid #444;
+            background-color: #000;
             line-height: 0;
             cursor: crosshair;
         }
 
         #ambiente-img {
-            max-width: 90vw;
-            max-height: 80vh;
+            max-width: 85vw;
+            height: auto;
             display: block;
         }
 
-        /* Classe base para os fios */
+        /* Configuração dos Fios */
         .fio {
             position: absolute;
-            pointer-events: none; /* Não interfere no clique de teste */
             z-index: 10;
+            pointer-events: none; /* Clique passa para o container */
         }
 
-        /* Identificação visual para o teste */
+        /* Estilo visual para debug */
         .fase { filter: drop-shadow(0 0 5px #ff0000); }
         .neutro { filter: drop-shadow(0 0 5px #00ffff); }
-        .retorno { filter: drop-shadow(0 0 5px #ffd700); }
+        .retorno { filter: drop-shadow(0 0 5px #ffa500); }
 
-        .controles {
-            margin-top: 15px;
-            padding: 10px;
+        .painel-ajuda {
+            margin-top: 20px;
+            padding: 15px;
             background: #1a1a1a;
-            border-radius: 5px;
-            border-left: 5px solid #ffd700;
+            border: 1px solid #333;
+            border-radius: 8px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <h2>Ajuste de Fiação - Ambiente</h2>
-    
-    <div id="canvas-container">
-        <!-- Imagem de Fundo -->
-        <img src="ambiente.jpg" id="ambiente-img" alt="Cenário">
+    <h2>Posicionamento de Quadros - Teste</h2>
 
-        <!-- EXEMPLOS DE POSICIONAMENTO -->
-        <!-- Você deve ajustar o 'top' e 'left' conforme os testes -->
-        <img src="FASE1/fio.png" class="fio fase" id="fase1" style="top: 20%; left: 30%; width: 50px;">
-        <img src="NEUTRO1/fio.png" class="fio neutro" id="neutro1" style="top: 40%; left: 50%; width: 50px;">
-        <img src="RETORNO1/fio.png" class="fio retorno" id="retorno1" style="top: 60%; left: 70%; width: 50px;">
+    <div id="cenario-container">
+        <!-- Imagem de Fundo -->
+        <img src="ambiente.jpg" id="ambiente-img">
+
+        <!-- FASES -->
+        <img src="FASE1/quadro0000.png" class="fio fase" id="fase1" style="top: 10%; left: 10%;">
+        <img src="FASE2/quadro0000.png" class="fio fase" id="fase2" style="top: 15%; left: 10%;">
+        <img src="FASE3/quadro0000.png" class="fio fase" id="fase3" style="top: 20%; left: 10%;">
+
+        <!-- NEUTROS -->
+        <img src="NEUTRO1/quadro0000.png" class="fio neutro" id="neutro1" style="top: 30%; left: 10%;">
+        <img src="NEUTRO2/quadro0000.png" class="fio neutro" id="neutro2" style="top: 35%; left: 10%;">
+        <img src="NEUTRO3/quadro0000.png" class="fio neutro" id="neutro3" style="top: 40%; left: 10%;">
+
+        <!-- RETORNOS -->
+        <img src="RETORNO1/quadro0000.png" class="fio retorno" id="retorno1" style="top: 55%; left: 10%;">
+        <img src="RETORNO2/quadro0000.png" class="fio retorno" id="retorno2" style="top: 60%; left: 10%;">
+        <img src="RETORNO3/quadro0000.png" class="fio retorno" id="retorno3" style="top: 65%; left: 10%;">
     </div>
 
-    <div class="controles">
-        <p><strong>Dica:</strong> Clique na imagem para obter as coordenadas <strong>top/left</strong> no Console (F12).</p>
-        <div id="coordenadas-display">Coordenadas: -</div>
+    <div class="painel-ajuda">
+        <p id="coord-info">Clique na imagem para capturar a posição do eletroduto.</p>
+        <small>Dica: Use as coordenadas geradas para mover os quadros no código.</small>
     </div>
 
     <script>
-        const container = document.getElementById('canvas-container');
-        const display = document.getElementById('coordenadas-display');
+        const container = document.getElementById('cenario-container');
+        const info = document.getElementById('coord-info');
 
-        // Função para ajudar a encontrar a posição exata
         container.addEventListener('click', function(e) {
             const rect = container.getBoundingClientRect();
-            
-            // Calcula a porcentagem para manter a responsividade
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-            const coordString = `top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`;
+            const resultado = `top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`;
+            info.innerHTML = `<strong>Coordenada:</strong> ${resultado}`;
+            console.log(resultado);
             
-            display.innerHTML = `<strong>Último clique:</strong> ${coordString}`;
-            console.log(`Posição para o CSS: ${coordString}`);
-            
-            // Feedback visual rápido
-            const marker = document.createElement('div');
-            marker.style.position = 'absolute';
-            marker.style.top = y + '%';
-            marker.style.left = x + '%';
-            marker.style.width = '5px';
-            marker.style.height = '5px';
-            marker.style.background = 'white';
-            marker.style.borderRadius = '50%';
-            marker.style.zIndex = '100';
-            container.appendChild(marker);
-            setTimeout(() => marker.remove(), 1000);
+            // Criar um marcador temporário no local do clique
+            const dot = document.createElement('div');
+            dot.style.cssText = `position:absolute; width:6px; height:6px; background:white; border-radius:50%; top:${y}%; left:${x}%; z-index:100;`;
+            container.appendChild(dot);
+            setTimeout(() => dot.remove(), 2000);
         });
+
+        // Função útil para você testar outros quadros via Console (F12)
+        // Exemplo de uso: trocarQuadro('fase1', 'FASE1', 12)
+        function trocarQuadro(idElemento, pasta, numero) {
+            const numFormatado = numero.toString().padStart(4, '0');
+            document.getElementById(idElemento).src = `${pasta}/quadro${numFormatado}.png`;
+        }
     </script>
 </body>
 </html>
