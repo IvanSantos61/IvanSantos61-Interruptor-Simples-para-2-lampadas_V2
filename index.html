@@ -272,7 +272,7 @@
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnico</h3>
+                <h3>Ajuda Técnica</h3>
                 <div class="lista-ajuda">
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
@@ -317,7 +317,7 @@
 
         const etapas = [
             { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "80%", left: "40%" } },
-            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76%", left: "41%" } },
+            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76%", left: "41%" } },
             { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "55.5%" } },
             { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76%", left: "49%" }, posB: { top: "31%", left: "54%" } },
             { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" } },
@@ -397,8 +397,13 @@
             }
             const config = etapas[etapaAtual];
 
-            const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
-            txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
+            // Condicional para aplicar o texto fixo personalizado se for a FASE 1
+            if (config.nome === "FASE 1") {
+                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE";
+            } else {
+                const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
+                txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
+            }
 
             pontoA.className = `ponto-clique ${config.cor}`;
             pontoA.style.top = config.posA.top;
@@ -435,8 +440,13 @@
             e.stopPropagation();
             pontoA.classList.add('verde');
             
-            const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
-            txtInstrucao.innerHTML = `${etapas[etapaAtual].nome} EM CURSO: ${fraseAleatoria}`;
+            // Condicional para aplicar o texto de destino personalizado se for a FASE 1
+            if (etapas[etapaAtual].nome === "FASE 1") {
+                txtInstrucao.innerHTML = "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE";
+            } else {
+                const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
+                txtInstrucao.innerHTML = `${etapas[etapaAtual].nome} EM CURSO: ${fraseAleatoria}`;
+            }
             pontoB.style.display = "block";
         };
 
