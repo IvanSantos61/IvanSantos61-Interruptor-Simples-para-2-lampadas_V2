@@ -157,14 +157,13 @@
         
         .btn-controle:active { transform: scale(0.96); }
 
-        /* --- MODAL AJUDA TÉCNICA (Centralizado no espaço de controle) --- */
+        /* --- MODAL AJUDA TÉCNICA (Centralizado e sem barras de rolagem) --- */
         #modal-ajuda {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 55%; /* Largura ideal para a lista de opções */
-            max-width: 85%; /* Limita para nunca estourar a caixa do projeto */
-            max-height: 90%; /* Garante que caiba na altura do painel */
+            width: 55%; /* Tamanho ideal para o menu de lista */
+            max-width: 90%;
             background: #0a111a;
             border: 2px solid #00f0ff;
             box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
@@ -174,7 +173,6 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            overflow-y: auto; /* Permite scroll interno se necessário em telas muito pequenas */
         }
 
         #modal-ajuda h3 {
@@ -232,12 +230,14 @@
             align-items: center;
         }
         #img-suporte {
-            width: 100%; /* Ajusta perfeitamente dentro do container */
+            width: auto;
             max-width: 100%; 
             height: auto;
+            max-height: 52vh; /* Trava a altura para impedir barras de rolagem na tela */
             border-radius: 6px;
             border: 1px solid #162e3d;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            object-fit: contain;
         }
 
         /* --- PONTOS DE CLIQUE --- */
@@ -360,14 +360,13 @@
             const telaImg = document.getElementById('tela-imagem-ajuda');
             document.getElementById('img-suporte').src = nomeArquivo;
             
-            // Quando a imagem abre, expande dinamicamente a largura do modal para preencher melhor a área de controle
-            modalAjuda.style.width = "80%";
+            // Abre ocupando uma largura confortável que respeita os limites
+            modalAjuda.style.width = "75%";
             telaImg.style.display = "flex";
         }
 
         function voltarParaListaAjuda() {
             document.getElementById('tela-imagem-ajuda').style.display = "none";
-            // Retorna o modal para o tamanho de lista padrão
             modalAjuda.style.width = "55%";
             document.getElementById('menu-lista-ajuda').style.display = "flex";
         }
