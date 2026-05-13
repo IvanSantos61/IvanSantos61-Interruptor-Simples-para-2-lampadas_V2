@@ -42,8 +42,8 @@
             z-index: 5;
         }
 
-        /* --- COMPONENTES MÓVEIS --- */
-        .tecla-movel, .carga-movel {
+        /* --- COMPONENTES --- */
+        .tecla-movel, .carga-movel, .acessorio-movel {
             position: absolute;
             z-index: 20; 
             user-select: none;
@@ -56,7 +56,15 @@
         #tecla-dr { top: 28%; left: 23.2%; width: 6%; }
         #tecla-int { top: 53.9%; left: 76%; width: 5.3%; }
 
-        /* AJUSTE AS POSIÇÕES DAS LÂMPADAS AQUI */
+        /* AJUSTE A POSIÇÃO DO CONECTOR AQUI */
+        #conector-neutro {
+            top: 35%; 
+            left: 45%; 
+            width: 4%; 
+            display: none; /* Inicia oculto */
+            z-index: 15;
+        }
+
         #lampada1 {
             top: 16.6%; 
             left: 78.5%; 
@@ -121,7 +129,8 @@
         
         <div id="camadas-fios"></div>
 
-        <!-- Componentes Móveis -->
+        <!-- Componentes -->
+        <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
@@ -140,6 +149,7 @@
         const pontoB = document.getElementById('ponto-B');
         const lamp1 = document.getElementById('lampada1');
         const lamp2 = document.getElementById('lampada2');
+        const conectorN = document.getElementById('conector-neutro');
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
@@ -226,6 +236,12 @@
                 imgFio.src = `${config.pasta}/quadro${num}.png`;
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
+                    
+                    // Lógica específica para o conector
+                    if(config.nome === "NEUTRO 1") {
+                        conectorN.style.display = "block";
+                    }
+
                     if (callback) callback();
                 }
                 quadroAtual++;
