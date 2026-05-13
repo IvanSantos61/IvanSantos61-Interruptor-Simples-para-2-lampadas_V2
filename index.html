@@ -59,6 +59,12 @@
             line-height: 1.4;
         }
 
+        /* Classe de teste para a fonte Calibri */
+        .font-calibri {
+            font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+            text-transform: uppercase; /* Mantém o padrão do seu painel */
+        }
+
         .txt-laranja { color: #ff9d00; font-weight: bold; }
         .txt-verde { color: #00ff00; font-weight: bold; }
         .txt-vermelho { color: #ff3333; font-weight: bold; }
@@ -409,7 +415,8 @@
             } else if (config.nome === "FASE 3") {
                 txtInstrucao.innerHTML = "REDE: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
             } else if (config.nome === "RETORNO 1") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.";
+                // APLICAÇÃO DA FONTE CALIBRI APENAS NESTE TEXTO DE TESTE
+                txtInstrucao.innerHTML = "<span class='font-calibri'>CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.</span>";
             } else if (config.nome === "NEUTRO 3") {
                 txtInstrucao.innerHTML = "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
             } else if (config.nome === "RETORNO 2") {
