@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador FioCerto - Componentes Master</title>
+    <title>Simulador FioCerto - Master Interativo</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -45,28 +45,30 @@
         /* --- COMPONENTES MÓVEIS (TECLAS) --- */
         .tecla-movel {
             position: absolute;
-            z-index: 20; /* Fica acima dos fios */
+            z-index: 20; 
             cursor: pointer;
-            transition: transform 0.1s;
+            /* Evita que o arrasto do mouse selecione a imagem */
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
-        /* IDs para você ajustar manualmente */
-        #tecla-geral {
+        /* IDs para ajuste manual de posição e tamanho */
+        #tecla-dg {
             top: 20%; 
             left: 10%; 
-            width: 5%; /* Ajuste a largura conforme o tamanho do disjuntor na foto */
+            width: 4%; 
         }
 
         #tecla-dr {
             top: 20%; 
             left: 20%; 
-            width: 8%; 
+            width: 6%; 
         }
 
-        #tecla-interruptor {
+        #tecla-int {
             top: 50%; 
             left: 80%; 
-            width: 4%; 
+            width: 3.5%; 
         }
 
         /* --- SISTEMA DE PONTOS --- */
@@ -106,23 +108,20 @@
 <body>
 
     <div id="painel-status">
-        <strong id="fio-atual">POSICIONAMENTO DE COMPONENTES</strong><br>
-        <span id="instrucao">Ajuste a posição das teclas no CSS.</span>
+        <strong id="fio-atual">CALIBRAGEM DE COMPONENTES</strong><br>
+        <span id="instrucao">Ajuste as teclas DG, DR e Interruptor no CSS.</span>
     </div>
 
     <div id="projeto-container">
-        <!-- Cenário -->
         <img src="ambiente.jpg" class="imagem-base">
         
-        <!-- Camadas de Fios -->
         <div id="camadas-fios"></div>
 
-        <!-- Componentes Móveis (Padrão OFF) -->
-        <img src="geral_off.png" id="tecla-geral" class="tecla-movel">
-        <img src="dr_off.png" id="tecla-dr" class="tecla-movel">
-        <img src="inter_off.png" id="tecla-interruptor" class="tecla-movel">
+        <!-- Componentes Móveis - Padrão OFF -->
+        <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
+        <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
+        <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <!-- Pontos de Conexão -->
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
@@ -148,6 +147,26 @@
         ];
 
         let etapaAtual = 0;
+
+        // Função simplificada para alternar estado (para teste visual)
+        function alternarTecla(id, prefixo) {
+            const el = document.getElementById(id);
+            el.onclick = () => {
+                const status = el.getAttribute('data-status');
+                if(status === 'off') {
+                    el.src = `${prefixo}_on.png`;
+                    el.setAttribute('data-status', 'on');
+                } else {
+                    el.src = `${prefixo}_off.png`;
+                    el.setAttribute('data-status', 'off');
+                }
+            };
+        }
+
+        // Ativa a alternância para teste
+        alternarTecla('tecla-dg', 'al_dg');
+        alternarTecla('tecla-dr', 'al_dr');
+        alternarTecla('tecla-int', 'tec_int');
 
         function iniciarEtapa() {
             if (etapaAtual >= etapas.length) return;
@@ -183,14 +202,14 @@
             }, 40); 
         }
 
-        pontoA.addEventListener('click', (e) => {
+        pontoA.onclick = (e) => {
             e.stopPropagation();
             pontoA.classList.add('verde');
             txtInstrucao.innerText = "Toque no ponto de DESTINO.";
             pontoB.style.display = "block";
-        });
+        };
 
-        pontoB.addEventListener('click', (e) => {
+        pontoB.onclick = (e) => {
             e.stopPropagation();
             pontoB.classList.add('verde');
             animarPassagemCabo(etapas[etapaAtual], () => {
@@ -202,19 +221,19 @@
                     etapaAtual++;
                     if (etapaAtual < etapas.length) iniciarEtapa();
                     else {
-                        txtFio.innerHTML = "✓ FIAÇÃO PRONTA";
-                        txtInstrucao.innerText = "Agora você pode testar os componentes.";
+                        txtFio.innerHTML = "✓ FIAÇÃO COMPLETA";
+                        txtInstrucao.innerText = "Simulador pronto para testes de carga.";
                     }
                 }, 600);
             });
-        });
+        };
 
-        // Coletor para te ajudar no posicionamento das teclas
+        // Coletor de coordenadas para as teclas
         document.getElementById('projeto-container').onclick = function(e) {
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`Posição para o CSS -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
+            console.log(`Posição sugerida -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
 
         iniciarEtapa();
