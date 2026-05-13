@@ -50,13 +50,24 @@
             -webkit-user-drag: none;
         }
 
-        .tecla-movel { cursor: pointer; }
+        .tecla-movel { 
+            cursor: pointer;
+            /* Aumenta a área de clique sem mudar o tamanho visual da imagem */
+            padding: 10px; 
+            margin: -10px;
+        }
 
         #tecla-dg { top: 26%; left: 12%; width: 4%; }
         #tecla-dr { top: 28%; left: 23.2%; width: 6%; }
-        #tecla-int { top: 53.9%; left: 76%; width: 5.3%; }
+        
+        /* Ajuste fino na área do interruptor */
+        #tecla-int { 
+            top: 53.5%; 
+            left: 75.5%; 
+            width: 6.5%; /* Aumentado levemente para melhor toque */
+            z-index: 30; /* Garantir que fique acima de quase tudo */
+        }
 
-        /* AJUSTE AS POSIÇÕES DOS CONECTORES AQUI */
         #conector-neutro {
             top: 75.2%; 
             left: 39.5%; 
@@ -69,9 +80,9 @@
             top: 20%; 
             left: 51.4%; 
             width: 9%; 
-            display: none; /* Inicia oculto */
+            display: none; 
             z-index: 16;
-            transform: rotate(90deg); /* ALTE RE O ÂNGULO AQUI */
+            transform: rotate(90deg);
         }
 
         #lampada1 {
@@ -81,6 +92,7 @@
             display: none; 
             z-index: 25;
             filter: drop-shadow(0 0 20px #fff700);
+            pointer-events: none; /* CRUCIAL: impede que a lâmpada bloqueie o clique no interruptor */
         }
 
         #lampada2 {
@@ -90,6 +102,7 @@
             display: none; 
             z-index: 25;
             filter: drop-shadow(0 0 20px #fff700);
+            pointer-events: none; /* CRUCIAL */
         }
 
         /* --- SISTEMA DE PONTOS --- */
@@ -197,7 +210,8 @@
 
         function alternarTecla(id, prefixo) {
             const el = document.getElementById(id);
-            el.onclick = () => {
+            el.onclick = (e) => {
+                e.stopPropagation(); // Evita conflitos de clique
                 const status = el.getAttribute('data-status');
                 if(status === 'off') {
                     el.src = `${prefixo}_on.png`;
