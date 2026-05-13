@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador FioCerto - Teste de Carga</title>
+    <title>Simulador FioCerto - Teste de Carga Duplo</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -56,12 +56,21 @@
         #tecla-dr { top: 28%; left: 23.2%; width: 6%; }
         #tecla-int { top: 53.9%; left: 76%; width: 5.3%; }
 
-        /* AJUSTE A POSIÇÃO DA LÂMPADA AQUI */
-        #lampada {
+        /* AJUSTE AS POSIÇÕES DAS LÂMPADAS AQUI */
+        #lampada1 {
             top: 10%; 
-            left: 85%; 
-            width: 10%; 
-            display: none; /* Inicia oculta */
+            left: 80%; 
+            width: 8%; 
+            display: none; 
+            z-index: 25;
+            filter: drop-shadow(0 0 20px #fff700);
+        }
+
+        #lampada2 {
+            top: 10%; 
+            left: 88%; 
+            width: 8%; 
+            display: none; 
             z-index: 25;
             filter: drop-shadow(0 0 20px #fff700);
         }
@@ -117,8 +126,9 @@
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <!-- Lâmpada (Carga) -->
-        <img src="lamp_on.png" id="lampada" class="carga-movel">
+        <!-- Lâmpadas (Cargas) -->
+        <img src="lamp_on.png" id="lampada1" class="carga-movel">
+        <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
@@ -128,7 +138,8 @@
         const camadasFios = document.getElementById('camadas-fios');
         const pontoA = document.getElementById('ponto-A');
         const pontoB = document.getElementById('ponto-B');
-        const lampada = document.getElementById('lampada');
+        const lamp1 = document.getElementById('lampada1');
+        const lamp2 = document.getElementById('lampada2');
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
@@ -154,9 +165,11 @@
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-                lampada.style.display = "block";
+                lamp1.style.display = "block";
+                lamp2.style.display = "block";
             } else {
-                lampada.style.display = "none";
+                lamp1.style.display = "none";
+                lamp2.style.display = "none";
             }
         }
 
@@ -183,7 +196,7 @@
             if (etapaAtual >= etapas.length) {
                 fiacaoConcluida = true;
                 txtFio.innerHTML = "✓ FIAÇÃO COMPLETA";
-                txtInstrucao.innerText = "Ligue o DG, DR e o Interruptor para testar.";
+                txtInstrucao.innerText = "Ligue o DG, DR e o Interruptor para acender as lâmpadas.";
                 verificarCircuito();
                 return;
             }
@@ -239,14 +252,6 @@
                     iniciarEtapa();
                 }, 600);
             });
-        };
-
-        // Coletor para te ajudar a posicionar a lâmpada
-        document.getElementById('projeto-container').onclick = function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`Posição para Lâmpada -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
 
         iniciarEtapa();
