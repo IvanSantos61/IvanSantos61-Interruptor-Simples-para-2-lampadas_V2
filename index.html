@@ -162,8 +162,8 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 32%;
-            min-width: 340px;
+            width: 40%; /* Aumentado de 32% para 40% para acomodar as imagens maiores */
+            min-width: 360px;
             background: #0a111a;
             border: 2px solid #00f0ff;
             box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
@@ -230,7 +230,8 @@
             align-items: center;
         }
         #img-suporte {
-            max-width: 100%;
+            width: 120%; /* Aumentado em +20% (era max-width: 100%) */
+            max-width: 120%; 
             height: auto;
             border-radius: 6px;
             border: 1px solid #162e3d;
