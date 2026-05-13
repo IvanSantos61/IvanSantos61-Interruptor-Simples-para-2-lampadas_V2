@@ -21,11 +21,24 @@
             overflow: hidden; /* Garante que nada transborde da tela do PC */
         }
 
-        /* --- PAINEL DE FORA A FORA (IGUAL À GRAVURA) --- */
+        /* --- IDENTIFICAÇÃO DO SISTEMA (IGUAL À GRAVURA) --- */
+        #titulo-sistema {
+            color: #00f0ff;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-top: 3vh;
+            margin-bottom: 1vh;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        /* --- PAINEL DE FORA A FORA --- */
         #painel-status {
             width: 100%; /* De fora a fora na tela */
             max-width: 1200px; /* Alinhado aos limites do laboratório */
-            margin: 2vh auto; /* Margem calculada baseada na altura da tela */
+            margin: 1vh auto 2vh auto;
             padding: 20px 40px;
             background: rgba(4, 10, 20, 0.9);
             border: 1px solid #16222f;
@@ -50,7 +63,7 @@
         .txt-verde { color: #00ff00; font-weight: bold; }
         .txt-vermelho { color: #ff3333; font-weight: bold; }
 
-        /* --- ÁREA DO PROJETO AJUSTADA PARA CABER NA TELA --- */
+        /* --- ÁREA DO PROJETO --- */
         #projeto-container {
             position: relative;
             display: inline-block; 
@@ -58,14 +71,15 @@
             border: 2px solid #1f2937;
             box-shadow: 0 0 40px rgba(0,0,0,0.9);
             line-height: 0;
-            max-height: 75vh; /* Limita a altura do circuito para não gerar scroll */
+            max-height: 70vh; /* Ajustado para acomodar o título superior */
         }
 
         .imagem-base {
             max-width: 95vw;
-            max-height: 75vh; /* Ajusta a imagem dinamicamente à altura do monitor */
+            max-height: 70vh; 
             display: block;
             object-fit: contain;
+            border-radius: 8px;
         }
 
         .camada-full {
@@ -95,6 +109,36 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
 
+        /* --- BOTÃO REINICIAR (IGUAL À GRAVURA) --- */
+        #btn-reiniciar {
+            position: absolute;
+            bottom: 3.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #b80000;
+            color: #ffffff;
+            border: none;
+            padding: 10px 35px;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 110;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        #btn-reiniciar:hover {
+            background: #d60000;
+        }
+
+        #btn-reiniciar:active {
+            transform: translateX(-50%) scale(0.96);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
         /* --- PONTOS DE CLIQUE --- */
         .ponto-clique {
             position: absolute;
@@ -115,6 +159,8 @@
 </head>
 <body>
 
+    <div id="titulo-sistema">Laboratório SMT Pro</div>
+
     <div id="painel-status">
         <span id="instrucao">CARREGANDO...</span>
     </div>
@@ -133,6 +179,8 @@
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
+        <button id="btn-reiniciar">Reiniciar</button>
+
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
@@ -144,6 +192,7 @@
         const conectorN2 = document.getElementById('conector-neutro');
         const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtInstrucao = document.getElementById('instrucao');
+        const btnReiniciar = document.getElementById('btn-reiniciar');
 
         // BANCO DE FRASES ALEATÓRIAS EM CAIXA ALTA (UPPERCASE) CONFORME O PADRÃO DA FOTO
         const msgsSaida = [
@@ -216,7 +265,6 @@
             }
             const config = etapas[etapaAtual];
             
-            // Define o texto misturando o nome da etapa com uma instrução de saída aleatória
             const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
             txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
 
@@ -271,6 +319,43 @@
                     iniciarEtapa();
                 }, 600);
             });
+        };
+
+        // --- LÓGICA DO BOTÃO REINICIAR ---
+        btnReiniciar.onclick = (e) => {
+            e.stopPropagation();
+            
+            // 1. Reseta variáveis de controle
+            etapaAtual = 0;
+            fiacaoConcluida = false;
+
+            // 2. Limpa todos os fios gerados
+            camadasFios.innerHTML = "";
+
+            // 3. Oculta os acessórios e cargas
+            conectorN2.style.display = "none";
+            conectorN3.style.display = "none";
+            document.getElementById('lampada1').style.display = "none";
+            document.getElementById('lampada2').style.display = "none";
+
+            // 4. Reseta os disjuntores e interruptor para o estado "off"
+            const chaves = [
+                { id: 'tecla-dg', pref: 'al_dg' },
+                { id: 'tecla-dr', pref: 'al_dr' },
+                { id: 'tecla-int', pref: 'tec_int' }
+            ];
+            chaves.forEach(ch => {
+                const el = document.getElementById(ch.id);
+                el.setAttribute('data-status', 'off');
+                el.src = `${ch.pref}_off.png`;
+            });
+
+            // 5. Remove estados visuais dos pontos de clique ativos
+            pontoA.classList.remove('verde');
+            pontoB.classList.remove('verde');
+
+            // 6. Reinicia o ciclo de fiação
+            iniciarEtapa();
         };
 
         iniciarEtapa();
