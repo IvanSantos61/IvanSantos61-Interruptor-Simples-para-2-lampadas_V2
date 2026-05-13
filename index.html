@@ -90,12 +90,22 @@
             z-index: 5;
         }
 
-        /* --- BALÃO INFORMATIVO NBR-5410 --- */
+        /* --- BALÃO INFORMATIVO NBR-5410 CORRIGIDO (CSS SEGURO SEM IMG) --- */
         #balao-NBR {
             position: absolute;
             top: 41%;
-            left: 63%;
-            width: 21%;
+            left: 55%; /* Ajustado levemente para a esquerda para não cobrir os fios */
+            width: 18%;
+            background: rgba(4, 12, 22, 0.95);
+            border: 2px solid #ff9d00;
+            box-shadow: 0 0 15px rgba(255, 157, 0, 0.5);
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            line-height: 1.4;
+            text-align: center;
+            font-weight: bold;
             z-index: 40;
             display: none;
             pointer-events: none;
@@ -268,7 +278,11 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <img src="bl-retorno.png" id="balao-NBR">
+        <div id="balao-NBR">
+            <span style="color: #ff9d00;">CONDUTOR DE RETORNO</span><br>
+            Identificado pela cor preta ou outra conforme projeto.<br>
+            <span style="color: #00f0ff; font-size: 10px;">Norma NBR 5410</span>
+        </div>
 
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
@@ -438,7 +452,6 @@
             camadasFios.appendChild(imgFio);
 
             const timer = setInterval(() => {
-                // CORREÇÃO: Atualiza o quadro estritamente de 0 até o valor max estabelecido
                 imgFio.src = `${config.pasta}/quadro${quadroAtual.toString().padStart(4, '0')}.png`;
                 
                 if (quadroAtual >= config.max) {
@@ -447,7 +460,7 @@
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
                     if (callback) callback();
                 } else {
-                    quadroAtual++; // Só incrementa se não tiver batido o limite máximo, impedindo o loop fantasma
+                    quadroAtual++;
                 }
             }, 40); 
         }
@@ -456,7 +469,7 @@
             e.stopPropagation();
             pontoA.classList.add('verde');
             
-            const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
+            const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsSaida.length)];
             txtInstrucao.innerHTML = `${etapas[etapaAtual].nome} EM CURSO: ${fraseAleatoria}`;
             pontoB.style.display = "block";
         };
