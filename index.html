@@ -21,7 +21,7 @@
             overflow: hidden; /* Garante que nada transborde da tela do PC */
         }
 
-        /* --- IDENTIFICAÇÃO DO SISTEMA (IGUAL À GRAVURA) --- */
+        /* --- IDENTIFICAÇÃO DO SISTEMA --- */
         #titulo-sistema {
             color: #00f0ff;
             font-size: 26px;
@@ -36,8 +36,8 @@
 
         /* --- PAINEL DE FORA A FORA --- */
         #painel-status {
-            width: 100%; /* De fora a fora na tela */
-            max-width: 1200px; /* Alinhado aos limites do laboratório */
+            width: 100%;
+            max-width: 1200px;
             margin: 1vh auto 2vh auto;
             padding: 20px 40px;
             background: rgba(4, 10, 20, 0.9);
@@ -71,7 +71,7 @@
             border: 2px solid #1f2937;
             box-shadow: 0 0 40px rgba(0,0,0,0.9);
             line-height: 0;
-            max-height: 70vh; /* Ajustado para acomodar o título superior */
+            max-height: 70vh;
         }
 
         .imagem-base {
@@ -88,6 +88,17 @@
             width: 100%; height: 100%;
             pointer-events: none;
             z-index: 5;
+        }
+
+        /* --- BALÃO INFORMATIVO NBR-5410 (IGUAL À GRAVURA) --- */
+        #balao-NBR {
+            position: absolute;
+            top: 41%;
+            left: 63%;
+            width: 21%;
+            z-index: 40;
+            display: none;
+            pointer-events: none;
         }
 
         /* --- COMPONENTES --- */
@@ -109,34 +120,118 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
 
-        /* --- BOTÃO REINICIAR (IGUAL À GRAVURA) --- */
-        #btn-reiniciar {
+        /* --- CONTROLES CONTRASTANTES (REINICIAR E AJUDA) --- */
+        .btn-controle {
             position: absolute;
-            bottom: 3.5%;
             left: 50%;
             transform: translateX(-50%);
-            background: #b80000;
-            color: #ffffff;
             border: none;
-            padding: 10px 35px;
-            font-size: 16px;
+            padding: 8px 30px;
+            font-size: 15px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-radius: 20px;
             cursor: pointer;
             z-index: 110;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             transition: background 0.2s, transform 0.1s;
         }
 
-        #btn-reiniciar:hover {
-            background: #d60000;
+        #btn-ajuda {
+            bottom: 12%; /* Fica logo acima do reiniciar */
+            background: #004f77;
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+        }
+        #btn-ajuda:hover { background: #007bb3; }
+
+        #btn-reiniciar {
+            bottom: 3.5%;
+            background: #b80000;
+            color: #ffffff;
+        }
+        #btn-reiniciar:hover { background: #d60000; }
+        .btn-controle:active { transform: translateX(-50%) scale(0.96); }
+
+        /* --- MODAL AJUDA TÉCNICA (IGUAL À GRAVURA) --- */
+        #modal-ajuda {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32%;
+            min-width: 340px;
+            background: #0a111a;
+            border: 2px solid #00f0ff;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            align-items: center;
         }
 
-        #btn-reiniciar:active {
-            transform: translateX(-50%) scale(0.96);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        #modal-ajuda h3 {
+            color: #00f0ff;
+            text-transform: uppercase;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            font-size: 17px;
+            letter-spacing: 1px;
+        }
+
+        .lista-ajuda {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .item-ajuda {
+            width: 100%;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid #162e3d;
+            border-radius: 6px;
+            color: #fff;
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .item-ajuda:hover {
+            border-color: #00f0ff;
+            background: rgba(0, 79, 119, 0.2);
+        }
+
+        .btn-fechar-modal {
+            background: #222;
+            color: #aaa;
+            border: 1px solid #444;
+            padding: 10px 40px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+        .btn-fechar-modal:hover { background: #333; color: #fff; }
+
+        /* TELA DE EXIBIÇÃO DA GRAVURA DE SUPORTE */
+        #tela-imagem-ajuda {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #img-suporte {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #162e3d;
+            margin-bottom: 20px;
         }
 
         /* --- PONTOS DE CLIQUE --- */
@@ -169,6 +264,8 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
+        <img src="bl-retorno.png" id="balao-NBR">
+
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
         
@@ -179,7 +276,25 @@
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
-        <button id="btn-reiniciar">Reiniciar</button>
+        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
+        <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
+
+        <div id="modal-ajuda">
+            <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+                <h3>Ajuda Técnica</h3>
+                <div class="lista-ajuda">
+                    <button class="item-ajuda" onclick="abrirGravuraAjuda('ajuda_interruptor.png')">1. Ligação do Interruptor</button>
+                    <button class="item-ajuda" onclick="abrirGravuraAjuda('ajuda_lampada.png')">2. Ligação da Lâmpada</button>
+                    <button class="item-ajuda" onclick="abrirGravuraAjuda('ajuda_conexoes.png')">3. Emendas e conexões</button>
+                </div>
+                <button class="btn-fechar-modal" onclick="fecharModalAjuda()">Fechar</button>
+            </div>
+            
+            <div id="tela-imagem-ajuda">
+                <img src="" id="img-suporte">
+                <button class="btn-fechar-modal" onclick="voltarParaListaAjuda()">Voltar</button>
+            </div>
+        </div>
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
@@ -193,8 +308,10 @@
         const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtInstrucao = document.getElementById('instrucao');
         const btnReiniciar = document.getElementById('btn-reiniciar');
+        const btnAjuda = document.getElementById('btn-ajuda');
+        const modalAjuda = document.getElementById('modal-ajuda');
+        const balaoNBR = document.getElementById('balao-NBR');
 
-        // BANCO DE FRASES ALEATÓRIAS EM CAIXA ALTA (UPPERCASE) CONFORME O PADRÃO DA FOTO
         const msgsSaida = [
             "CLIQUE NA REFERÊNCIA DO <span class='txt-laranja'>PONTO DE SAÍDA</span> DO CABO ATUAL.",
             "INICIE A CONEXÃO CLICANDO NO <span class='txt-laranja'>BORNE DE ORIGEM</span> DESTACADO.",
@@ -222,6 +339,27 @@
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
+
+        // CONTROLE DO MODAL DE AJUDA
+        btnAjuda.onclick = (e) => {
+            e.stopPropagation();
+            modalAjuda.style.display = "flex";
+            voltarParaListaAjuda(); // Garante que abre no menu de opções
+        };
+
+        function fecharModalAjuda() { modalAjuda.style.display = "none"; }
+
+        function abrirGravuraAjuda(nomeArquivo) {
+            document.getElementById('menu-lista-ajuda').style.display = "none";
+            const telaImg = document.getElementById('tela-imagem-ajuda');
+            document.getElementById('img-suporte').src = nomeArquivo;
+            telaImg.style.display = "flex";
+        }
+
+        function voltarParaListaAjuda() {
+            document.getElementById('tela-imagem-ajuda').style.display = "none";
+            document.getElementById('menu-lista-ajuda').style.display = "flex";
+        }
 
         function verificarCircuito() {
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
@@ -265,6 +403,13 @@
             }
             const config = etapas[etapaAtual];
             
+            // Exibe ou esconde o balão da NBR 5410 com base na etapa atual
+            if(config.nome === "RETORNO 1") {
+                balaoNBR.style.display = "block";
+            } else {
+                balaoNBR.style.display = "none";
+            }
+
             const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
             txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
 
@@ -321,24 +466,19 @@
             });
         };
 
-        // --- LÓGICA DO BOTÃO REINICIAR ---
+        // RESET COMPLETO
         btnReiniciar.onclick = (e) => {
             e.stopPropagation();
-            
-            // 1. Reseta variáveis de controle
+            fecharModalAjuda();
             etapaAtual = 0;
             fiacaoConcluida = false;
-
-            // 2. Limpa todos os fios gerados
             camadasFios.innerHTML = "";
-
-            // 3. Oculta os acessórios e cargas
+            balaoNBR.style.display = "none";
             conectorN2.style.display = "none";
             conectorN3.style.display = "none";
             document.getElementById('lampada1').style.display = "none";
             document.getElementById('lampada2').style.display = "none";
 
-            // 4. Reseta os disjuntores e interruptor para o estado "off"
             const chaves = [
                 { id: 'tecla-dg', pref: 'al_dg' },
                 { id: 'tecla-dr', pref: 'al_dr' },
@@ -350,11 +490,8 @@
                 el.src = `${ch.pref}_off.png`;
             });
 
-            // 5. Remove estados visuais dos pontos de clique ativos
             pontoA.classList.remove('verde');
             pontoB.classList.remove('verde');
-
-            // 6. Reinicia o ciclo de fiação
             iniciarEtapa();
         };
 
