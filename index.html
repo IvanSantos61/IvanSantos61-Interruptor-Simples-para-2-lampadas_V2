@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador FioCerto - Master Interativo</title>
+    <title>Simulador FioCerto - Teste de Carga</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -42,33 +42,28 @@
             z-index: 5;
         }
 
-        /* --- COMPONENTES MÓVEIS (TECLAS) --- */
-        .tecla-movel {
+        /* --- COMPONENTES MÓVEIS --- */
+        .tecla-movel, .carga-movel {
             position: absolute;
             z-index: 20; 
-            cursor: pointer;
-            /* Evita que o arrasto do mouse selecione a imagem */
             user-select: none;
             -webkit-user-drag: none;
         }
 
-        /* IDs para ajuste manual de posição e tamanho */
-        #tecla-dg {
-            top: 26%; 
-            left: 12%; 
-            width: 4%; 
-        }
+        .tecla-movel { cursor: pointer; }
 
-        #tecla-dr {
-            top: 28%; 
-            left: 23.2%; 
-            width: 6%; 
-        }
+        #tecla-dg { top: 26%; left: 12%; width: 4%; }
+        #tecla-dr { top: 28%; left: 23.2%; width: 6%; }
+        #tecla-int { top: 53.9%; left: 76%; width: 5.3%; }
 
-        #tecla-int {
-            top: 53.9%; 
-            left: 76%; 
-            width: 5.3%; 
+        /* AJUSTE A POSIÇÃO DA LÂMPADA AQUI */
+        #lampada {
+            top: 10%; 
+            left: 85%; 
+            width: 10%; 
+            display: none; /* Inicia oculta */
+            z-index: 25;
+            filter: drop-shadow(0 0 20px #fff700);
         }
 
         /* --- SISTEMA DE PONTOS --- */
@@ -108,8 +103,8 @@
 <body>
 
     <div id="painel-status">
-        <strong id="fio-atual">CALIBRAGEM DE COMPONENTES</strong><br>
-        <span id="instrucao">Ajuste as teclas DG, DR e Interruptor no CSS.</span>
+        <strong id="fio-atual">INICIANDO SIMULADOR</strong><br>
+        <span id="instrucao">Conclua a fiação para testar o circuito.</span>
     </div>
 
     <div id="projeto-container">
@@ -117,10 +112,13 @@
         
         <div id="camadas-fios"></div>
 
-        <!-- Componentes Móveis - Padrão OFF -->
+        <!-- Componentes Móveis -->
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
+
+        <!-- Lâmpada (Carga) -->
+        <img src="lamp_on.png" id="lampada" class="carga-movel">
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
@@ -130,6 +128,7 @@
         const camadasFios = document.getElementById('camadas-fios');
         const pontoA = document.getElementById('ponto-A');
         const pontoB = document.getElementById('ponto-B');
+        const lampada = document.getElementById('lampada');
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
@@ -147,8 +146,20 @@
         ];
 
         let etapaAtual = 0;
+        let fiacaoConcluida = false;
 
-        // Função simplificada para alternar estado (para teste visual)
+        function verificarCircuito() {
+            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
+            const dr = document.getElementById('tecla-dr').getAttribute('data-status');
+            const int = document.getElementById('tecla-int').getAttribute('data-status');
+
+            if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
+                lampada.style.display = "block";
+            } else {
+                lampada.style.display = "none";
+            }
+        }
+
         function alternarTecla(id, prefixo) {
             const el = document.getElementById(id);
             el.onclick = () => {
@@ -160,16 +171,22 @@
                     el.src = `${prefixo}_off.png`;
                     el.setAttribute('data-status', 'off');
                 }
+                verificarCircuito();
             };
         }
 
-        // Ativa a alternância para teste
         alternarTecla('tecla-dg', 'al_dg');
         alternarTecla('tecla-dr', 'al_dr');
         alternarTecla('tecla-int', 'tec_int');
 
         function iniciarEtapa() {
-            if (etapaAtual >= etapas.length) return;
+            if (etapaAtual >= etapas.length) {
+                fiacaoConcluida = true;
+                txtFio.innerHTML = "✓ FIAÇÃO COMPLETA";
+                txtInstrucao.innerText = "Ligue o DG, DR e o Interruptor para testar.";
+                verificarCircuito();
+                return;
+            }
             const config = etapas[etapaAtual];
             txtFio.innerText = `INSTALANDO: ${config.nome}`;
             txtInstrucao.innerText = `Toque no ponto de SAÍDA do cabo.`;
@@ -219,21 +236,17 @@
                     pontoA.classList.remove('verde');
                     pontoB.classList.remove('verde');
                     etapaAtual++;
-                    if (etapaAtual < etapas.length) iniciarEtapa();
-                    else {
-                        txtFio.innerHTML = "✓ FIAÇÃO COMPLETA";
-                        txtInstrucao.innerText = "Simulador pronto para testes de carga.";
-                    }
+                    iniciarEtapa();
                 }, 600);
             });
         };
 
-        // Coletor de coordenadas para as teclas
+        // Coletor para te ajudar a posicionar a lâmpada
         document.getElementById('projeto-container').onclick = function(e) {
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log(`Posição sugerida -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
+            console.log(`Posição para Lâmpada -> top: "${y.toFixed(2)}%", left: "${x.toFixed(2)}%"`);
         };
 
         iniciarEtapa();
