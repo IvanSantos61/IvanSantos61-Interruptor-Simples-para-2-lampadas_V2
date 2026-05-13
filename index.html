@@ -157,12 +157,12 @@
         
         .btn-controle:active { transform: scale(0.96); }
 
-        /* --- MODAL AJUDA TÉCNICA (Centralizado e sem barras de rolagem) --- */
+        /* --- MODAL AJUDA TÉCNICA --- */
         #modal-ajuda {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 55%; /* Tamanho ideal para o menu de lista */
+            width: 55%; /* Tamanho inicial para o menu de lista */
             max-width: 90%;
             background: #0a111a;
             border: 2px solid #00f0ff;
@@ -233,7 +233,7 @@
             width: auto;
             max-width: 100%; 
             height: auto;
-            max-height: 52vh; /* Trava a altura para impedir barras de rolagem na tela */
+            max-height: 52vh; /* Altura ideal sem quebrar telas */
             border-radius: 6px;
             border: 1px solid #162e3d;
             margin-bottom: 15px;
@@ -360,13 +360,15 @@
             const telaImg = document.getElementById('tela-imagem-ajuda');
             document.getElementById('img-suporte').src = nomeArquivo;
             
-            // Abre ocupando uma largura confortável que respeita os limites
-            modalAjuda.style.width = "75%";
+            // Remove o excesso lateral: o container se molda exatamente ao tamanho real da foto ajustada
+            modalAjuda.style.width = "fit-content";
+            modalAjuda.style.maxWidth = "75%";
             telaImg.style.display = "flex";
         }
 
         function voltarParaListaAjuda() {
             document.getElementById('tela-imagem-ajuda').style.display = "none";
+            // Retorna a largura padrão ideal para o menu de lista
             modalAjuda.style.width = "55%";
             document.getElementById('menu-lista-ajuda').style.display = "flex";
         }
