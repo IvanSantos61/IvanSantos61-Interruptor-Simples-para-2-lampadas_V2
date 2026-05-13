@@ -90,27 +90,6 @@
             z-index: 5;
         }
 
-        /* --- BALÃO INFORMATIVO NBR-5410 CORRIGIDO (CSS SEGURO SEM IMG) --- */
-        #balao-NBR {
-            position: absolute;
-            top: 41%;
-            left: 55%; /* Ajustado levemente para a esquerda para não cobrir os fios */
-            width: 18%;
-            background: rgba(4, 12, 22, 0.95);
-            border: 2px solid #ff9d00;
-            box-shadow: 0 0 15px rgba(255, 157, 0, 0.5);
-            color: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            line-height: 1.4;
-            text-align: center;
-            font-weight: bold;
-            z-index: 40;
-            display: none;
-            pointer-events: none;
-        }
-
         /* --- COMPONENTES --- */
         .tecla-movel, .carga-movel, .acessorio-movel {
             position: absolute;
@@ -278,12 +257,6 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <div id="balao-NBR">
-            <span style="color: #ff9d00;">CONDUTOR DE RETORNO</span><br>
-            Identificado pela cor preta ou outra conforme projeto.<br>
-            <span style="color: #00f0ff; font-size: 10px;">Norma NBR 5410</span>
-        </div>
-
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
         
@@ -299,7 +272,7 @@
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnica</h3>
+                <h3>Ajuda Técnico</h3>
                 <div class="lista-ajuda">
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
@@ -329,7 +302,6 @@
         const btnReiniciar = document.getElementById('btn-reiniciar');
         const btnAjuda = document.getElementById('btn-ajuda');
         const modalAjuda = document.getElementById('modal-ajuda');
-        const balaoNBR = document.getElementById('balao-NBR');
 
         const msgsSaida = [
             "CLIQUE NA REFERÊNCIA DO <span class='txt-laranja'>PONTO DE SAÍDA</span> DO CABO ATUAL.",
@@ -424,12 +396,6 @@
                 return;
             }
             const config = etapas[etapaAtual];
-            
-            if(config.nome === "RETORNO 1") {
-                balaoNBR.style.display = "block";
-            } else {
-                balaoNBR.style.display = "none";
-            }
 
             const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
             txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
@@ -469,7 +435,7 @@
             e.stopPropagation();
             pontoA.classList.add('verde');
             
-            const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsSaida.length)];
+            const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
             txtInstrucao.innerHTML = `${etapas[etapaAtual].nome} EM CURSO: ${fraseAleatoria}`;
             pontoB.style.display = "block";
         };
@@ -495,7 +461,6 @@
             etapaAtual = 0;
             fiacaoConcluida = false;
             camadasFios.innerHTML = "";
-            balaoNBR.style.display = "none";
             conectorN2.style.display = "none";
             conectorN3.style.display = "none";
             document.getElementById('lampada1').style.display = "none";
