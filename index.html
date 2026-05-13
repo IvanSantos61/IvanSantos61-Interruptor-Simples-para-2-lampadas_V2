@@ -56,13 +56,21 @@
         #tecla-dr { top: 28%; left: 23.2%; width: 6%; }
         #tecla-int { top: 53.9%; left: 76%; width: 5.3%; }
 
-        /* AJUSTE A POSIÇÃO DO CONECTOR AQUI */
+        /* AJUSTE AS POSIÇÕES DOS CONECTORES AQUI */
         #conector-neutro {
             top: 35%; 
             left: 45%; 
             width: 4%; 
-            display: none; /* Inicia oculto */
+            display: none; 
             z-index: 15;
+        }
+
+        #conector-neutro-3vias {
+            top: 30%; 
+            left: 54%; 
+            width: 4.5%; 
+            display: none; /* Inicia oculto */
+            z-index: 16;
         }
 
         #lampada1 {
@@ -131,6 +139,8 @@
 
         <!-- Componentes -->
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
+        <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
+        
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
@@ -149,7 +159,8 @@
         const pontoB = document.getElementById('ponto-B');
         const lamp1 = document.getElementById('lampada1');
         const lamp2 = document.getElementById('lampada2');
-        const conectorN = document.getElementById('conector-neutro');
+        const conectorN2 = document.getElementById('conector-neutro');
+        const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
 
@@ -237,9 +248,12 @@
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
-                    // Lógica específica para o conector
+                    // Lógica para exibição dos conectores
                     if(config.nome === "NEUTRO 1") {
-                        conectorN.style.display = "block";
+                        conectorN2.style.display = "block";
+                    }
+                    if(config.nome === "NEUTRO 2") {
+                        conectorN3.style.display = "block";
                     }
 
                     if (callback) callback();
