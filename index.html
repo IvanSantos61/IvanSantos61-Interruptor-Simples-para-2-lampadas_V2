@@ -3,35 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador FioCerto - Teste de Carga Duplo</title>
+    <title>Laboratório SMT Pro</title>
     <style>
         * { box-sizing: border-box; }
         body {
             margin: 0;
-            background-color: #050505;
+            background-color: #010409;
             color: #ffd700;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
 
+        /* --- PAINEL DE MENSAGENS PADRÃO GIGANTE (IGUAL À FOTO) --- */
+        #painel-status {
+            width: 85%;
+            max-width: 900px;
+            margin: 25px 0;
+            padding: 25px;
+            background: rgba(5, 12, 25, 0.85);
+            border: 1px solid #1a2a3a;
+            border-radius: 15px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #instrucao {
+            color: #ffd700;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .txt-laranja { color: #ff9d00; }
+        .txt-verde { color: #00ff00; }
+
+        /* --- CONTAINER DO PROJETO --- */
         #projeto-container {
             position: relative;
-            display: inline-block; 
-            margin-top: 10px;
-            border: 2px solid #333;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
-            line-height: 0;
+            background: #0d1117;
+            border-radius: 20px;
+            padding: 10px;
+            border: 2px solid #1f2937;
         }
 
-        .imagem-base {
-            max-width: 95vw;
-            height: auto;
-            display: block;
-        }
-
+        .imagem-base { max-width: 90vw; height: auto; border-radius: 10px; }
+        
         .camada-full {
             position: absolute;
             top: 0; left: 0;
@@ -40,215 +63,144 @@
             z-index: 5;
         }
 
-        /* --- COMPONENTES --- */
-        .tecla-movel, .carga-movel, .acessorio-movel {
+        /* BALÃO INFORMATIVO DINÂMICO */
+        #balao-info {
             position: absolute;
-            z-index: 20; 
-            user-select: none;
-            -webkit-user-drag: none;
+            width: 25%;
+            z-index: 150;
+            display: none;
+            pointer-events: none;
         }
 
-        .tecla-movel { cursor: pointer; padding: 10px; margin: -10px; }
-        #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
-        #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
-        #tecla-int { top: 53.5%; left: 75.5%; width: 6.5%; z-index: 30; }
+        /* COMPONENTES */
+        .acessorio-movel { position: absolute; z-index: 20; display: none; }
+        #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; }
+        #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; transform: rotate(90deg); }
 
-        #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; display: none; z-index: 15; }
-        #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; display: none; z-index: 16; transform: rotate(90deg); }
-
-        #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
-        #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
-
-        /* --- SISTEMA DE PONTOS --- */
+        /* PONTOS */
         .ponto-clique {
             position: absolute;
-            width: 1.8%; aspect-ratio: 1 / 1;
-            border: 0.2vw solid #fff;
+            width: 2%; aspect-ratio: 1/1;
+            border: 2px solid #fff;
             border-radius: 50%;
             cursor: pointer;
             z-index: 100;
             transform: translate(-50%, -50%);
             display: none;
         }
-
-        .ponto-fase { background: rgba(255, 0, 0, 0.7); box-shadow: 0 0 1vw #ff0000; }
-        .ponto-neutro { background: rgba(0, 150, 255, 0.7); box-shadow: 0 0 1vw #0096ff; }
-        .ponto-retorno { background: rgba(255, 165, 0, 0.7); box-shadow: 0 0 1vw #ffa500; }
-        .ponto-clique.verde { background: #00ff00 !important; box-shadow: 0 0 1.5vw #00ff00 !important; }
-
-        /* --- PAINEL DE MENSAGENS (PADRÃO SMT PRO) --- */
-        #painel-status {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #111;
-            border-radius: 5px;
-            border-bottom: 3px solid #ffd700;
-            text-align: center;
-            z-index: 200;
-        }
-
-        .txt-laranja { color: #ff9d00; font-weight: bold; }
-        .txt-verde { color: #00ff00; font-weight: bold; }
-        .txt-vermelho { color: #ff3333; font-weight: bold; }
+        .ponto-fase { background: rgba(255, 0, 0, 0.7); box-shadow: 0 0 15px #ff0000; }
+        .ponto-neutro { background: rgba(0, 150, 255, 0.7); box-shadow: 0 0 15px #0096ff; }
+        .ponto-retorno { background: rgba(255, 165, 0, 0.7); box-shadow: 0 0 15px #ffa500; }
+        .verde { background: #00ff00 !important; box-shadow: 0 0 25px #00ff00 !important; }
     </style>
 </head>
 <body>
 
     <div id="painel-status">
-        <strong id="fio-atual">INICIANDO SIMULADOR</strong><br>
-        <span id="instrucao">Conclua a fiação para testar o circuito.</span>
+        <span id="instrucao">CARREGANDO LABORATÓRIO SMT PRO...</span>
     </div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
+        
+        <!-- Balão de referência enviado -->
+        <img src="bl-retorno.png" id="balao-info">
 
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
-        
-        <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
-        <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
-        <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
-
-        <img src="lamp_on.png" id="lampada1" class="carga-movel">
-        <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
 
     <script>
-        const camadasFios = document.getElementById('camadas-fios');
-        const pontoA = document.getElementById('ponto-A');
-        const pontoB = document.getElementById('ponto-B');
-        const conectorN2 = document.getElementById('conector-neutro');
-        const conectorN3 = document.getElementById('conector-neutro-3vias');
-        const txtFio = document.getElementById('fio-atual');
         const txtInstrucao = document.getElementById('instrucao');
+        const balao = document.getElementById('balao-info');
 
-        // MENSAGENS ALEATÓRIAS NO PADRÃO SMT PRO
+        // MENSAGENS ALEATÓRIAS NO NOVO PADRÃO VISUAL
         const msgsSaida = [
-            "Toque no <span class='txt-laranja'>PONTO DE SAÍDA</span> do cabo.",
-            "Inicie a fiação no <span class='txt-laranja'>BORNE DESTACADO</span>.",
-            "Selecione a <span class='txt-laranja'>ORIGEM</span> do condutor para começar."
+            "CLIQUE NA REFERÊNCIA DO <span class='txt-laranja'>PONTO DE SAÍDA</span>.",
+            "INICIE A FIAÇÃO NO <span class='txt-laranja'>BORNE DESTACADO</span>.",
+            "TOQUE NO PONTO PARA INICIAR A <span class='txt-laranja'>PASSAGEM DO CABO</span>."
         ];
 
         const msgsDestino = [
-            "Agora toque no <span class='txt-verde'>PONTO DE DESTINO</span>.",
-            "Leve o cabo até o <span class='txt-verde'>BORNE DE CHEGADA</span>.",
-            "Finalize o trajeto no <span class='txt-verde'>PONTO INDICADO</span>."
+            "AGORA CLIQUE NA REFERÊNCIA DO <span class='txt-verde'>PONTO DE DESTINO</span>.",
+            "LEVE O CONDUTOR ATÉ O <span class='txt-verde'>BORNE DE CHEGADA</span>.",
+            "FINALIZE A CONEXÃO NO <span class='txt-verde'>PONTO INDICADO</span>."
         ];
 
         const etapas = [
             { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "80%", left: "40%" } },
             { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76%", left: "41%" } },
-            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "55.5%" } },
-            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76%", left: "49%" }, posB: { top: "31%", left: "54%" } },
-            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" } },
-            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" } },
-            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54%" }, posB: { top: "23%", left: "91%" } },
-            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "14%", left: "57%" }, posB: { top: "25%", left: "89%" } },
-            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" } },
-            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" } }
+            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" }, info: true, posBalao: { top: "45%", left: "65%" } }
         ];
 
         let etapaAtual = 0;
-        let fiacaoConcluida = false;
-
-        function verificarCircuito() {
-            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
-            const dr = document.getElementById('tecla-dr').getAttribute('data-status');
-            const int = document.getElementById('tecla-int').getAttribute('data-status');
-
-            if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-                document.getElementById('lampada1').style.display = "block";
-                document.getElementById('lampada2').style.display = "block";
-                txtFio.innerHTML = "<span class='txt-verde'>LÂMPADAS ACESAS</span>";
-            } else {
-                document.getElementById('lampada1').style.display = "none";
-                document.getElementById('lampada2').style.display = "none";
-                if(fiacaoConcluida) txtFio.innerHTML = "<span class='txt-vermelho'>LÂMPADAS APAGADAS</span>";
-            }
-        }
-
-        function alternarTecla(id, prefixo) {
-            const el = document.getElementById(id);
-            el.onclick = (e) => {
-                e.stopPropagation();
-                const status = el.getAttribute('data-status');
-                const novoStatus = status === 'off' ? 'on' : 'off';
-                el.src = `${prefixo}_${novoStatus}.png`;
-                el.setAttribute('data-status', novoStatus);
-                verificarCircuito();
-            };
-        }
-
-        alternarTecla('tecla-dg', 'al_dg');
-        alternarTecla('tecla-dr', 'al_dr');
-        alternarTecla('tecla-int', 'tec_int');
 
         function iniciarEtapa() {
             if (etapaAtual >= etapas.length) {
-                fiacaoConcluida = true;
-                txtFio.innerHTML = "✓ <span class='txt-verde'>FIAÇÃO COMPLETA</span>";
-                txtInstrucao.innerText = "Ligue o DG, DR e o Interruptor para testar.";
-                verificarCircuito();
+                txtInstrucao.innerHTML = "<span class='txt-verde'>FIAÇÃO CONCLUÍDA! TESTE O CIRCUITO AGORA.</span>";
                 return;
             }
-            const config = etapas[etapaAtual];
-            txtFio.innerText = `INSTALANDO: ${config.nome}`;
+
+            const e = etapas[etapaAtual];
             txtInstrucao.innerHTML = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
+            
+            // Esconde balão da etapa anterior
+            balao.style.display = "none";
 
-            pontoA.className = `ponto-clique ${config.cor}`;
-            pontoA.style.top = config.posA.top;
-            pontoA.style.left = config.posA.left;
-            pontoA.style.display = "block";
+            const pA = document.getElementById('ponto-A');
+            const pB = document.getElementById('ponto-B');
 
-            pontoB.className = `ponto-clique ${config.cor}`;
-            pontoB.style.top = config.posB.top;
-            pontoB.style.left = config.posB.left;
-            pontoB.style.display = "none";
-        }
+            pA.className = `ponto-clique ${e.cor}`;
+            pA.style.top = e.posA.top; pA.style.left = e.posA.left;
+            pA.style.display = "block";
 
-        function animarPassagemCabo(config, callback) {
-            let quadroAtual = 0;
-            const imgFio = document.createElement('img');
-            imgFio.className = "camada-full";
-            camadasFios.appendChild(imgFio);
+            pB.className = `ponto-clique ${e.cor}`;
+            pB.style.top = e.posB.top; pB.style.left = e.posB.left;
+            pB.style.display = "none";
 
-            const timer = setInterval(() => {
-                imgFio.src = `${config.pasta}/quadro${quadroAtual.toString().padStart(4, '0')}.png`;
-                if (quadroAtual >= config.max) {
-                    clearInterval(timer);
-                    if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
-                    if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
-                    if (callback) callback();
+            pA.onclick = () => {
+                pA.classList.add('verde');
+                txtInstrucao.innerHTML = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
+                pB.style.display = "block";
+                
+                // Se for etapa com balão informativo (Ex: Retorno)
+                if(e.info) {
+                    balao.style.top = e.posBalao.top;
+                    balao.style.left = e.posBalao.left;
+                    balao.style.display = "block";
                 }
-                quadroAtual++;
-            }, 40); 
+            };
+
+            pB.onclick = () => {
+                pB.classList.add('verde');
+                animar(e, () => {
+                    etapaAtual++;
+                    pA.style.display = pB.style.display = "none";
+                    pA.classList.remove('verde'); pB.classList.remove('verde');
+                    iniciarEtapa();
+                });
+            };
         }
 
-        pontoA.onclick = (e) => {
-            e.stopPropagation();
-            pontoA.classList.add('verde');
-            txtInstrucao.innerHTML = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
-            pontoB.style.display = "block";
-        };
-
-        pontoB.onclick = (e) => {
-            e.stopPropagation();
-            pontoB.classList.add('verde');
-            animarPassagemCabo(etapas[etapaAtual], () => {
-                setTimeout(() => {
-                    pontoA.style.display = "none";
-                    pontoB.style.display = "none";
-                    pontoA.classList.remove('verde');
-                    pontoB.classList.remove('verde');
-                    etapaAtual++;
-                    iniciarEtapa();
-                }, 600);
-            });
-        };
+        function animar(conf, callback) {
+            let q = 0;
+            const img = document.createElement('img');
+            img.className = "camada-full";
+            document.getElementById('camadas-fios').appendChild(img);
+            const t = setInterval(() => {
+                img.src = `${conf.pasta}/quadro${q.toString().padStart(4, '0')}.png`;
+                if (q >= conf.max) { 
+                    clearInterval(t); 
+                    if(conf.nome === "NEUTRO 1") document.getElementById('conector-neutro').style.display = "block";
+                    callback(); 
+                }
+                q++;
+            }, 40);
+        }
 
         iniciarEtapa();
     </script>
