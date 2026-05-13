@@ -162,8 +162,9 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 40%; /* Aumentado de 32% para 40% para acomodar as imagens maiores */
+            width: fit-content; /* Altera dinamicamente de acordo com o conteúdo interno */
             min-width: 360px;
+            max-width: 90vw; /* Impede que o modal estoure telas menores */
             background: #0a111a;
             border: 2px solid #00f0ff;
             box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
@@ -186,6 +187,7 @@
 
         .lista-ajuda {
             width: 100%;
+            min-width: 320px; /* Mantém uma boa largura para a lista de botões */
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -230,8 +232,8 @@
             align-items: center;
         }
         #img-suporte {
-            width: 120%; /* Aumentado em +20% (era max-width: 100%) */
-            max-width: 120%; 
+            width: 125%; /* Aumentado mais 5% (Totalizando +25% do tamanho original) */
+            max-width: 125%; 
             height: auto;
             border-radius: 6px;
             border: 1px solid #162e3d;
