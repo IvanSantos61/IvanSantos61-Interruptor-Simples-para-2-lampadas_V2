@@ -410,6 +410,8 @@
                 txtInstrucao.innerHTML = "REDE: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
             } else if (config.nome === "RETORNO 1") {
                 txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.";
+            } else if (config.nome === "NEUTRO 3") {
+                txtInstrucao.innerHTML = "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
             } else {
                 const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
                 txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
@@ -465,6 +467,8 @@
                 txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE";
             } else if (nomeEtapa === "RETORNO 1") {
                 txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA";
+            } else if (nomeEtapa === "NEUTRO 3") {
+                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO";
             } else {
                 const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
                 txtInstrucao.innerHTML = `${nomeEtapa} EM CURSO: ${fraseAleatoria}`;
