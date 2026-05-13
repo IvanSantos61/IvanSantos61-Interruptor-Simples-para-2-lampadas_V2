@@ -3,294 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FioCerto - Teste de Carga Duplo</title>
+    <title>FioCerto - Simulador de Fiação</title>
     <style>
         * { box-sizing: border-box; }
         body {
             margin: 0;
             background-color: #050505;
             color: #ffd700;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* --- INTERFACE PROFISSIONAL SMT PRO --- */
+        /* CONTAINER DE MENSAGENS ESTILO SMT PRO */
         #container-instrucao {
             position: fixed;
             top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
             width: 90%;
-            max-width: 500px;
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid #333;
-            border-bottom: 3px solid #ffd700;
-            padding: 12px;
-            border-radius: 8px;
+            max-width: 550px;
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #444;
+            border-bottom: 4px solid #ffd700;
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        .txt-instrucao { color: #fff; font-size: 14px; margin-bottom: 5px; }
-        .txt-laranja { color: #ff9d00; font-weight: bold; }
-        .txt-verde { color: #00ff00; font-weight: bold; }
-        .txt-vermelho { color: #ff3333; font-weight: bold; }
-
-        .status-badge {
+        .txt-fio { color: #fff; font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .txt-comando { color: #ff9d00; font-size: 14px; font-style: italic; min-height: 20px; }
+        .status-pill {
             display: inline-block;
-            padding: 4px 12px;
+            margin-top: 10px;
+            padding: 5px 15px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 5px;
+            border: 1px solid currentColor;
         }
+        .pill-off { color: #ff3333; background: rgba(255, 51, 51, 0.1); }
+        .pill-on { color: #00ff00; background: rgba(0, 255, 0, 0.1); }
 
-        .bg-verde { background: #004400; color: #00ff00; border: 1px solid #00ff00; }
-        .bg-vermelho { background: #440000; color: #ff3333; border: 1px solid #ff3333; }
-
-        /* --- ÁREA DO PROJETO --- */
         #projeto-container {
             position: relative;
-            margin-top: 110px; /* Espaço para a instrução fixa */
-            border: 2px solid #222;
+            margin-top: 140px;
             line-height: 0;
-            background: #000;
         }
 
-        .imagem-base {
-            max-width: 98vw;
-            height: auto;
-            display: block;
-        }
+        .imagem-base { max-width: 95vw; height: auto; display: block; border: 1px solid #222; }
+        .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
-        .camada-full {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* --- COMPONENTES INTERATIVOS --- */
-        .tecla-movel { 
-            position: absolute;
-            z-index: 30; 
-            cursor: pointer;
-            padding: 10px; 
-            margin: -10px;
-            user-select: none;
-        }
-
+        /* COMPONENTES */
+        .tecla-movel { position: absolute; z-index: 30; cursor: pointer; padding: 10px; margin: -10px; }
         #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
         #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
         #tecla-int { top: 53.5%; left: 75.5%; width: 6.5%; }
 
-        .acessorio-movel { position: absolute; z-index: 15; display: none; pointer-events: none; }
-        #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; }
-        #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; transform: rotate(90deg); }
-
-        .carga-movel {
-            position: absolute;
-            z-index: 25;
-            display: none;
-            filter: drop-shadow(0 0 25px #fff700);
-            pointer-events: none;
-        }
+        .carga-movel { position: absolute; z-index: 25; display: none; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; }
 
-        /* --- PONTOS DE CLIQUE --- */
+        /* PONTOS */
         .ponto-clique {
-            position: absolute;
-            width: 2.2%; 
-            aspect-ratio: 1 / 1;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            transform: translate(-50%, -50%);
-            display: none;
-            transition: all 0.2s;
+            position: absolute; width: 2%; aspect-ratio: 1/1;
+            border: 2px solid #fff; border-radius: 50%;
+            cursor: pointer; z-index: 100; transform: translate(-50%, -50%);
+            display: none; transition: 0.3s;
         }
-
-        .ponto-fase { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 10px #ff0000; }
-        .ponto-neutro { background: rgba(0, 150, 255, 0.8); box-shadow: 0 0 10px #0096ff; }
-        .ponto-retorno { background: rgba(255, 165, 0, 0.8); box-shadow: 0 0 10px #ffa500; }
-        .ponto-clique.confirmado { background: #00ff00 !important; box-shadow: 0 0 15px #00ff00 !important; border-color: #fff; }
-
+        .fase { background: #ff0000; box-shadow: 0 0 10px #ff0000; }
+        .neutro { background: #0096ff; box-shadow: 0 0 10px #0096ff; }
+        .retorno { background: #ffa500; box-shadow: 0 0 10px #ffa500; }
+        .ponto-clique.ativo { background: #00ff00 !important; box-shadow: 0 0 20px #00ff00 !important; }
     </style>
 </head>
 <body>
 
     <div id="container-instrucao">
-        <div class="txt-instrucao" id="msg-topo">
-            PASSO <span id="etapa-num">1</span>: <span class="txt-laranja" id="fio-nome">INICIANDO</span>
-        </div>
-        <div id="instrucao-detalhe" style="color: #ccc; font-size: 13px;">
-            Toque no ponto de saída destacado.
-        </div>
-        <div id="status-circuito" class="status-badge bg-vermelho">
-            LÂMPADAS APAGADAS
-        </div>
+        <div class="txt-fio" id="display-fio">CARREGANDO...</div>
+        <div class="txt-comando" id="display-msg">Aguarde o início do teste.</div>
+        <div id="status-pilula" class="status-pill pill-off">CIRCUITO DESLIGADO</div>
     </div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="imagem-base">
-        
         <div id="camadas-fios"></div>
-
-        <!-- Acessórios -->
-        <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
-        <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
         
-        <!-- Dispositivos -->
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <!-- Cargas -->
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
-        <!-- Pontos de Conexão -->
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
 
     <script>
-        const camadasFios = document.getElementById('camadas-fios');
-        const pontoA = document.getElementById('ponto-A');
-        const pontoB = document.getElementById('ponto-B');
-        const lamp1 = document.getElementById('lampada1');
-        const lamp2 = document.getElementById('lampada2');
-        const badgeStatus = document.getElementById('status-circuito');
-        
+        // LISTA DE MENSAGENS ALEATÓRIAS (AJUSTE COMO QUISER)
+        const msgsSaida = [
+            "Conecte o cabo no borne de saída indicado.",
+            "Inicie a fiação clicando no ponto em destaque.",
+            "Selecione a origem do condutor agora.",
+            "Toque no borne para prender o fio de saída.",
+            "Primeiro passo: clique no ponto de partida."
+        ];
+
+        const msgsDestino = [
+            "Agora leve o condutor até o próximo borne.",
+            "Passe o cabo pela tubulação até o destino.",
+            "Finalize o percurso clicando no ponto de chegada.",
+            "Conecte a outra extremidade no borne indicado.",
+            "Encaminhe o fio até o ponto final."
+        ];
+
         const etapas = [
-            { nome: "CABO FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "80%", left: "40%" } },
-            { nome: "CABO NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76%", left: "41%" } },
-            { nome: "CABO FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "55.5%" } },
-            { nome: "CABO NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76%", left: "49%" }, posB: { top: "31%", left: "54%" } },
-            { nome: "CABO FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" } },
-            { nome: "CABO RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" } },
-            { nome: "CABO NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54%" }, posB: { top: "23%", left: "91%" } },
-            { nome: "CABO RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "14%", left: "57%" }, posB: { top: "25%", left: "89%" } },
-            { nome: "CABO RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" } },
-            { nome: "CABO NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" } }
+            { nome: "FASE 1 (DG ao DR)", pasta: "FASE1", max: 24, cor: "fase", posA: { top: "38%", left: "27%" }, posB: { top: "80%", left: "40%" } },
+            { nome: "NEUTRO 1 (Barramento)", pasta: "NEUTRO1", max: 54, cor: "neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76%", left: "41%" } },
+            { nome: "FASE 2 (DR ao Disjuntor)", pasta: "FASE2", max: 24, cor: "fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "55.5%" } },
+            { nome: "NEUTRO 2 (Conector)", pasta: "NEUTRO2", max: 24, cor: "neutro", posA: { top: "76%", left: "49%" }, posB: { top: "31%", left: "54%" } }
+            // ... Adicione as outras etapas aqui seguindo o mesmo padrão
         ];
 
         let etapaAtual = 0;
-        let fiacaoConcluida = false;
+        let concluido = false;
 
-        function atualizarStatusFisico() {
-            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
-            const dr = document.getElementById('tecla-dr').getAttribute('data-status');
-            const int = document.getElementById('tecla-int').getAttribute('data-status');
+        function atualizarDisplay() {
+            const dg = document.getElementById('tecla-dg').dataset.status === 'on';
+            const dr = document.getElementById('tecla-dr').dataset.status === 'on';
+            const int = document.getElementById('tecla-int').dataset.status === 'on';
+            const pilula = document.getElementById('status-pilula');
 
-            if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-                lamp1.style.display = "block";
-                lamp2.style.display = "block";
-                badgeStatus.innerText = "LÂMPADAS ACESAS";
-                badgeStatus.className = "status-badge bg-verde";
+            if (concluido && dg && dr && int) {
+                document.getElementById('lampada1').style.display = 'block';
+                document.getElementById('lampada2').style.display = 'block';
+                pilula.innerText = "LÂMPADAS ACESAS";
+                pilula.className = "status-pill pill-on";
             } else {
-                lamp1.style.display = "none";
-                lamp2.style.display = "none";
-                badgeStatus.innerText = "LÂMPADAS APAGADAS";
-                badgeStatus.className = "status-badge bg-vermelho";
+                document.getElementById('lampada1').style.display = 'none';
+                document.getElementById('lampada2').style.display = 'none';
+                pilula.innerText = "CIRCUITO DESLIGADO";
+                pilula.className = "status-pill pill-off";
             }
         }
 
-        function alternarTecla(id, prefixo) {
-            const el = document.getElementById(id);
-            el.onclick = (e) => {
-                e.stopPropagation();
-                const status = el.getAttribute('data-status');
-                if(status === 'off') {
-                    el.src = `${prefixo}_on.png`;
-                    el.setAttribute('data-status', 'on');
-                } else {
-                    el.src = `${prefixo}_off.png`;
-                    el.setAttribute('data-status', 'off');
-                }
-                atualizarStatusFisico();
-            };
-        }
-
-        alternarTecla('tecla-dg', 'al_dg');
-        alternarTecla('tecla-dr', 'al_dr');
-        alternarTecla('tecla-int', 'tec_int');
-
-        function iniciarEtapa() {
+        function iniciarPasso() {
             if (etapaAtual >= etapas.length) {
-                fiacaoConcluida = true;
-                document.getElementById('msg-topo').innerHTML = "✓ <span class='txt-verde'>FIAÇÃO CONCLUÍDA</span>";
-                document.getElementById('instrucao-detalhe').innerText = "Acione os componentes para testar o circuito.";
-                atualizarStatusFisico();
+                concluido = true;
+                document.getElementById('display-fio').innerText = "✓ SISTEMA PRONTO";
+                document.getElementById('display-msg').innerText = "Fiação finalizada com sucesso! Teste os dispositivos.";
+                atualizarDisplay();
                 return;
             }
 
-            const config = etapas[etapaAtual];
-            document.getElementById('etapa-num').innerText = etapaAtual + 1;
-            document.getElementById('fio-nome').innerText = config.nome;
-            document.getElementById('instrucao-detalhe').innerHTML = "Toque no ponto de <span class='txt-laranja'>SAÍDA</span> do cabo.";
+            const e = etapas[etapaAtual];
+            document.getElementById('display-fio').innerText = `INSTALANDO: ${e.nome}`;
+            // Escolhe mensagem aleatória de saída
+            document.getElementById('display-msg').innerText = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
 
-            pontoA.className = `ponto-clique ${config.cor}`;
-            pontoA.style.top = config.posA.top;
-            pontoA.style.left = config.posA.left;
-            pontoA.style.display = "block";
+            const pA = document.getElementById('ponto-A');
+            const pB = document.getElementById('ponto-B');
 
-            pontoB.className = `ponto-clique ${config.cor}`;
-            pontoB.style.top = config.posB.top;
-            pontoB.style.left = config.posB.left;
-            pontoB.style.display = "none";
+            pA.className = `ponto-clique ${e.cor}`;
+            pA.style.top = e.posA.top; pA.style.left = e.posA.left;
+            pA.style.display = 'block';
+
+            pB.className = `ponto-clique ${e.cor}`;
+            pB.style.top = e.posB.top; pB.style.left = e.posB.left;
+            pB.style.display = 'none';
+
+            pA.onclick = () => {
+                pA.classList.add('ativo');
+                // Escolhe mensagem aleatória de destino
+                document.getElementById('display-msg').innerText = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
+                pB.style.display = 'block';
+            };
+
+            pB.onclick = () => {
+                pB.classList.add('ativo');
+                animar(e, () => {
+                    etapaAtual++;
+                    pA.style.display = pB.style.display = 'none';
+                    pA.classList.remove('ativo'); pB.classList.remove('ativo');
+                    iniciarPasso();
+                });
+            };
         }
 
-        function animarCabo(config, callback) {
+        function animar(conf, callback) {
             let q = 0;
             const img = document.createElement('img');
             img.className = "camada-full";
-            camadasFios.appendChild(img);
-
-            const timer = setInterval(() => {
-                img.src = `${config.pasta}/quadro${q.toString().padStart(4, '0')}.png`;
-                if (q >= config.max) {
-                    clearInterval(timer);
-                    if(config.nome === "CABO NEUTRO 1") document.getElementById('conector-neutro').style.display = "block";
-                    if(config.nome === "CABO NEUTRO 2") document.getElementById('conector-neutro-3vias').style.display = "block";
-                    if (callback) callback();
-                }
+            document.getElementById('camadas-fios').appendChild(img);
+            const t = setInterval(() => {
+                img.src = `${conf.pasta}/quadro${q.toString().padStart(4, '0')}.png`;
+                if (q >= conf.max) { clearInterval(t); callback(); }
                 q++;
             }, 40);
         }
 
-        pontoA.onclick = (e) => {
-            e.stopPropagation();
-            pontoA.classList.add('confirmado');
-            document.getElementById('instrucao-detalhe').innerHTML = "Toque no ponto de <span class='txt-verde'>DESTINO</span>.";
-            pontoB.style.display = "block";
-        };
+        function setupBotoes(id, prefix) {
+            const btn = document.getElementById(id);
+            btn.onclick = () => {
+                const s = btn.dataset.status === 'off' ? 'on' : 'off';
+                btn.src = `${prefix}_${s}.png`;
+                btn.dataset.status = s;
+                atualizarDisplay();
+            };
+        }
 
-        pontoB.onclick = (e) => {
-            e.stopPropagation();
-            pontoB.classList.add('confirmado');
-            animarCabo(etapas[etapaAtual], () => {
-                setTimeout(() => {
-                    pontoA.style.display = "none";
-                    pontoB.style.display = "none";
-                    pontoA.classList.remove('confirmado');
-                    pontoB.classList.remove('confirmado');
-                    etapaAtual++;
-                    iniciarEtapa();
-                }, 500);
-            });
-        };
+        setupBotoes('tecla-dg', 'al_dg');
+        setupBotoes('tecla-dr', 'al_dr');
+        setupBotoes('tecla-int', 'tec_int');
 
-        iniciarEtapa();
+        iniciarPasso();
     </script>
 </body>
 </html>
