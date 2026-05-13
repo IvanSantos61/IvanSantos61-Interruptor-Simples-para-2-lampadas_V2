@@ -90,7 +90,7 @@
             z-index: 5;
         }
 
-        /* --- BALÃO INFORMATIVO NBR-5410 (IGUAL À GRAVURA) --- */
+        /* --- BALÃO INFORMATIVO NBR-5410 --- */
         #balao-NBR {
             position: absolute;
             top: 41%;
@@ -120,11 +120,9 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
 
-        /* --- CONTROLES CONTRASTANTES (REINICIAR E AJUDA) --- */
+        /* --- CONTROLES COM POSICIONAMENTO MANUAL LIBERADO --- */
         .btn-controle {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             border: none;
             padding: 8px 30px;
             font-size: 15px;
@@ -138,23 +136,28 @@
             transition: background 0.2s, transform 0.1s;
         }
 
+        /* Altere os valores de top e left abaixo para posicionar o botão Ajuda */
         #btn-ajuda {
-            bottom: 12%; /* Fica logo acima do reiniciar */
+            top: 90%; 
+            left: 23%;
             background: #004f77;
             color: #00f0ff;
             border: 1px solid #00f0ff;
         }
         #btn-ajuda:hover { background: #007bb3; }
 
+        /* Altere os valores de top e left abaixo para posicionar o botão Reiniciar */
         #btn-reiniciar {
-            bottom: 3.5%;
+            top: 92%;
+            left: 23%;
             background: #b80000;
             color: #ffffff;
         }
         #btn-reiniciar:hover { background: #d60000; }
-        .btn-controle:active { transform: translateX(-50%) scale(0.96); }
+        
+        .btn-controle:active { transform: scale(0.96); }
 
-        /* --- MODAL AJUDA TÉCNICA (IGUAL À GRAVURA) --- */
+        /* --- MODAL AJUDA TÉCNICA --- */
         #modal-ajuda {
             position: absolute;
             top: 50%; left: 50%;
@@ -340,11 +343,10 @@
         let etapaAtual = 0;
         let fiacaoConcluida = false;
 
-        // CONTROLE DO MODAL DE AJUDA
         btnAjuda.onclick = (e) => {
             e.stopPropagation();
             modalAjuda.style.display = "flex";
-            voltarParaListaAjuda(); // Garante que abre no menu de opções
+            voltarParaListaAjuda();
         };
 
         function fecharModalAjuda() { modalAjuda.style.display = "none"; }
@@ -403,7 +405,6 @@
             }
             const config = etapas[etapaAtual];
             
-            // Exibe ou esconde o balão da NBR 5410 com base na etapa atual
             if(config.nome === "RETORNO 1") {
                 balaoNBR.style.display = "block";
             } else {
@@ -466,7 +467,6 @@
             });
         };
 
-        // RESET COMPLETO
         btnReiniciar.onclick = (e) => {
             e.stopPropagation();
             fecharModalAjuda();
