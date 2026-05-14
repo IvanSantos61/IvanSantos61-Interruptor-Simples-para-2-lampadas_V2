@@ -112,13 +112,10 @@
             line-height: 1.4;
         }
 
-        /* Balão Seção/Fase (Amarelo) */
-        #balao-secao, #balao-fase-norma { 
-            border: 2px solid #ffd700; 
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); 
-        }
+        /* Amarelos (Fase/Seção) */
+        #balao-secao, #balao-fase-norma { border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-secao { top: 32%; left: 5%; }
-        #balao-fase-norma { top: 52%; left: 45%; } /* Posicionado próximo ao interruptor */
+        #balao-fase-norma { top: 52%; left: 45%; }
 
         #balao-secao:after, #balao-fase-norma:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -130,7 +127,7 @@
             z-index: 1;
         }
 
-        /* Balão Cores (Ciano) */
+        /* Ciano (Cores Gerais) */
         #balao-cores { top: 55%; left: 5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-cores:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -142,7 +139,7 @@
             z-index: 1;
         }
 
-        /* Balão Neutro (Azul Claro) */
+        /* Azul (Neutro) */
         #balao-neutro-norma { top: 40%; left: 15%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
         #balao-neutro-norma:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -156,7 +153,7 @@
 
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
 
-        /* --- IDENTIFICAÇÃO E PAINEL --- */
+        /* --- PAINEL E ESTRUTURA --- */
         #titulo-sistema {
             color: #00f0ff; font-size: 36px; font-weight: 900; letter-spacing: 2px;
             margin-top: 2.5vh; margin-bottom: 1vh; text-align: center;
@@ -175,7 +172,6 @@
             letter-spacing: 1.5px; line-height: 1.4;
         }
 
-        /* --- PROJETO --- */
         #projeto-container {
             position: relative; display: inline-block; margin-bottom: 2vh;
             border: 2px solid #1f2937; box-shadow: 0 0 40px rgba(0,0,0,0.9);
@@ -196,7 +192,6 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
 
-        /* --- BOTÕES E MODAL AJUDA --- */
         .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
@@ -210,7 +205,6 @@
         .item-ajuda { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #162e3d; color: #fff; padding: 12px; margin-bottom: 10px; cursor: pointer; text-align: left; }
         .btn-fechar-modal { background: #222; color: #aaa; border: 1px solid #444; padding: 10px 40px; cursor: pointer; margin-top: 10px; }
 
-        /* --- PLACA CONCLUÍDO --- */
         #placa-concluido {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 60%; height: 38%; background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
@@ -320,46 +314,45 @@
         let timerPlaca;
 
         function iniciarLaboratorio() {
-            telaEntrada.style.opacity = \"0\";
+            telaEntrada.style.opacity = "0";
             setTimeout(function() { 
-                telaEntrada.style.visibility = \"hidden\";
+                telaEntrada.style.visibility = "hidden";
                 iniciarEtapa();
             }, 500);
         }
 
         document.getElementById('projeto-container').addEventListener('mousedown', function() {
             [balaoSecao, balaoCores, balaoNeutroNorma, balaoFaseNorma].forEach(function(b) {
-                if(b.style.display === \"block\") {
-                    b.style.opacity = \"0\";
-                    setTimeout(function() { b.style.display = \"none\"; }, 400);
+                if(b.style.display === "block") {
+                    b.style.opacity = "0";
+                    setTimeout(function() { b.style.display = "none"; }, 400);
                 }
             });
         });
 
-        // --- SISTEMA DE AJUDA ---
-        document.getElementById('btn-ajuda').onclick = function() { modalAjuda.style.display = \"flex\"; };
-        function fecharModalAjuda() { modalAjuda.style.display = \"none\"; voltarParaListaAjuda(); }
+        document.getElementById('btn-ajuda').onclick = function() { modalAjuda.style.display = "flex"; };
+        function fecharModalAjuda() { modalAjuda.style.display = "none"; voltarParaListaAjuda(); }
         function abrirGravuraAjuda(img) {
-            document.getElementById('menu-lista-ajuda').style.display = \"none\";
-            document.getElementById('tela-imagem-ajuda').style.display = \"flex\";
+            document.getElementById('menu-lista-ajuda').style.display = "none";
+            document.getElementById('tela-imagem-ajuda').style.display = "flex";
             document.getElementById('img-suporte').src = img;
         }
         function voltarParaListaAjuda() {
-            document.getElementById('tela-imagem-ajuda').style.display = \"none\";
-            document.getElementById('menu-lista-ajuda').style.display = \"flex\";
+            document.getElementById('tela-imagem-ajuda').style.display = "none";
+            document.getElementById('menu-lista-ajuda').style.display = "flex";
         }
 
         const etapas = [
-            { nome: \"FASE 1\", msgA: \"REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE\", msgB: \"REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE\", pasta: \"FASE1\", max: 24, cor: \"ponto-fase\", posA: { top: \"38%\", left: \"27%\" }, posB: { top: \"79.3%\", left: \"40.5%\" } },
-            { nome: \"NEUTRO 1\", msgA: \"REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO\", msgB: \"REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO\", pasta: \"NEUTRO1\", max: 54, cor: \"ponto-neutro\", posA: { top: \"32.4%\", left: \"44.5%\" }, posB: { top: \"76.5%\", left: \"40%\" } },
-            { nome: \"FASE 2\", msgA: \"REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA\", msgB: \"REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR A FASE\", pasta: \"FASE2\", max: 24, cor: \"ponto-fase\", posA: { top: \"79%\", left: \"49%\" }, posB: { top: \"31%\", left: \"56%\" } },
-            { nome: \"NEUTRO 2\", msgA: \"REDE: LEVE NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA\", msgB: \"REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO\", pasta: \"NEUTRO2\", max: 24, cor: \"ponto-neutro\", posA: { top: \"76.8%\", left: \"49%\" }, posB: { top: \"31%\", left: \"54.5%\" } },
-            { nome: \"FASE 3\", msgA: \"REDE: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA\", msgB: \"REDE: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE\", pasta: \"FASE3\", max: 30, cor: \"ponto-fase\", posA: { top: \"16%\", left: \"56%\" }, posB: { top: \"56%\", left: \"72%\" } },
-            { nome: \"RETORNO 1\", msgA: \"CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.\", msgB: \"CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA\", pasta: \"RETORNO1\", max: 36, cor: \"ponto-retorno\", posA: { top: \"62%\", left: \"72%\" }, posB: { top: \"30%\", left: \"57%\" } },
-            { nome: \"NEUTRO 3\", msgA: \"CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA\", msgB: \"CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO\", pasta: \"NEUTRO3\", max: 30, cor: \"ponto-neutro\", posA: { top: \"17%\", left: \"54.7%\" }, posB: { top: \"23%\", left: \"91%\" } },
-            { nome: \"RETORNO 2\", msgA: \"CIRCUITO: LEVE O RETORNO À LÂMPADA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA\", msgB: \"CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O RETORNO\", pasta: \"RETORNO2\", max: 30, cor: \"ponto-retorno\", posA: { top: \"16%\", left: \"57%\" }, posB: { top: \"25%\", left: \"89%\" } },
-            { nome: \"RETORNO 3\", msgA: \"CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O RETORNO PARA A LÂMPADA 2\", msgB: \"CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O RETORNO\", pasta: \"RETORNO3\", max: 30, cor: \"ponto-retorno\", posA: { top: \"25%\", left: \"89%\" }, posB: { top: \"64%\", left: \"89%\" } },
-            { nome: \"NEUTRO 4\", msgA: \"CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2\", msgB: \"CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O NEUTRO\", pasta: \"NEUTRO4\", max: 24, cor: \"ponto-neutro\", posA: { top: \"25%\", left: \"91.5%\" }, posB: { top: \"63%\", left: \"91%\" } }
+            { nome: "FASE 1", msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
+            { nome: "NEUTRO 1", msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" } },
+            { nome: "FASE 2", msgA: "REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR A FASE", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "56%" } },
+            { nome: "NEUTRO 2", msgA: "REDE: LEVE NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76.8%", left: "49%" }, posB: { top: "31%", left: "54.5%" } },
+            { nome: "FASE 3", msgA: "REDE: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" } },
+            { nome: "RETORNO 1", msgA: "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.", msgB: "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" } },
+            { nome: "NEUTRO 3", msgA: "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54.7%" }, posB: { top: "23%", left: "91%" } },
+            { nome: "RETORNO 2", msgA: "CIRCUITO: LEVE O RETORNO À LÂMPADA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O RETORNO", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "16%", left: "57%" }, posB: { top: "25%", left: "89%" } },
+            { nome: "RETORNO 3", msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O RETORNO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O RETORNO", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" } },
+            { nome: "NEUTRO 4", msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O NEUTRO", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" } }
         ];
 
         function verificarCircuito() {
@@ -368,21 +361,21 @@
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-                document.getElementById('lampada1').style.display = \"block\";
-                document.getElementById('lampada2').style.display = \"block\";
-                txtInstrucao.innerHTML = \"<span class='status-aceso'>LÂMPADAS ACESAS</span>\";
+                document.getElementById('lampada1').style.display = "block";
+                document.getElementById('lampada2').style.display = "block";
+                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
                 cicloAtivo = true;
             } else {
-                document.getElementById('lampada1').style.display = \"none\";
-                document.getElementById('lampada2').style.display = \"none\";
+                document.getElementById('lampada1').style.display = "none";
+                document.getElementById('lampada2').style.display = "none";
                 if (fiacaoConcluida) {
                     if (cicloAtivo) {
-                        txtInstrucao.innerHTML = \"<span class='status-apagado'>LÂMPADAS APAGADAS</span>\";
-                        placaConcluido.style.display = \"flex\";
+                        txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
+                        placaConcluido.style.display = "flex";
                         clearTimeout(timerPlaca);
-                        timerPlaca = setTimeout(function() { placaConcluido.style.display = \"none\"; }, 3000);
+                        timerPlaca = setTimeout(function() { placaConcluido.style.display = "none"; }, 3000);
                     } else {
-                        txtInstrucao.innerHTML = \"FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>\";
+                        txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
                     }
                 }
             }
@@ -394,7 +387,7 @@
                 e.stopPropagation();
                 const status = el.getAttribute('data-status');
                 const novoStatus = status === 'off' ? 'on' : 'off';
-                el.src = prefixo + \"_\" + novoStatus + \".png\";
+                el.src = prefixo + "_" + novoStatus + ".png";
                 el.setAttribute('data-status', novoStatus);
                 verificarCircuito();
             };
@@ -412,19 +405,19 @@
             }
             const config = etapas[etapaAtual];
             txtInstrucao.innerHTML = config.msgA;
-            pontoA.className = \"ponto-clique \" + config.cor;
+            pontoA.className = "ponto-clique " + config.cor;
             pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left;
-            pontoA.style.display = \"block\";
-            pontoB.className = \"ponto-clique \" + config.cor;
+            pontoA.style.display = "block";
+            pontoB.className = "ponto-clique " + config.cor;
             pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left;
-            pontoB.style.display = \"none\";
+            pontoB.style.display = "none";
         }
 
         pontoA.onclick = function(e) {
             e.stopPropagation();
             pontoA.classList.add('verde');
             txtInstrucao.innerHTML = etapas[etapaAtual].msgB;
-            pontoB.style.display = \"block\";
+            pontoB.style.display = "block";
         };
 
         pontoB.onclick = function(e) {
@@ -433,34 +426,34 @@
             let quadroAtual = 0;
             const config = etapas[etapaAtual];
             const imgFio = document.createElement('img');
-            imgFio.className = \"camada-full\";
+            imgFio.className = "camada-full";
             camadasFios.appendChild(imgFio);
+            
             const timer = setInterval(function() {
-                imgFio.src = config.pasta + \"/quadro\" + quadroAtual.toString().padStart(4, '0') + \".png\";
+                imgFio.src = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
-                    // Lógica para exibir balões de norma técnica
-                    if (config.nome === \"FASE 1\") {
-                        [balaoSecao, balaoCores].forEach(function(b) {
-                            b.style.display = \"block\";
-                            setTimeout(function() { b.style.opacity = \"1\"; }, 50);
+                    if (config.nome === "FASE 1") {
+                        [balaoSecao, balaoCores].forEach(b => {
+                            b.style.display = "block";
+                            setTimeout(() => { b.style.opacity = "1"; }, 50);
                         });
                     }
-                    if (config.nome === \"NEUTRO 1\") {
-                        conectorN2.style.display = \"block\";
-                        balaoNeutroNorma.style.display = \"block\";
-                        setTimeout(function() { balaoNeutroNorma.style.opacity = \"1\"; }, 50);
+                    if (config.nome === "NEUTRO 1") {
+                        conectorN2.style.display = "block";
+                        balaoNeutroNorma.style.display = "block";
+                        setTimeout(() => { balaoNeutroNorma.style.opacity = "1"; }, 50);
                     }
-                    if (config.nome === \"FASE 3\") {
-                        balaoFaseNorma.style.display = \"block\";
-                        setTimeout(function() { balaoFaseNorma.style.opacity = \"1\"; }, 50);
+                    if (config.nome === "FASE 3") {
+                        balaoFaseNorma.style.display = "block";
+                        setTimeout(() => { balaoFaseNorma.style.opacity = "1"; }, 50);
                     }
                     
-                    if(config.nome === \"NEUTRO 2\") conectorN3.style.display = \"block\";
+                    if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
 
                     setTimeout(function() {
-                        pontoA.style.display = \"none\"; pontoB.style.display = \"none\";
+                        pontoA.style.display = "none"; pontoB.style.display = "none";
                         pontoA.classList.remove('verde'); pontoB.classList.remove('verde');
                         etapaAtual++;
                         iniciarEtapa();
@@ -469,26 +462,26 @@
             }, 40);
         };
 
-        // --- REINICIAR (VOLTA PARA O SPLASH) ---
         document.getElementById('btn-reiniciar').onclick = function() {
-            telaEntrada.style.visibility = \"visible\";
-            telaEntrada.style.opacity = \"1\";
+            telaEntrada.style.visibility = "visible";
+            telaEntrada.style.opacity = "1";
             etapaAtual = 0;
             fiacaoConcluida = false;
             cicloAtivo = false;
-            camadasFios.innerHTML = \"\";
-            conectorN2.style.display = \"none\";
-            conectorN3.style.display = \"none\";
-            document.getElementById('lampada1').style.display = \"none\";
-            document.getElementById('lampada2').style.display = \"none\";
-            placaConcluido.style.display = \"none\";
+            camadasFios.innerHTML = "";
+            conectorN2.style.display = "none";
+            conectorN3.style.display = "none";
+            document.getElementById('lampada1').style.display = "none";
+            document.getElementById('lampada2').style.display = "none";
+            placaConcluido.style.display = "none";
             
             ['tecla-dg', 'tecla-dr', 'tecla-int'].forEach(id => {
                 const el = document.getElementById(id);
                 el.setAttribute('data-status', 'off');
-                el.src = el.src.replace('_on.png', '_off.png');
+                const pref = id === 'tecla-dg' ? 'al_dg' : (id === 'tecla-dr' ? 'al_dr' : 'tec_int');
+                el.src = pref + "_off.png";
             });
-            txtInstrucao.innerHTML = \"CARREGANDO...\";
+            txtInstrucao.innerHTML = "CARREGANDO...";
         };
     </script>
 </body>
