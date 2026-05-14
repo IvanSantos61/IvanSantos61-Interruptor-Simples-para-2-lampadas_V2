@@ -295,6 +295,40 @@
         .p-bl { bottom: 12px; left: 12px; transform: rotate(45deg); }
         .p-br { bottom: 12px; right: 12px; transform: rotate(75deg); }
 
+        /* --- BALÃO DE INFORMAÇÃO --- */
+        #balao-info {
+            position: absolute;
+            top: 40%;
+            left: 5%;
+            background: white;
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            max-width: 220px;
+            text-align: center;
+            pointer-events: none;
+        }
+        #balao-info::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 20%;
+            border-width: 10px;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+        .norma-vermelha {
+            color: red;
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
         /* --- MODAL AJUDA TÉCNICA --- */
         #modal-ajuda {
             position: absolute;
@@ -434,6 +468,12 @@
             <div id="texto-concluido">✓ Concluído</div>
         </div>
 
+        <!-- BALÃO INFORMATIVO -->
+        <div id="balao-info">
+            A fase pode ter qualquer cor
+            <span class="norma-vermelha">(Item 6.1.5.3.4 da NBR-5410)</span>
+        </div>
+
         <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
 
@@ -471,6 +511,7 @@
         const modalAjuda = document.getElementById('modal-ajuda');
         const placaConcluido = document.getElementById('placa-concluido');
         const telaEntrada = document.getElementById('tela-entrada');
+        const balaoInfo = document.getElementById('balao-info');
 
         function iniciarLaboratorio() {
             telaEntrada.style.opacity = "0";
@@ -634,6 +675,13 @@
                     clearInterval(timer);
                     if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
+                    
+                    // MOSTRAR BALÃO APÓS FASE 1
+                    if(config.nome === "FASE 1") {
+                        balaoInfo.style.display = "block";
+                        setTimeout(() => { balaoInfo.style.display = "none"; }, 4000);
+                    }
+
                     if (callback) callback();
                 } else { quadroAtual++; }
             }, 40); 
@@ -690,6 +738,7 @@
             e.stopPropagation();
             fecharModalAjuda();
             limparTimersConcluido();
+            balaoInfo.style.display = "none";
             
             // 1. Faz a tela de entrada reaparecer suavemente
             telaEntrada.style.visibility = "visible";
