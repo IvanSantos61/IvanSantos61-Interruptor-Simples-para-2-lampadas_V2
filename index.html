@@ -61,7 +61,7 @@
             line-height: 1.4;
         }
 
-        /* Classes de status do painel conforme as imagens enviadas */
+        /* Classes de status do painel */
         .status-aceso {
             background: #006400 !important;
             color: #00ff00 !important;
@@ -128,7 +128,7 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
 
-        /* --- CONTROLES COM POSICIONAMENTO MANUAL LIBERADO --- */
+        /* --- CONTROLES --- */
         .btn-controle {
             position: absolute;
             border: none;
@@ -163,7 +163,7 @@
         
         .btn-controle:active { transform: scale(0.96); }
 
-        /* --- PAINEL INTEGRADO DE CONCLUÍDO (ESTILO PLACA METÁLICA) --- */
+        /* --- PAINEL INTEGRADO DE CONCLUÍDO (PLACA METÁLICA) --- */
         #placa-concluido {
             position: absolute;
             top: 50%; left: 50%;
@@ -175,10 +175,10 @@
             border-radius: 10px;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 15px 35px rgba(0,0,0,0.9);
             z-index: 150;
-            display: none; /* Controlado pelo JS */
+            display: none; 
             align-items: center;
             justify-content: center;
-            pointer-events: none; /* Não atrapalha cliques em volta */
+            pointer-events: none; 
         }
 
         #texto-concluido {
@@ -194,19 +194,44 @@
             gap: 15px;
         }
 
-        /* Detalhes dos parafusos nas quatro quinas da placa */
+        /* --- PARAFUSOS PHILIPS AJUSTADOS --- */
         .parafuso {
             position: absolute;
-            width: 12px; height: 12px;
-            background: #555;
-            border: 1px solid #222;
+            width: 24px;  /* Tamanho proporcional e realista */
+            height: 24px;
+            background: #4e5761;
+            border: 2px solid #1c2229;
             border-radius: 50%;
-            box-shadow: inset 1px 1px 3px #888;
+            box-shadow: inset 2px 2px 4px rgba(255,255,255,0.4), 1px 2px 3px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .p-tl { top: 8px; left: 8px; }
-        .p-tr { top: 8px; right: 8px; }
-        .p-bl { bottom: 8px; left: 8px; }
-        .p-br { bottom: 8px; right: 8px; }
+        
+        /* Construção da fenda em cruz (Philips) usando CSS puro */
+        .parafuso::before, .parafuso::after {
+            content: '';
+            position: absolute;
+            background: #1c2229; /* Cor profunda da fenda */
+            border-radius: 1px;
+            box-shadow: 0px 1px 1px rgba(255,255,255,0.15);
+        }
+        /* Linha Horizontal da fenda */
+        .parafuso::before {
+            width: 14px;
+            height: 3px;
+        }
+        /* Linha Vertical da fenda */
+        .parafuso::after {
+            width: 3px;
+            height: 14px;
+        }
+
+        /* Posicionamento nas quinas internas da placa */
+        .p-tl { top: 12px; left: 12px; transform: rotate(15deg); }
+        .p-tr { top: 12px; right: 12px; transform: rotate(110deg); } /* Rotações variadas para realismo */
+        .p-bl { bottom: 12px; left: 12px; transform: rotate(45deg); }
+        .p-br { bottom: 12px; right: 12px; transform: rotate(75deg); }
 
         /* --- MODAL AJUDA TÉCNICA --- */
         #modal-ajuda {
@@ -403,7 +428,7 @@
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
-        let cicloAtivo = false; // Monitora se as lâmpadas acenderam pela primeira vez
+        let cicloAtivo = false; 
         let timerPlacaSurgir = null;
         let timerPlacaSumir = null;
 
@@ -442,13 +467,12 @@
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
-            // Condição para as lâmpadas ligarem
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
                 
-                cicloAtivo = true; // Ativa permanentemente o rastreio do ciclo após o 1º acionamento
-                limparTimersConcluido(); // Se reacender enquanto contava, cancela a aparição da placa
+                cicloAtivo = true; 
+                limparTimersConcluido(); 
 
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
             } else {
@@ -456,16 +480,14 @@
                 document.getElementById('lampada2').style.display = "none";
                 
                 if (cicloAtivo) {
-                    // Executa apenas se já tiver ocorrido o primeiro acionamento das lâmpadas
                     txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
-                    
                     limparTimersConcluido();
 
-                    // Timer 1: Após 2 segundos, surge a placa de CONCLUÍDO
+                    // 2 segundos para surgir
                     timerPlacaSurgir = setTimeout(() => {
                         placaConcluido.style.display = "flex";
                         
-                        // Timer 2: Após mais 3 segundos (total de 5s), a placa some
+                        // 3 segundos para sumir
                         timerPlacaSumir = setTimeout(() => {
                             placaConcluido.style.display = "none";
                         }, 3000);
@@ -473,7 +495,6 @@
                     }, 2000);
 
                 } else if (fiacaoConcluida) {
-                    // Estado intermediário: fiação pronta mas nunca ligou
                     txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
                 }
             }
@@ -503,7 +524,6 @@
             }
             const config = etapas[etapaAtual];
 
-            // Textos fixos personalizados para a saída (Ponto A)
             if (config.nome === "FASE 1") {
                 txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE";
             } else if (config.nome === "NEUTRO 1") {
@@ -566,7 +586,6 @@
             
             const nomeEtapa = etapas[etapaAtual].nome;
 
-            // Textos fixos personalizados para o destino (Ponto B)
             if (nomeEtapa === "FASE 1") {
                 txtInstrucao.innerHTML = "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE";
             } else if (nomeEtapa === "NEUTRO 1") {
@@ -616,7 +635,7 @@
             
             etapaAtual = 0;
             fiacaoConcluida = false;
-            cicloAtivo = false; // Reseta o rastreio do ciclo inicial
+            cicloAtivo = false; 
             
             camadasFios.innerHTML = "";
             conectorN2.style.display = "none";
