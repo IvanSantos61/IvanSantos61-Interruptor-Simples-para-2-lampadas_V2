@@ -21,7 +21,7 @@
             overflow: hidden; /* Garante que nada transborde da tela do PC */
         }
 
-        /* --- TELA DE ENTRADA PADRÃO --- */
+        /* --- TELA DE ENTRADA (SPLASH SCREEN) - AJUSTE FIEL AO ORIGINAL --- */
         #tela-entrada {
             position: fixed;
             top: 0;
@@ -36,78 +36,64 @@
             transition: opacity 0.5s ease, visibility 0.5s;
         }
 
-        /* Moldura Centralizada com Brilho Neon */
         .moldura-entrada {
-            width: 75%;
-            max-width: 850px;
-            height: 65%;
-            max-height: 500px;
-            border: 2px solid #00f0ff;
-            border-radius: 20px;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            width: 80%;
+            max-width: 900px;
+            height: 70%;
+            max-height: 550px;
+            border: 3px solid #00f0ff;
+            border-radius: 25px;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
         }
 
         .titulo-entrada {
             color: #00f0ff;
-            font-size: 32px;
+            font-size: 52px; /* Fonte bem maior */
             font-weight: 900;
-            letter-spacing: 2px;
+            line-height: 1.1; /* Título em 2 linhas */
+            letter-spacing: 1px;
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-            margin: 0 0 15px 0;
+            text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+            margin: 0 0 25px 0;
         }
 
         .subtitulo-entrada {
             color: #00f0ff;
-            font-size: 18px;
-            font-weight: bold;
-            letter-spacing: 3px;
+            font-size: 22px;
+            font-weight: 400; /* Mais leve que o título */
+            letter-spacing: 5px;
             text-transform: uppercase;
-            margin: 0 0 35px 0;
-        }
-
-        .linha-divisora {
-            width: 120px;
-            height: 1px;
-            background-color: rgba(0, 240, 255, 0.4);
-            margin-bottom: 40px;
+            margin: 0 0 50px 0;
         }
 
         .creditos-entrada {
-            color: #556270;
-            font-size: 13px;
+            color: #445566; /* Cor mais discreta como no original */
+            font-size: 15px;
             font-weight: 500;
-            margin-bottom: 40px;
-            letter-spacing: 0.5px;
+            margin-bottom: 50px;
         }
 
-        /* Link Piscante para Iniciar */
         .btn-iniciar-lab {
-            color: #00a8b5;
-            font-size: 14px;
+            color: #00f0ff;
+            font-size: 16px;
             font-weight: bold;
             text-decoration: none;
             cursor: pointer;
-            letter-spacing: 0.5px;
             background: none;
             border: none;
-            padding: 10px;
-            animation: piscarTexto 1.5s infinite ease-in-out;
-            transition: color 0.2s;
-        }
-
-        .btn-iniciar-lab:hover {
-            color: #00f0ff;
+            padding: 15px;
+            animation: piscarTexto 1.2s infinite ease-in-out;
+            transition: color 0.3s;
         }
 
         @keyframes piscarTexto {
-            0%, 100% { opacity: 0.2; }
+            0%, 100% { opacity: 0.1; }
             50% { opacity: 1; }
         }
 
@@ -253,7 +239,7 @@
         
         .btn-controle:active { transform: scale(0.96); }
 
-        /* --- PAINEL INTEGRADO DE CONCLUÍDO (PLACA METÁLICA) --- */
+        /* --- PLACA METÁLICA DE CONCLUÍDO --- */
         #placa-concluido {
             position: absolute;
             top: 50%; left: 50%;
@@ -284,10 +270,9 @@
             gap: 15px;
         }
 
-        /* --- PARAFUSOS PHILIPS AJUSTADOS --- */
         .parafuso {
             position: absolute;
-            width: 24px;  /* Tamanho proporcional e realista */
+            width: 24px;
             height: 24px;
             background: #4e5761;
             border: 2px solid #1c2229;
@@ -297,29 +282,17 @@
             align-items: center;
             justify-content: center;
         }
-        
-        /* Construção da fenda em cruz (Philips) usando CSS puro */
         .parafuso::before, .parafuso::after {
             content: '';
             position: absolute;
-            background: #1c2229; /* Cor profunda da fenda */
+            background: #1c2229;
             border-radius: 1px;
-            box-shadow: 0px 1px 1px rgba(255,255,255,0.15);
         }
-        /* Linha Horizontal da fenda */
-        .parafuso::before {
-            width: 14px;
-            height: 3px;
-        }
-        /* Linha Vertical da fenda */
-        .parafuso::after {
-            width: 3px;
-            height: 14px;
-        }
+        .parafuso::before { width: 14px; height: 3px; }
+        .parafuso::after { width: 3px; height: 14px; }
 
-        /* Posicionamento nas quinas internas da placa */
         .p-tl { top: 12px; left: 12px; transform: rotate(15deg); }
-        .p-tr { top: 12px; right: 12px; transform: rotate(110deg); } /* Rotações variadas para realismo */
+        .p-tr { top: 12px; right: 12px; transform: rotate(110deg); }
         .p-bl { bottom: 12px; left: 12px; transform: rotate(45deg); }
         .p-br { bottom: 12px; right: 12px; transform: rotate(75deg); }
 
@@ -388,7 +361,6 @@
         }
         .btn-fechar-modal:hover { background: #333; color: #fff; }
 
-        /* TELA DE EXIBIÇÃO DA GRAVURA DE SUPORTE */
         #tela-imagem-ajuda {
             width: 100%;
             display: none;
@@ -428,9 +400,8 @@
 
     <div id="tela-entrada">
         <div class="moldura-entrada">
-            <h1 class="titulo-entrada">Interruptor Simples para 1 Lâmpada</h1>
-            <h2 class="subtitulo-entrada">Circuito Monofásico - 127V</h2>
-            <div class="linha-divisora"></div>
+            <h1 class="titulo-entrada">INTERRUPTOR SIMPLES PARA 1<br>LÂMPADA</h1>
+            <h2 class="subtitulo-entrada">CIRCUITO MONOFÁSICO - 127V</h2>
             <div class="creditos-entrada">© Desenvolvido por Ivan Santos - ConectaeadPLUS - 2026</div>
             <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
         </div>
@@ -469,7 +440,7 @@
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnico</h3>
+                <h3>Ajuda Técnica</h3>
                 <div class="lista-ajuda">
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
@@ -504,7 +475,7 @@
 
         function iniciarLaboratorio() {
             telaEntrada.style.opacity = "0";
-            telaEntrada.style.visibility = "hidden";
+            setTimeout(() => { telaEntrada.style.visibility = "hidden"; }, 500);
         }
 
         const msgsSaida = [
@@ -534,7 +505,7 @@
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
-        let cicloAtivo = false; 
+        let cicloAtivo = false; 
         let timerPlacaSurgir = null;
         let timerPlacaSumir = null;
 
@@ -550,7 +521,6 @@
             document.getElementById('menu-lista-ajuda').style.display = "none";
             const telaImg = document.getElementById('tela-imagem-ajuda');
             document.getElementById('img-suporte').src = nomeArquivo;
-            
             modalAjuda.style.width = "fit-content";
             modalAjuda.style.maxWidth = "75%";
             telaImg.style.display = "flex";
@@ -576,30 +546,21 @@
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
-                
-                cicloAtivo = true; 
-                limparTimersConcluido(); 
-
+                cicloAtivo = true; 
+                limparTimersConcluido(); 
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
-                
                 if (cicloAtivo) {
                     txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
                     limparTimersConcluido();
-
-                    // 2 segundos para surgir
                     timerPlacaSurgir = setTimeout(() => {
                         placaConcluido.style.display = "flex";
-                        
-                        // 3 segundos para sumir
                         timerPlacaSumir = setTimeout(() => {
                             placaConcluido.style.display = "none";
                         }, 3000);
-
                     }, 2000);
-
                 } else if (fiacaoConcluida) {
                     txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
                 }
@@ -629,7 +590,6 @@
                 return;
             }
             const config = etapas[etapaAtual];
-
             if (config.nome === "FASE 1") {
                 txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE";
             } else if (config.nome === "NEUTRO 1") {
@@ -654,12 +614,10 @@
                 const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
                 txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
             }
-
             pontoA.className = `ponto-clique ${config.cor}`;
             pontoA.style.top = config.posA.top;
             pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
-
             pontoB.className = `ponto-clique ${config.cor}`;
             pontoB.style.top = config.posB.top;
             pontoB.style.left = config.posB.left;
@@ -671,27 +629,21 @@
             const imgFio = document.createElement('img');
             imgFio.className = "camada-full";
             camadasFios.appendChild(imgFio);
-
             const timer = setInterval(() => {
                 imgFio.src = `${config.pasta}/quadro${quadroAtual.toString().padStart(4, '0')}.png`;
-                
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
                     if (callback) callback();
-                } else {
-                    quadroAtual++;
-                }
-            }, 40); 
+                } else { quadroAtual++; }
+            }, 40); 
         }
 
         pontoA.onclick = (e) => {
             e.stopPropagation();
             pontoA.classList.add('verde');
-            
             const nomeEtapa = etapas[etapaAtual].nome;
-
             if (nomeEtapa === "FASE 1") {
                 txtInstrucao.innerHTML = "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE";
             } else if (nomeEtapa === "NEUTRO 1") {
@@ -738,28 +690,20 @@
             e.stopPropagation();
             fecharModalAjuda();
             limparTimersConcluido();
-            
             etapaAtual = 0;
             fiacaoConcluida = false;
-            cicloAtivo = false; 
-            
+            cicloAtivo = false; 
             camadasFios.innerHTML = "";
             conectorN2.style.display = "none";
             conectorN3.style.display = "none";
             document.getElementById('lampada1').style.display = "none";
             document.getElementById('lampada2').style.display = "none";
-
-            const chaves = [
-                { id: 'tecla-dg', pref: 'al_dg' },
-                { id: 'tecla-dr', pref: 'al_dr' },
-                { id: 'tecla-int', pref: 'tec_int' }
-            ];
+            const chaves = [{ id: 'tecla-dg', pref: 'al_dg' }, { id: 'tecla-dr', pref: 'al_dr' }, { id: 'tecla-int', pref: 'tec_int' }];
             chaves.forEach(ch => {
                 const el = document.getElementById(ch.id);
                 el.setAttribute('data-status', 'off');
                 el.src = `${ch.pref}_off.png`;
             });
-
             pontoA.classList.remove('verde');
             pontoB.classList.remove('verde');
             iniciarEtapa();
