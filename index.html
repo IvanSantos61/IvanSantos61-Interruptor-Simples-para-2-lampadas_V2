@@ -54,11 +54,28 @@
             font-family: 'Arial Narrow', Arial, sans-serif;
             font-stretch: condensed;
             color: #ffd700;
-            font-size: 20px; /* Aumentado levemente para compensar a compressão da fonte */
+            font-size: 20px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             line-height: 1.4;
+        }
+
+        /* Classes de status do painel conforme as imagens enviadas */
+        .status-aceso {
+            background: #006400 !important;
+            color: #00ff00 !important;
+            padding: 8px 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .status-apagado {
+            background: #b80000 !important;
+            color: #ffffff !important;
+            padding: 8px 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(184, 0, 0, 0.4);
         }
 
         .txt-laranja { color: #ff9d00; font-weight: bold; }
@@ -145,6 +162,51 @@
         #btn-reiniciar:hover { background: #d60000; }
         
         .btn-controle:active { transform: scale(0.96); }
+
+        /* --- PAINEL INTEGRADO DE CONCLUÍDO (ESTILO PLACA METÁLICA) --- */
+        #placa-concluido {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 38%;
+            background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
+            border: 3px solid #111;
+            border-radius: 10px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 15px 35px rgba(0,0,0,0.9);
+            z-index: 150;
+            display: none; /* Controlado pelo JS */
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Não atrapalha cliques em volta */
+        }
+
+        #texto-concluido {
+            font-family: Arial, sans-serif;
+            font-size: 4.5vw;
+            font-weight: 900;
+            color: #00ff00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Detalhes dos parafusos nas quatro quinas da placa */
+        .parafuso {
+            position: absolute;
+            width: 12px; height: 12px;
+            background: #555;
+            border: 1px solid #222;
+            border-radius: 50%;
+            box-shadow: inset 1px 1px 3px #888;
+        }
+        .p-tl { top: 8px; left: 8px; }
+        .p-tr { top: 8px; right: 8px; }
+        .p-bl { bottom: 8px; left: 8px; }
+        .p-br { bottom: 8px; right: 8px; }
 
         /* --- MODAL AJUDA TÉCNICA --- */
         #modal-ajuda {
@@ -269,6 +331,14 @@
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
+        <div id="placa-concluido">
+            <div class="parafuso p-tl"></div>
+            <div class="parafuso p-tr"></div>
+            <div class="parafuso p-bl"></div>
+            <div class="parafuso p-br"></div>
+            <div id="texto-concluido">✓ Concluído</div>
+        </div>
+
         <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
 
@@ -304,6 +374,7 @@
         const btnReiniciar = document.getElementById('btn-reiniciar');
         const btnAjuda = document.getElementById('btn-ajuda');
         const modalAjuda = document.getElementById('modal-ajuda');
+        const placaConcluido = document.getElementById('placa-concluido');
 
         const msgsSaida = [
             "CLIQUE NA REFERÊNCIA DO <span class='txt-laranja'>PONTO DE SAÍDA</span> DO CABO ATUAL.",
@@ -332,6 +403,9 @@
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
+        let cicloAtivo = false; // Monitora se as lâmpadas acenderam pela primeira vez
+        let timerPlacaSurgir = null;
+        let timerPlacaSumir = null;
 
         btnAjuda.onclick = (e) => {
             e.stopPropagation();
@@ -357,19 +431,49 @@
             document.getElementById('menu-lista-ajuda').style.display = "flex";
         }
 
+        function limparTimersConcluido() {
+            if(timerPlacaSurgir) clearTimeout(timerPlacaSurgir);
+            if(timerPlacaSumir) clearTimeout(timerPlacaSumir);
+            placaConcluido.style.display = "none";
+        }
+
         function verificarCircuito() {
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
+            // Condição para as lâmpadas ligarem
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
-                txtInstrucao.innerHTML = "<span class='txt-verde'>CIRCUITO ENERGIZADO: AS LÂMPADAS ESTÃO ACESAS!</span>";
+                
+                cicloAtivo = true; // Ativa permanentemente o rastreio do ciclo após o 1º acionamento
+                limparTimersConcluido(); // Se reacender enquanto contava, cancela a aparição da placa
+
+                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
-                if(fiacaoConcluida) {
+                
+                if (cicloAtivo) {
+                    // Executa apenas se já tiver ocorrido o primeiro acionamento das lâmpadas
+                    txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
+                    
+                    limparTimersConcluido();
+
+                    // Timer 1: Após 2 segundos, surge a placa de CONCLUÍDO
+                    timerPlacaSurgir = setTimeout(() => {
+                        placaConcluido.style.display = "flex";
+                        
+                        // Timer 2: Após mais 3 segundos (total de 5s), a placa some
+                        timerPlacaSumir = setTimeout(() => {
+                            placaConcluido.style.display = "none";
+                        }, 3000);
+
+                    }, 2000);
+
+                } else if (fiacaoConcluida) {
+                    // Estado intermediário: fiação pronta mas nunca ligou
                     txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
                 }
             }
@@ -472,9 +576,9 @@
             } else if (nomeEtapa === "NEUTRO 2") {
                 txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO";
             } else if (nomeEtapa === "FASE 3") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE";
+                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE";
             } else if (nomeEtapa === "RETORNO 1") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO À CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
+                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA";
             } else if (nomeEtapa === "NEUTRO 3") {
                 txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO";
             } else if (nomeEtapa === "RETORNO 2") {
@@ -508,8 +612,12 @@
         btnReiniciar.onclick = (e) => {
             e.stopPropagation();
             fecharModalAjuda();
+            limparTimersConcluido();
+            
             etapaAtual = 0;
             fiacaoConcluida = false;
+            cicloAtivo = false; // Reseta o rastreio do ciclo inicial
+            
             camadasFios.innerHTML = "";
             conectorN2.style.display = "none";
             conectorN3.style.display = "none";
