@@ -97,7 +97,7 @@
         /* --- BALÕES INFORMATIVOS --- */
         .balao-informativo {
             position: absolute;
-            width: 260px;
+            /* width removido daqui para ser individual */
             background: rgba(4, 10, 20, 0.95);
             border-radius: 12px;
             padding: 15px;
@@ -112,13 +112,17 @@
             line-height: 1.4;
         }
 
-        /* Amarelos e Laranjas */
-        #balao-secao, #balao-fase-norma, #balao-conector, #balao-retorno-cor, #balao-retorno-comum { border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-        #balao-secao { top: 32%; left: 5%; }
-        #balao-fase-norma { top: 52%; left: 45%; }
-        #balao-conector { top: 22%; left: 35%; }
-        #balao-retorno-cor { top: 35%; left: 40%; border-color: #ffa500; }
-        #balao-retorno-comum { top: 30%; left: 62%; border-color: #ffa500; }
+        /* Definição de Larguras e Posições Individuais */
+        #balao-secao { width: 230px; top: 42%; left: 3%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-fase-norma { width: 210px; top: 39%; left: 40.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-conector { width: 210px; top: 15%; left: 32%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-retorno-cor { width: 220px; top: 39%; left: 42.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
+        #balao-retorno-comum { width: 240px; top: 15%; left: 65.4%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
+        
+        #balao-cores { width: 230px; top: 68%; left: 3%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        
+        #balao-neutro-norma { width: 260px; top: 34%; left: 21%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
+        #balao-neutro-comum { width: 240px; top: 12%; left: 68%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
 
         .balao-informativo:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -127,23 +131,14 @@
         
         #balao-secao:after, #balao-fase-norma:after, #balao-conector:after { border-left: 10px solid #ffd700; }
         #balao-retorno-cor:after, #balao-retorno-comum:after { border-left: 10px solid #ffa500; }
+        #balao-cores:after { border-left: 10px solid #00f0ff; }
+        #balao-neutro-norma:after, #balao-neutro-comum:after { border-left: 10px solid #0096ff; }
 
         .balao-informativo:before {
             content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
             border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 8px solid rgba(4, 10, 20, 0.95);
             z-index: 1;
         }
-
-        /* Azuis (Neutro) */
-        #balao-cores { top: 55%; left: 5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
-        #balao-cores:after { border-left: 10px solid #00f0ff; }
-
-        #balao-neutro-norma, #balao-neutro-comum { border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
-        #balao-neutro-norma { top: 40%; left: 15%; }
-        #balao-neutro-norma:after { border-left: 10px solid #0096ff; }
-        
-        #balao-neutro-comum { top: 20%; left: 58%; }
-        #balao-neutro-comum:after { border-left: 10px solid #0096ff; }
 
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
 
@@ -419,7 +414,6 @@
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
-                    // Lógica de exibição dos balões
                     if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
                     if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
                     if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
