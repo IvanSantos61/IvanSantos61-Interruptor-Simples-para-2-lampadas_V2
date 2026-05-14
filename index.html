@@ -21,79 +21,6 @@
             overflow: hidden;
         }
 
-        /* --- TELA DE ENTRADA (SPLASH SCREEN) --- */
-        #tela-entrada {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #060b13;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-
-        .moldura-entrada {
-            width: 80%;
-            max-width: 900px;
-            height: 70%;
-            max-height: 450px;
-            border: 3px solid #00f0ff;
-            border-radius: 25px;
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .titulo-entrada {
-            color: #00f0ff;
-            font-size: 52px;
-            font-weight: 600;
-            line-height: 1.1;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
-            margin: 0 0 25px 0;
-        }
-
-        .subtitulo-entrada {
-            color: #00f0ff;
-            font-size: 24px;
-            font-weight: 450;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin: 0 0 50px 0;
-        }
-
-        .creditos-entrada {
-            color: #445566;
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 50px;
-        }
-
-        .btn-iniciar-lab {
-            color: #00f0ff;
-            font-size: 14px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 15px;
-            animation: piscarTexto 1.2s infinite ease-in-out;
-        }
-
-        @keyframes piscarTexto {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 1; }
-        }
-
         /* --- IDENTIFICAÇÃO DO SISTEMA --- */
         #titulo-sistema {
             color: #00f0ff;
@@ -133,26 +60,6 @@
             line-height: 1.4;
         }
 
-        .status-aceso {
-            background: #006400 !important;
-            color: #00ff00 !important;
-            padding: 8px 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-        }
-
-        .status-apagado {
-            background: #b80000 !important;
-            color: #ffffff !important;
-            padding: 8px 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(184, 0, 0, 0.4);
-        }
-
-        .txt-laranja { color: #ff9d00; font-weight: bold; }
-        .txt-verde { color: #00ff00; font-weight: bold; }
-        .txt-vermelho { color: #ff3333; font-weight: bold; }
-
         /* --- ÁREA DO PROJETO --- */
         #projeto-container {
             position: relative;
@@ -181,23 +88,27 @@
         }
 
         /* --- COMPONENTES --- */
-        .tecla-movel, .carga-movel, .acessorio-movel {
+        .tecla-movel {
             position: absolute;
             z-index: 20; 
             user-select: none;
+            cursor: pointer;
         }
 
-        #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; cursor: pointer; }
-        #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; cursor: pointer; }
-        #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; z-index: 30; cursor: pointer; }
+        #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
+        #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
+        #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; z-index: 30; }
 
-        #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; display: none; z-index: 15; }
-        #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; display: none; z-index: 16; transform: rotate(90deg); }
+        #lampada1, #lampada2 { 
+            position: absolute;
+            display: none; 
+            z-index: 25; 
+            filter: drop-shadow(0 0 20px #fff700); 
+        }
+        #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; }
+        #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; }
 
-        #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
-        #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
-
-        /* --- BALÃO DE INFORMAÇÃO (AJUSTADO) --- */
+        /* --- BALÃO DE INFORMAÇÃO --- */
         #balao-info {
             position: absolute;
             background: #ffffff;
@@ -211,8 +122,8 @@
             display: none;
             width: 240px;
             text-align: center;
-            line-height: 1.4; /* Melhora o espaçamento entre linhas */
-            pointer-events: none;
+            line-height: 1.4;
+            pointer-events: auto; /* Permitir clique para fechar, se necessário */
         }
 
         #balao-info::after {
@@ -229,43 +140,9 @@
             display: block;
             color: #d00000;
             font-size: 11px;
-            margin-top: 8px; /* Afasta o texto da norma do texto principal */
+            margin-top: 8px;
             font-weight: 900;
         }
-
-        /* --- CONTROLES --- */
-        .btn-controle {
-            position: absolute;
-            border: none;
-            padding: 8px 30px;
-            font-size: 15px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 110;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
-        #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
-
-        /* --- PLACA CONCLUÍDO --- */
-        #placa-concluido {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60%; height: 38%;
-            background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
-            border: 3px solid #111;
-            border-radius: 10px;
-            z-index: 150;
-            display: none; 
-            align-items: center;
-            justify-content: center;
-        }
-
-        #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-transform: uppercase; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); }
 
         /* --- PONTOS DE CLIQUE --- */
         .ponto-clique {
@@ -286,47 +163,28 @@
 </head>
 <body>
 
-    <div id="tela-entrada">
-        <div class="moldura-entrada">
-            <h1 class="titulo-entrada">INTERRUPTOR SIMPLES PARA 2<br>LÂMPADAS</h1>
-            <h2 class="subtitulo-entrada">CIRCUITO MONOFÁSICO - 127V</h2>
-            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - ConectaeadPLUS - 2026</div>
-            <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
-        </div>
-    </div>
-
     <div id="titulo-sistema">Laboratório SMT Pro</div>
 
     <div id="painel-status">
-        <span id="instrucao">CARREGANDO...</span>
+        <span id="instrucao">AGUARDANDO INÍCIO...</span>
     </div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
-
-        <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
-        <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
         
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <img src="lamp_on.png" id="lampada1" class="carga-movel">
-        <img src="lamp_on.png" id="lampada2" class="carga-movel">
+        <img src="lamp_on.png" id="lampada1">
+        <img src="lamp_on.png" id="lampada2">
 
-        <div id="placa-concluido">
-            <div id="texto-concluido">✓ Concluído</div>
-        </div>
-
-        <!-- BALÃO DE INFORMAÇÃO COM POSIÇÃO FÁCIL DE AJUSTAR -->
+        <!-- BALÃO COM PROPRIEDADES TOP E LEFT PARA EDIÇÃO RÁPIDA -->
         <div id="balao-info" style="top: 35%; left: 8%;">
             A fase pode ter qualquer cor
             <span class="norma-vermelha">(Item 6.1.5.3.4 da NBR-5410)</span>
         </div>
-
-        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
-        <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
@@ -336,42 +194,25 @@
         const camadasFios = document.getElementById('camadas-fios');
         const pontoA = document.getElementById('ponto-A');
         const pontoB = document.getElementById('ponto-B');
-        const conectorN2 = document.getElementById('conector-neutro');
-        const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtInstrucao = document.getElementById('instrucao');
-        const placaConcluido = document.getElementById('placa-concluido');
         const balaoInfo = document.getElementById('balao-info');
-
-        const etapas = [
-            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
-            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" } },
-            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "56%" } },
-            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76.8%", left: "49%" }, posB: { top: "31%", left: "54.5%" } },
-            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" } },
-            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" } },
-            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54.7%" }, posB: { top: "23%", left: "91%" } },
-            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "16%", left: "57%" }, posB: { top: "25%", left: "89%" } },
-            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" } },
-            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" } }
-        ];
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
 
-        function iniciarLaboratorio() {
-            document.getElementById('tela-entrada').style.opacity = "0";
-            setTimeout(() => { document.getElementById('tela-entrada').style.visibility = "hidden"; }, 500);
-            iniciarEtapa();
-        }
+        const etapas = [
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
+            // ... outras etapas aqui
+        ];
 
         function iniciarEtapa() {
             if (etapaAtual >= etapas.length) {
                 fiacaoConcluida = true;
-                txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
+                txtInstrucao.innerText = "FIAÇÃO CONCLUÍDA.";
                 return;
             }
             const config = etapas[etapaAtual];
-            txtInstrucao.innerHTML = `ETAPA: ${config.nome}. CLIQUE NA ORIGEM INDICADA.`;
+            txtInstrucao.innerText = `ETAPA: ${config.nome}`;
             pontoA.className = `ponto-clique ${config.cor}`;
             pontoA.style.top = config.posA.top;
             pontoA.style.left = config.posA.left;
@@ -385,7 +226,6 @@
         pontoA.onclick = () => {
             pontoA.classList.add('verde');
             pontoB.style.display = "block";
-            txtInstrucao.innerHTML = `PERCURSO EM ANDAMENTO... CLIQUE NO DESTINO.`;
         };
 
         pontoB.onclick = () => {
@@ -400,19 +240,15 @@
                 imgFio.src = `${config.pasta}/quadro${quadro.toString().padStart(4, '0')}.png`;
                 if (quadro >= config.max) {
                     clearInterval(anim);
-                    if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
-                    if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
                     
+                    // Dispara o balão na Fase 1
                     if(config.nome === "FASE 1") {
                         balaoInfo.style.display = "block";
-                        setTimeout(() => { balaoInfo.style.display = "none"; }, 5000);
                     }
 
                     setTimeout(() => {
                         pontoA.style.display = "none";
                         pontoB.style.display = "none";
-                        pontoA.classList.remove('verde');
-                        pontoB.classList.remove('verde');
                         etapaAtual++;
                         iniciarEtapa();
                     }, 500);
@@ -420,38 +256,15 @@
             }, 40);
         };
 
-        function verificarCircuito() {
-            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
-            const dr = document.getElementById('tecla-dr').getAttribute('data-status');
-            const int = document.getElementById('tecla-int').getAttribute('data-status');
-
-            if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-                document.getElementById('lampada1').style.display = "block";
-                document.getElementById('lampada2').style.display = "block";
-                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
-                placaConcluido.style.display = "flex";
-            } else {
-                document.getElementById('lampada1').style.display = "none";
-                document.getElementById('lampada2').style.display = "none";
-                if(fiacaoConcluida) txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
+        // FECHAR BALÃO COM QUALQUER CLIQUE NA JANELA
+        window.addEventListener('click', (e) => {
+            if (balaoInfo.style.display === "block") {
+                // Pequeno delay para não fechar no mesmo clique que o abre
+                balaoInfo.style.display = "none";
             }
-        }
+        }, true);
 
-        function toggle(id, pref) {
-            const el = document.getElementById(id);
-            el.onclick = () => {
-                const s = el.getAttribute('data-status') === 'off' ? 'on' : 'off';
-                el.src = `${pref}_${s}.png`;
-                el.setAttribute('data-status', s);
-                verificarCircuito();
-            };
-        }
-
-        toggle('tecla-dg', 'al_dg');
-        toggle('tecla-dr', 'al_dr');
-        toggle('tecla-int', 'tec_int');
-
-        document.getElementById('btn-reiniciar').onclick = () => location.reload();
+        iniciarEtapa();
     </script>
 </body>
 </html>
