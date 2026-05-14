@@ -97,7 +97,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES INFORMATIVOS NBR-5410 --- */
+        /* --- ADIÇÃO: ESTILO DOS BALÕES --- */
         .balao-informativo {
             position: absolute;
             width: 260px;
@@ -115,16 +115,9 @@
             display: none;
             transition: opacity 0.4s ease;
         }
-
         #balao-secao { top: 45%; left: 5%; }
         #balao-cores { top: 45%; right: 5%; border-color: #00f0ff; }
-
-        .txt-norma-vermelho {
-            color: #ff3333;
-            font-weight: bold;
-            display: block;
-            margin-top: 5px;
-        }
+        .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 5px; }
 
         /* --- UI PRINCIPAL --- */
         #titulo-sistema {
@@ -189,59 +182,30 @@
             z-index: 5;
         }
 
-        /* --- COMPONENTES ORIGINAIS --- */
         .tecla-movel, .carga-movel, .acessorio-movel { position: absolute; z-index: 20; user-select: none; }
         .tecla-movel { cursor: pointer; padding: 10px; margin: -10px; }
         #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
         #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
         #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; z-index: 30; }
-
         #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; display: none; z-index: 15; }
         #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; display: none; z-index: 16; transform: rotate(90deg); }
-
         #lampada1, #lampada2 { width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada1 { top: 4.5%; left: 68.8%; }
         #lampada2 { top: 43.8%; left: 68.8%; }
 
-        .btn-controle {
-            position: absolute;
-            border: none;
-            padding: 8px 30px;
-            font-size: 15px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 110;
-        }
+        .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
 
-        .ponto-clique {
-            position: absolute;
-            width: 1.8%; aspect-ratio: 1 / 1;
-            border: 0.2vw solid #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
+        .ponto-clique { position: absolute; width: 1.8%; aspect-ratio: 1 / 1; border: 0.2vw solid #fff; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); display: none; }
         .ponto-fase { background: rgba(255, 0, 0, 0.7); }
         .ponto-neutro { background: rgba(0, 150, 255, 0.7); }
         .ponto-retorno { background: rgba(255, 165, 0, 0.7); }
         .ponto-clique.verde { background: #00ff00 !important; }
 
-        /* --- MODAL AJUDA --- */
-        #modal-ajuda {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.8); z-index: 2000;
-            display: none; align-items: center; justify-content: center;
-        }
-        .conteudo-ajuda {
-            background: #111; border: 2px solid #00f0ff; padding: 30px;
-            border-radius: 15px; max-width: 500px; text-align: center;
-        }
+        #modal-ajuda { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .conteudo-ajuda { background: #060b13; border: 2px solid #00f0ff; border-radius: 20px; width: 100%; max-width: 600px; padding: 40px; position: relative; text-align: center; box-shadow: 0 0 50px rgba(0, 240, 255, 0.3); }
+        .btn-fechar-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #00f0ff; font-size: 24px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -250,16 +214,13 @@
         <div class="moldura-entrada">
             <h1 class="titulo-entrada">INTERRUPTOR SIMPLES PARA 2 LÂMPADAS</h1>
             <h2 class="subtitulo-entrada">CIRCUITO MONOFÁSICO - 127V</h2>
-            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - FioCerto 2026</div>
+            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - ConectaeadPLUS - 2026</div>
             <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
         </div>
     </div>
 
     <div id="titulo-sistema">Laboratório SMT Pro</div>
-
-    <div id="painel-status">
-        <span id="instrucao">CARREGANDO...</span>
-    </div>
+    <div id="painel-status"><span id="instrucao">CARREGANDO...</span></div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="imagem-base">
@@ -269,9 +230,9 @@
             A seção mínima dos fios de iluminação é 1,5mm²
             <span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span>
         </div>
-
         <div id="balao-cores" class="balao-informativo">
-            A fase pode ser de qualquer cor <span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span>
+            A fase pode ser de qualquer cor
+            <span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span>
         </div>
 
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
@@ -293,10 +254,9 @@
 
     <div id="modal-ajuda">
         <div class="conteudo-ajuda">
-            <h2 style="color: #00f0ff;">Como Jogar</h2>
-            <p>1. Conecte os pontos destacados para fazer a fiação.</p>
-            <p>2. Ligue os disjuntores e o interruptor após concluir.</p>
-            <button onclick="fecharModalAjuda()" style="padding: 10px 20px; cursor: pointer;">Fechar</button>
+            <button class="btn-fechar-modal" id="btn-fechar-ajuda">&times;</button>
+            <h2 style="color: #00f0ff; margin-top: 0;">COMO CONECTAR</h2>
+            <p style="color: #fff; line-height: 1.6;">Clique nos círculos coloridos para iniciar e finalizar a conexão de cada condutor.</p>
         </div>
     </div>
 
@@ -309,10 +269,12 @@
         const conectorN2 = document.getElementById('conector-neutro');
         const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtInstrucao = document.getElementById('instrucao');
+        const btnAjuda = document.getElementById('btn-ajuda');
         const btnReiniciar = document.getElementById('btn-reiniciar');
+        const modalAjuda = document.getElementById('modal-ajuda');
+        const btnFecharAjuda = document.getElementById('btn-fechar-ajuda');
         const telaEntrada = document.getElementById('tela-entrada');
 
-        // ETAPAS ORIGINAIS
         const etapas = [
             { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
             { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" } },
@@ -335,8 +297,8 @@
             iniciarEtapa();
         }
 
-        // FECHAR BALÕES NO PRIMEIRO CLIQUE
-        document.getElementById('projeto-container').addEventListener('mousedown', function() {
+        // LÓGICA PARA SUMIR BALÕES
+        document.getElementById('projeto-container').addEventListener('mousedown', () => {
             [balaoSecao, balaoCores].forEach(b => {
                 if(b.style.display === "block") {
                     b.style.opacity = "0";
@@ -349,7 +311,6 @@
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
             const int = document.getElementById('tecla-int').getAttribute('data-status');
-
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
@@ -357,7 +318,7 @@
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
-                if (fiacaoConcluida) txtInstrucao.innerHTML = "FIAÇÃO OK! LIGUE TUDO.";
+                if (fiacaoConcluida) txtInstrucao.innerHTML = "FIAÇÃO OK! LIGUE OS DISJUNTORES E O INTERRUPTOR.";
             }
         }
 
@@ -389,6 +350,7 @@
             pontoA.style.top = config.posA.top;
             pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
+            pontoB.className = `ponto-clique ${config.cor}`;
             pontoB.style.top = config.posB.top;
             pontoB.style.left = config.posB.left;
             pontoB.style.display = "none";
@@ -408,23 +370,18 @@
             const imgFio = document.createElement('img');
             imgFio.className = "camada-full";
             camadasFios.appendChild(imgFio);
-            
             const timer = setInterval(() => {
                 imgFio.src = `${config.pasta}/quadro${quadroAtual.toString().padStart(4, '0')}.png`;
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
-                    
-                    // MOSTRAR BALÕES APÓS FASE 1
                     if (config.nome === "FASE 1") {
                         [balaoSecao, balaoCores].forEach(b => {
                             b.style.display = "block";
                             setTimeout(() => { b.style.opacity = "1"; }, 50);
                         });
                     }
-
                     if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
-                    
                     setTimeout(() => {
                         pontoA.style.display = "none";
                         pontoB.style.display = "none";
@@ -437,9 +394,8 @@
             }, 40);
         };
 
-        document.getElementById('btn-ajuda').onclick = () => document.getElementById('modal-ajuda').style.display = "flex";
-        function fecharModalAjuda() { document.getElementById('modal-ajuda').style.display = "none"; }
-        
+        btnAjuda.onclick = () => modalAjuda.style.display = "flex";
+        btnFecharAjuda.onclick = () => modalAjuda.style.display = "none";
         btnReiniciar.onclick = () => location.reload();
     </script>
 </body>
