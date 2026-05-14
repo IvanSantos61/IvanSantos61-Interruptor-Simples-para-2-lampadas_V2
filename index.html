@@ -112,10 +112,12 @@
             line-height: 1.4;
         }
 
-        #balao-secao, #balao-fase-norma, #balao-conector { border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        /* Amarelos e Laranjas */
+        #balao-secao, #balao-fase-norma, #balao-conector, #balao-retorno-cor { border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-secao { top: 32%; left: 5%; }
         #balao-fase-norma { top: 52%; left: 45%; }
         #balao-conector { top: 22%; left: 35%; }
+        #balao-retorno-cor { top: 35%; left: 40%; border-color: #ffa500; }
 
         .balao-informativo:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -123,6 +125,7 @@
         }
         
         #balao-secao:after, #balao-fase-norma:after, #balao-conector:after { border-left: 10px solid #ffd700; }
+        #balao-retorno-cor:after { border-left: 10px solid #ffa500; }
 
         .balao-informativo:before {
             content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
@@ -232,6 +235,7 @@
         <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
         <div id="balao-fase-norma" class="balao-informativo">O interruptor deve seccionar o condutor vivo (Fase)<span class="txt-norma-vermelho">(Item 6.3.7.2.1 da NBR-5410)</span></div>
         <div id="balao-conector" class="balao-informativo">Conectores de emenda garantem conexões firmes e energia sem interrupções</div>
+        <div id="balao-retorno-cor" class="balao-informativo">O retorno também pode ser de qualquer cor (continuidade da fase NBR-5410)</div>
 
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
@@ -276,7 +280,8 @@
             document.getElementById('balao-cores'),
             document.getElementById('balao-neutro-norma'),
             document.getElementById('balao-fase-norma'),
-            document.getElementById('balao-conector')
+            document.getElementById('balao-conector'),
+            document.getElementById('balao-retorno-cor')
         ];
         const conectorN2 = document.getElementById('conector-neutro');
         const conectorN3 = document.getElementById('conector-neutro-3vias');
@@ -404,10 +409,12 @@
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
+                    // Gatilhos de Balões
                     if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
                     if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
                     if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
                     if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
+                    if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
 
                     setTimeout(() => {
                         pontoA.style.display = "none"; pontoB.style.display = "none";
