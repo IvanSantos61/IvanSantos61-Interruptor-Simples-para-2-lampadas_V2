@@ -2,122 +2,139 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Laboratório SMT Pro - FioCerto</title>
+    <title>SMT Pro - FioCerto</title>
     <style>
-        body { background-color: #060b13; color: #ffd700; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; }
+        body { background: #060b13; color: #ffd700; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; }
         #projeto-container { position: relative; width: 1000px; height: 600px; background: #000; border: 2px solid #1f2937; margin-top: 20px; }
         .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         
-        /* Balão NBR-5410 conforme sua solicitação */
+        /* Balão NBR-5410 - Padrão FioCerto */
         #balao-informativo {
             position: absolute;
-            top: 40%; left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.98);
             border: 2px solid #ffd700;
-            padding: 20px 40px;
+            padding: 30px;
             border-radius: 15px;
             text-align: center;
             z-index: 1000;
             display: none; 
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
         }
 
         .texto-norma {
             display: block;
-            color: #ff0000; /* Caractere Vermelho solicitado */
+            color: #ff0000; /* Vermelho solicitado */
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-size: 0.9em;
         }
 
-        .ponto { position: absolute; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); border: 2px solid #fff; }
-        .fase { background: #ff0000; }
-        .neutro { background: #0096ff; }
-        .verde { background: #00ff00 !important; box-shadow: 0 0 15px #00ff00; }
+        /* Pontos de Interação */
+        .ponto { position: absolute; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); border: 2px solid #fff; transition: 0.2s; }
+        .fase { background: #ff0000; box-shadow: 0 0 10px #ff0000; }
+        .neutro { background: #0096ff; box-shadow: 0 0 10px #0096ff; }
+        .verde { background: #00ff00 !important; box-shadow: 0 0 20px #00ff00 !important; }
+        
+        #status-bar { padding: 15px; color: #00f0ff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
+    <div id="status-bar">AGUARDANDO INÍCIO</div>
+
     <div id="projeto-container">
-        <img src="ambiente.jpg" style="width:100%; height:100%; opacity: 0.6;">
+        <img src="ambiente.jpg" style="width:100%; height:100%; opacity: 0.5;">
         <div id="camadas-fios"></div>
 
-        <!-- O Balão que só fecha no clique -->
+        <!-- Balão Informativo NBR-5410 -->
         <div id="balao-informativo" onclick="fecharBalao()">
-            <div style="color: #fff; font-size: 18px;">A fase pode ser de qualquer cor</div>
+            <div style="color: #fff; font-size: 20px;">A fase pode ser de qualquer cor</div>
             <span class="texto-norma">(Item 6.1.5.3.4 da NBR-5410)</span>
+            <div style="font-size: 10px; color: #666; margin-top: 20px;">[ CLIQUE NESTE BALÃO PARA CONTINUAR ]</div>
         </div>
 
-        <div id="pontoA" class="ponto"></div>
-        <div id="pontoB" class="ponto" style="display: none;"></div>
+        <!-- Pontos de Controle Únicos -->
+        <div id="ptA" class="ponto"></div>
+        <div id="ptB" class="ponto" style="display: none;"></div>
     </div>
 
     <script>
-        const etapas = [
-            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "fase", pA: {t:"38%", l:"27%"}, pB: {t:"79.3%", l:"40.5%"} },
-            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "neutro", pA: {t:"32.4%", l:"44.5%"}, pB: {t:"76.5%", l:"40%"} }
+        const configEtapas = [
+            { id: "FASE 1", pasta: "FASE1", max: 24, cor: "fase", ax: "27%", ay: "38%", bx: "40.5%", by: "79.3%" },
+            { id: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "neutro", ax: "44.5%", ay: "32.4%", bx: "40%", by: "76.5%" }
         ];
 
-        let etapaAtual = 0;
+        let indiceEtapa = 0;
 
-        function carregarEtapa() {
-            const e = etapas[etapaAtual];
-            const pA = document.getElementById('pontoA');
-            const pB = document.getElementById('pontoB');
+        function montarCenario() {
+            const etapa = configEtapas[indiceEtapa];
+            const pA = document.getElementById('ptA');
+            const pB = document.getElementById('ptB');
+            
+            document.getElementById('status-bar').innerText = `EXECUTANDO: ${etapa.id}`;
 
-            pA.className = `ponto ${e.cor}`;
-            pA.style.top = e.pA.t;
-            pA.style.left = e.pA.l;
+            // Reset de pontos
+            pA.className = `ponto ${etapa.cor}`;
+            pA.style.left = etapa.ax;
+            pA.style.top = etapa.ay;
             pA.style.display = "block";
 
-            pB.className = `ponto ${e.cor}`;
-            pB.style.top = e.pB.t;
-            pB.style.left = e.pB.l;
+            pB.className = `ponto ${etapa.cor}`;
+            pB.style.left = etapa.bx;
+            pB.style.top = etapa.by;
             pB.style.display = "none";
 
             pA.onclick = () => { pA.classList.add('verde'); pB.style.display = "block"; };
-            pB.onclick = () => { pB.classList.add('verde'); animar(); };
+            pB.onclick = () => { pB.classList.add('verde'); rodarAnimacao(); };
         }
 
-        function animar() {
-            const e = etapas[etapaAtual];
-            const img = document.createElement('img');
-            img.className = "camada-full";
-            document.getElementById('camadas-fios').appendChild(img);
+        function rodarAnimacao() {
+            const etapa = configEtapas[indiceEtapa];
+            const container = document.getElementById('camadas-fios');
+            const novaCamada = document.createElement('img');
+            novaCamada.className = "camada-full";
+            container.appendChild(novaCamada);
 
-            let frame = 0;
-            const loop = setInterval(() => {
-                img.src = `${e.pasta}/quadro${frame.toString().padStart(4, '0')}.png`;
-                if (frame >= e.max) {
-                    clearInterval(loop);
-                    // Regra do Balão para FASE 1
-                    if (e.nome === "FASE 1") {
-                        document.getElementById('balao-informativo').style.display = 'block';
-                    } else {
-                        proximaEtapa();
-                    }
+            let quadro = 0;
+            const timer = setInterval(() => {
+                novaCamada.src = `${etapa.pasta}/quadro${quadro.toString().padStart(4, '0')}.png`;
+                if (quadro >= etapa.max) {
+                    clearInterval(timer);
+                    validarFimDaEtapa();
                 }
-                frame++;
-            }, 40);
+                quadro++;
+            }, 45);
+        }
+
+        function validarFimDaEtapa() {
+            if (configEtapas[indiceEtapa].id === "FASE 1") {
+                document.getElementById('balao-informativo').style.display = 'block';
+            } else {
+                proximo();
+            }
         }
 
         function fecharBalao() {
             document.getElementById('balao-informativo').style.display = 'none';
-            proximaEtapa();
+            proximo();
         }
 
-        function proximaEtapa() {
-            etapaAtual++;
-            if (etapaAtual < etapas.length) {
-                carregarEtapa();
+        function proximo() {
+            indiceEtapa++;
+            if (indiceEtapa < configEtapas.length) {
+                montarCenario();
             } else {
-                console.log("Fiação concluída.");
+                document.getElementById('status-bar').innerText = "FIAÇÃO COMPLETA!";
+                document.getElementById('ptA').style.display = "none";
+                document.getElementById('ptB').style.display = "none";
             }
         }
 
-        // Inicia o sistema
-        carregarEtapa();
+        // Inicialização
+        window.onload = montarCenario;
     </script>
 </body>
 </html>
