@@ -2,237 +2,154 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laboratório SMT Pro - FioCerto</title>
     <style>
-        * { box-sizing: border-box; }
-        
-        body {
+        /* Estilização Geral FioCerto */
+        body { 
+            background-color: #060b13; 
+            color: #ffd700; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
             margin: 0;
-            padding: 0;
-            background-color: #060b13;
-            color: #ffd700;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
             overflow: hidden;
         }
 
-        #titulo-sistema {
-            color: #00f0ff;
-            font-size: 32px;
-            font-weight: 900;
-            margin: 2vh 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        #projeto-container { 
+            position: relative; 
+            width: 1000px; 
+            height: 600px; 
+            background: #000; 
+            border: 3px solid #1f2937;
+            margin-top: 20px;
         }
 
-        #painel-status {
-            width: 90%;
-            max-width: 1100px;
-            background: rgba(4, 10, 20, 0.9);
-            border: 1px solid #16222f;
-            border-radius: 12px;
-            padding: 15px;
-            min-height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2vh;
+        .camada-full { 
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            pointer-events: none; 
         }
 
-        #instrucao {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        #projeto-container {
-            position: relative;
-            max-height: 65vh;
-            border: 2px solid #1f2937;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .imagem-base {
-            max-height: 65vh;
-            width: auto;
-            display: block;
-        }
-
-        .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-        
-        /* Estilo do Balão Informativo NBR-5410 */
+        /* Balão NBR-5410 com Interrupção por Clique */
         #balao-informativo {
             position: absolute;
-            top: 25%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(4, 10, 20, 0.98);
             border: 2px solid #ffd700; /* Yellow Gold */
-            padding: 20px;
-            border-radius: 15px;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
-            z-index: 1000;
-            display: none; 
+            z-index: 9999;
+            display: none; /* Inicia oculto */
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-            animation: surgir 0.3s ease-out;
-        }
-
-        @keyframes surgir {
-            from { opacity: 0; transform: translate(-50%, -40%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
         }
 
         .texto-norma {
             display: block;
-            color: #ff0000; /* Vermelho conforme solicitado */
-            font-size: 0.9em;
-            margin-top: 10px;
+            color: #ff0000; /* Vermelho solicitado */
             font-weight: bold;
+            margin-top: 12px;
+            font-size: 0.9em;
         }
 
-        .ponto-clique {
-            position: absolute;
-            width: 24px; height: 24px;
+        /* Pontos de Interação */
+        .ponto { 
+            position: absolute; 
+            width: 26px; height: 26px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            z-index: 100; 
+            transform: translate(-50%, -50%); 
             border: 2px solid #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            transform: translate(-50%, -50%);
-            display: none;
         }
-        .ponto-fase { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
-        .verde { background: #00ff00 !important; box-shadow: 0 0 20px #00ff00; }
+        .fase { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
+        .verde { background: #00ff00 !important; box-shadow: 0 0 20px #00ff00 !important; }
 
-        .tecla-movel { position: absolute; cursor: pointer; z-index: 30; }
-        #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
-        #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
-        #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; }
-
-        .carga-movel {
-            position: absolute;
-            display: none;
-            z-index: 25;
-            filter: drop-shadow(0 0 20px #fff700);
-            pointer-events: none;
+        #instrucao-topo {
+            margin-top: 20px;
+            font-size: 20px;
+            text-transform: uppercase;
+            color: #00f0ff;
         }
-        #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; }
-        #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; }
     </style>
 </head>
 <body>
 
-    <div id="titulo-sistema">FioCerto - SMT Pro</div>
-
-    <div id="painel-status">
-        <span id="instrucao">CLIQUE NO PONTO INDICADO PARA INICIAR A FIAÇÃO</span>
-    </div>
+    <div id="instrucao-topo">Siga os pontos para instalar a FASE 1</div>
 
     <div id="projeto-container">
-        <img src="ambiente.jpg" class="imagem-base">
+        <!-- Imagem base do laboratório -->
+        <img src="ambiente.jpg" style="width:100%; height:100%; opacity: 0.7;">
+        
         <div id="camadas-fios"></div>
 
-        <!-- Balão NBR-5410 -->
+        <!-- Balão Informativo -->
         <div id="balao-informativo" onclick="fecharBalao()">
-            <div style="color: #fff; font-size: 18px;">A fase pode ser de qualquer cor</div>
-            <span class="texto-norma">(Item 6.1.5.3.4 da NBR-5410)</span>
-            <div style="font-size: 10px; color: #555; margin-top: 10px;">[Clique para fechar]</div>
+            <div style="color: #fff; font-size: 20px; font-weight: bold;">
+                A fase pode ser de qualquer cor
+            </div>
+            <span class="texto-norma">
+                (Item 6.1.5.3.4 da NBR-5410)
+            </span>
+            <div style="font-size: 11px; color: #555; margin-top: 20px; text-transform: uppercase;">
+                [ Clique para fechar e continuar ]
+            </div>
         </div>
 
-        <!-- Componentes -->
-        <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
-        <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
-        <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
-        <img src="lamp_on.png" id="lampada1" class="carga-movel">
-        <img src="lamp_on.png" id="lampada2" class="carga-movel">
-
-        <!-- Pontos de Conexão -->
-        <div id="ponto-A" class="ponto-clique ponto-fase" style="top: 38%; left: 27%; display: block;"></div>
-        <div id="ponto-B" class="ponto-clique ponto-fase" style="top: 79.3%; left: 40.5%;"></div>
+        <!-- Elementos de clique -->
+        <div id="pontoA" class="ponto fase" style="top: 38%; left: 27%;"></div>
+        <div id="pontoB" class="ponto fase" style="top: 79.3%; left: 40.5%; display: none;"></div>
     </div>
 
     <script>
-        const etapas = [
-            { nome: "FASE 1", pasta: "FASE1", max: 24, msg: "Conecte a FASE no Disjuntor." },
-            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, msg: "Conecte o NEUTRO no barramento." }
-            // Outras etapas...
-        ];
+        const containerFios = document.getElementById('camadas-fios');
+        const balao = document.getElementById('balao-informativo');
+        const pA = document.getElementById('pontoA');
+        const pB = document.getElementById('pontoB');
 
-        let etapaAtual = 0;
-
-        document.getElementById('ponto-A').onclick = () => {
-            document.getElementById('ponto-A').classList.add('verde');
-            document.getElementById('ponto-B').style.display = "block";
+        // Logica de ativação dos pontos
+        pA.onclick = function() {
+            this.classList.add('verde');
+            pB.style.display = 'block';
         };
 
-        document.getElementById('ponto-B').onclick = () => {
-            document.getElementById('ponto-B').classList.add('verde');
-            animarCabo();
+        pB.onclick = function() {
+            this.classList.add('verde');
+            animarFase1();
         };
 
-        function animarCabo() {
-            const config = etapas[etapaAtual];
-            const container = document.getElementById('camadas-fios');
-            const img = document.createElement('img');
-            img.className = "camada-full";
-            container.appendChild(img);
+        function animarFase1() {
+            const imgCabo = document.createElement('img');
+            imgCabo.className = "camada-full";
+            containerFios.appendChild(imgCabo);
 
             let frame = 0;
-            const anim = setInterval(() => {
-                img.src = `${config.pasta}/quadro${frame.toString().padStart(4, '0')}.png`;
-                
-                if (frame >= config.max) {
-                    clearInterval(anim);
-                    
-                    // Lógica do Balão Informativo
-                    if (config.nome === "FASE 1") {
-                        document.getElementById('balao-informativo').style.display = "block";
-                    }
+            const totalFrames = 24; // Conforme sua estrutura de pastas
 
-                    proximaEtapa();
+            const temporizador = setInterval(() => {
+                // Caminho da imagem conforme seu padrão de pastas
+                imgCabo.src = `FASE1/quadro${frame.toString().padStart(4, '0')}.png`;
+                
+                if (frame >= totalFrames) {
+                    clearInterval(temporizador);
+                    // EXIBE O BALÃO ASSIM QUE O ÚLTIMO FRAME CARREGA
+                    balao.style.display = 'block';
                 }
                 frame++;
-            }, 40);
+            }, 45);
         }
 
         function fecharBalao() {
-            document.getElementById('balao-informativo').style.display = "none";
+            balao.style.display = 'none';
+            document.getElementById('instrucao-topo').innerText = "FASE 1 CONCLUÍDA. PROPRIA ETAPA: NEUTRO.";
+            // Aqui você dispararia a lógica para a próxima fiação
+            console.log("Usuário leu a norma e fechou o balão.");
         }
-
-        function proximaEtapa() {
-            etapaAtual++;
-            document.getElementById('ponto-A').classList.remove('verde');
-            document.getElementById('ponto-B').classList.remove('verde');
-            document.getElementById('ponto-B').style.display = "none";
-            
-            if (etapaAtual < etapas.length) {
-                document.getElementById('instrucao').innerText = etapas[etapaAtual].msg;
-                // Atualizar posições dos pontos conforme a etapa...
-            } else {
-                document.getElementById('instrucao').innerText = "FIAÇÃO CONCLUÍDA!";
-            }
-        }
-
-        // Simulação básica dos disjuntores para o teste
-        function setupTecla(id, prefix) {
-            const el = document.getElementById(id);
-            el.onclick = () => {
-                const status = el.getAttribute('data-status') === 'off' ? 'on' : 'off';
-                el.src = `${prefix}_${status}.png`;
-                el.setAttribute('data-status', status);
-            };
-        }
-        setupTecla('tecla-dg', 'al_dg');
-        setupTecla('tecla-dr', 'al_dr');
-        setupTecla('tecla-int', 'tec_int');
     </script>
 </body>
 </html>
