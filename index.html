@@ -94,19 +94,17 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES (COM CORREÇÃO DE ESPAÇAMENTO) --- */
+        /* --- BALÕES COM SETAS INDICATIVAS --- */
         .balao-informativo {
             position: absolute;
             width: 260px;
             background: rgba(4, 10, 20, 0.95);
-            border: 2px solid #ffd700;
             border-radius: 12px;
             padding: 15px;
             color: #fff;
             font-size: 14px;
             text-align: center;
             z-index: 120;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             pointer-events: none;
             opacity: 0;
             display: none;
@@ -114,8 +112,41 @@
             line-height: 1.4;
         }
 
-        #balao-secao { top: 35%; left: 5%; }
-        #balao-cores { top: 58%; left: 5%; border-color: #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        /* Balão Amarelo (Seção) */
+        #balao-secao { 
+            top: 32%; 
+            left: 5%; 
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        #balao-secao:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid #ffd700;
+        }
+
+        /* Balão Ciano (Cores) */
+        #balao-cores { 
+            top: 55%; 
+            left: 5%; 
+            border: 2px solid #00f0ff; 
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); 
+        }
+        #balao-cores:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid #00f0ff;
+        }
 
         .txt-norma-vermelho { 
             color: #ff3333; 
@@ -331,7 +362,6 @@
             });
         });
 
-        // RESTAURAÇÃO DAS MENSAGENS ORIGINAIS
         const etapas = [
             { nome: "FASE 1", msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
             { nome: "NEUTRO 1", msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" } },
