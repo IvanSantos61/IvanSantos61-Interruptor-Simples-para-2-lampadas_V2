@@ -97,7 +97,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- ESTILO DOS BALÕES DE NORMA --- */
+        /* --- ESTILO DOS BALÕES DE NORMA (CORREÇÃO DE SOBREPOSIÇÃO) --- */
         .balao-informativo {
             position: absolute;
             width: 260px;
@@ -115,8 +115,20 @@
             display: none;
             transition: opacity 0.4s ease;
         }
-        #balao-secao { top: 45%; left: 5%; }
-        #balao-cores { top: 45%; right: 5%; border-color: #00f0ff; }
+
+        /* Posicionamento separado para evitar sobreposição */
+        #balao-secao { 
+            top: 40%; 
+            left: 5%; 
+        }
+
+        #balao-cores { 
+            top: 58%; /* Movido mais para baixo */
+            left: 5%; 
+            border-color: #00f0ff; 
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 5px; }
 
         /* --- IDENTIFICAÇÃO DO SISTEMA --- */
@@ -511,7 +523,7 @@
             iniciarEtapa();
         }
 
-        // FECHAR BALÕES NO CLIQUE
+        // FECHAR BALÕES NO CLIQUE EM QUALQUER LUGAR DO CONTAINER
         document.getElementById('projeto-container').addEventListener('mousedown', () => {
             [balaoSecao, balaoCores].forEach(b => {
                 if(b.style.display === "block") {
@@ -677,7 +689,7 @@
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
-                    // MOSTRAR BALÕES APÓS FASE 1
+                    // MOSTRAR BALÕES APÓS FASE 1 COM POSIÇÕES CORRIGIDAS
                     if (config.nome === "FASE 1") {
                         [balaoSecao, balaoCores].forEach(b => {
                             b.style.display = "block";
@@ -752,6 +764,13 @@
             conectorN3.style.display = "none";
             document.getElementById('lampada1').style.display = "none";
             document.getElementById('lampada2').style.display = "none";
+            
+            // Ocultar balões no reiniciar
+            [balaoSecao, balaoCores].forEach(b => {
+                b.style.opacity = "0";
+                b.style.display = "none";
+            });
+
             const chaves = [{ id: 'tecla-dg', pref: 'al_dg' }, { id: 'tecla-dr', pref: 'al_dr' }, { id: 'tecla-int', pref: 'tec_int' }];
             chaves.forEach(ch => {
                 const el = document.getElementById(ch.id);
