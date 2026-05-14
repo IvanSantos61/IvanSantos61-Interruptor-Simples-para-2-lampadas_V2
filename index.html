@@ -94,7 +94,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES COM SETAS INTEGRADAS --- */
+        /* --- BALÕES COM SETAS NA COR DO FUNDO --- */
         .balao-informativo {
             position: absolute;
             width: 260px;
@@ -112,43 +112,31 @@
             line-height: 1.4;
         }
 
-        #balao-secao { 
-            top: 32%; left: 5%; 
-            border: 2px solid #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
+        #balao-secao { top: 32%; left: 5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-secao:after {
-            content: ''; position: absolute; bottom: -10px; left: 50%;
-            transform: translateX(-50%); border-left: 10px solid transparent;
-            border-right: 10px solid transparent; border-top: 10px solid #ffd700;
+            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #ffd700;
         }
         #balao-secao:before {
-            content: ''; position: absolute; bottom: -7px; left: 50%;
-            transform: translateX(-50%); border-left: 8px solid transparent;
-            border-right: 8px solid transparent; border-top: 8px solid rgba(4, 10, 20, 0.95);
+            content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+            border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgba(4, 10, 20, 0.95);
             z-index: 1;
         }
 
-        #balao-cores { 
-            top: 55%; left: 5%; 
-            border: 2px solid #00f0ff; 
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); 
-        }
+        #balao-cores { top: 55%; left: 5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-cores:after {
-            content: ''; position: absolute; bottom: -10px; left: 50%;
-            transform: translateX(-50%); border-left: 10px solid transparent;
-            border-right: 10px solid transparent; border-top: 10px solid #00f0ff;
+            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #00f0ff;
         }
         #balao-cores:before {
-            content: ''; position: absolute; bottom: -7px; left: 50%;
-            transform: translateX(-50%); border-left: 8px solid transparent;
-            border-right: 8px solid transparent; border-top: 8px solid rgba(4, 10, 20, 0.95);
+            content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+            border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgba(4, 10, 20, 0.95);
             z-index: 1;
         }
 
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
 
-        /* --- PAINEL --- */
+        /* --- IDENTIFICAÇÃO E STATUS --- */
         #titulo-sistema {
             color: #00f0ff; font-size: 36px; font-weight: 900; letter-spacing: 2px;
             margin-top: 2.5vh; margin-bottom: 1vh; text-align: center;
@@ -170,7 +158,7 @@
         /* --- PROJETO --- */
         #projeto-container {
             position: relative; display: inline-block; margin-bottom: 2vh;
-            border: 2px solid #1f2937; box-shadow: 0 0 40px rgba(0,0,0,0.9); max-height: 70vh;
+            border: 2px solid #1f2937; box-shadow: 0 0 40px rgba(0,0,0,0.9);
         }
 
         .imagem-base { max-width: 95vw; max-height: 70vh; display: block; object-fit: contain; border-radius: 8px; }
@@ -188,16 +176,35 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
 
+        /* --- BOTÕES E MODAL AJUDA --- */
         .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
+
+        #modal-ajuda {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 55%; background: #0a111a; border: 2px solid #00f0ff;
+            border-radius: 12px; padding: 20px; z-index: 200; display: none;
+            flex-direction: column; align-items: center;
+        }
+        .item-ajuda { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #162e3d; color: #fff; padding: 12px; margin-bottom: 10px; cursor: pointer; text-align: left; }
+        .btn-fechar-modal { background: #222; color: #aaa; border: 1px solid #444; padding: 10px 40px; cursor: pointer; margin-top: 10px; }
+
+        /* --- PLACA CONCLUÍDO --- */
+        #placa-concluido {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60%; height: 38%; background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
+            border: 3px solid #111; border-radius: 10px; z-index: 150;
+            display: none; align-items: center; justify-content: center;
+        }
+        #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); }
 
         .ponto-clique { position: absolute; width: 1.8%; aspect-ratio: 1 / 1; border: 0.2vw solid #fff; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); display: none; }
         .ponto-fase { background: rgba(255, 0, 0, 0.7); }
         .ponto-neutro { background: rgba(0, 150, 255, 0.7); }
         .ponto-retorno { background: rgba(255, 165, 0, 0.7); }
         .ponto-clique.verde { background: #00ff00 !important; }
-        
+
         .status-aceso { background: #006400 !important; color: #00ff00 !important; padding: 8px 30px; border-radius: 20px; }
         .status-apagado { background: #b80000 !important; color: #ffffff !important; padding: 8px 30px; border-radius: 20px; }
         .txt-vermelho { color: #ff3333; font-weight: bold; }
@@ -215,7 +222,7 @@
     </div>
 
     <div id="titulo-sistema">Laboratório SMT Pro</div>
-    <div id="painel-status"><span id="instrucao">AGUARDANDO...</span></div>
+    <div id="painel-status"><span id="instrucao">CARREGANDO...</span></div>
 
     <div id="projeto-container">
         <img src="ambiente.jpg" class="imagem-base">
@@ -240,8 +247,25 @@
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
+        <div id="placa-concluido"><div id="texto-concluido">✓ Concluído</div></div>
+
         <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
+
+        <div id="modal-ajuda">
+            <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+                <h3>Ajuda Técnica</h3>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas4.png')">3. Emendas e conexões (Caixa 01)</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas3.png')">4. Emendas e conexões (Caixa 02)</button>
+                <button class="btn-fechar-modal" onclick="fecharModalAjuda()">Fechar</button>
+            </div>
+            <div id="tela-imagem-ajuda" style="display:none; flex-direction:column; align-items:center;">
+                <img src="" id="img-suporte" style="max-width:100%; margin-bottom:15px;">
+                <button class="btn-fechar-modal" onclick="voltarParaListaAjuda()">Voltar</button>
+            </div>
+        </div>
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
@@ -257,6 +281,13 @@
         const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtInstrucao = document.getElementById('instrucao');
         const telaEntrada = document.getElementById('tela-entrada');
+        const placaConcluido = document.getElementById('placa-concluido');
+        const modalAjuda = document.getElementById('modal-ajuda');
+
+        let etapaAtual = 0;
+        let fiacaoConcluida = false;
+        let cicloAtivo = false;
+        let timerPlaca;
 
         function iniciarLaboratorio() {
             telaEntrada.style.opacity = "0";
@@ -275,6 +306,19 @@
             });
         });
 
+        // --- SISTEMA DE AJUDA ---
+        document.getElementById('btn-ajuda').onclick = function() { modalAjuda.style.display = "flex"; };
+        function fecharModalAjuda() { modalAjuda.style.display = "none"; voltarParaListaAjuda(); }
+        function abrirGravuraAjuda(img) {
+            document.getElementById('menu-lista-ajuda').style.display = "none";
+            document.getElementById('tela-imagem-ajuda').style.display = "flex";
+            document.getElementById('img-suporte').src = img;
+        }
+        function voltarParaListaAjuda() {
+            document.getElementById('tela-imagem-ajuda').style.display = "none";
+            document.getElementById('menu-lista-ajuda').style.display = "flex";
+        }
+
         const etapas = [
             { nome: "FASE 1", msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
             { nome: "NEUTRO 1", msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" } },
@@ -288,9 +332,6 @@
             { nome: "NEUTRO 4", msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O NEUTRO", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" } }
         ];
 
-        let etapaAtual = 0;
-        let fiacaoConcluida = false;
-
         function verificarCircuito() {
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
@@ -300,11 +341,19 @@
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
+                cicloAtivo = true;
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
                 if (fiacaoConcluida) {
-                    txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
+                    if (cicloAtivo) {
+                        txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
+                        placaConcluido.style.display = "flex";
+                        clearTimeout(timerPlaca);
+                        timerPlaca = setTimeout(function() { placaConcluido.style.display = "none"; }, 3000);
+                    } else {
+                        txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
+                    }
                 }
             }
         }
@@ -334,12 +383,10 @@
             const config = etapas[etapaAtual];
             txtInstrucao.innerHTML = config.msgA;
             pontoA.className = "ponto-clique " + config.cor;
-            pontoA.style.top = config.posA.top;
-            pontoA.style.left = config.posA.left;
+            pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
             pontoB.className = "ponto-clique " + config.cor;
-            pontoB.style.top = config.posB.top;
-            pontoB.style.left = config.posB.left;
+            pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left;
             pontoB.style.display = "none";
         }
 
@@ -371,10 +418,8 @@
                     if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
                     setTimeout(function() {
-                        pontoA.style.display = "none";
-                        pontoB.style.display = "none";
-                        pontoA.classList.remove('verde');
-                        pontoB.classList.remove('verde');
+                        pontoA.style.display = "none"; pontoB.style.display = "none";
+                        pontoA.classList.remove('verde'); pontoB.classList.remove('verde');
                         etapaAtual++;
                         iniciarEtapa();
                     }, 600);
@@ -382,7 +427,27 @@
             }, 40);
         };
 
-        document.getElementById('btn-reiniciar').onclick = function() { location.reload(); };
+        // --- REINICIAR (VOLTA PARA O SPLASH) ---
+        document.getElementById('btn-reiniciar').onclick = function() {
+            telaEntrada.style.visibility = "visible";
+            telaEntrada.style.opacity = "1";
+            etapaAtual = 0;
+            fiacaoConcluida = false;
+            cicloAtivo = false;
+            camadasFios.innerHTML = "";
+            conectorN2.style.display = "none";
+            conectorN3.style.display = "none";
+            document.getElementById('lampada1').style.display = "none";
+            document.getElementById('lampada2').style.display = "none";
+            placaConcluido.style.display = "none";
+            
+            ['tecla-dg', 'tecla-dr', 'tecla-int'].forEach(id => {
+                const el = document.getElementById(id);
+                el.setAttribute('data-status', 'off');
+                el.src = el.src.replace('_on.png', '_off.png');
+            });
+            txtInstrucao.innerHTML = "CARREGANDO...";
+        };
     </script>
 </body>
 </html>
