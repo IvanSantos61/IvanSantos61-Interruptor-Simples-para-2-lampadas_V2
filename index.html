@@ -21,6 +21,96 @@
             overflow: hidden; /* Garante que nada transborde da tela do PC */
         }
 
+        /* --- TELA DE ENTRADA PADRÃO --- */
+        #tela-entrada {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #060b13;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        /* Moldura Centralizada com Brilho Neon */
+        .moldura-entrada {
+            width: 75%;
+            max-width: 850px;
+            height: 65%;
+            max-height: 500px;
+            border: 2px solid #00f0ff;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .titulo-entrada {
+            color: #00f0ff;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            margin: 0 0 15px 0;
+        }
+
+        .subtitulo-entrada {
+            color: #00f0ff;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0 0 35px 0;
+        }
+
+        .linha-divisora {
+            width: 120px;
+            height: 1px;
+            background-color: rgba(0, 240, 255, 0.4);
+            margin-bottom: 40px;
+        }
+
+        .creditos-entrada {
+            color: #556270;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Link Piscante para Iniciar */
+        .btn-iniciar-lab {
+            color: #00a8b5;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            background: none;
+            border: none;
+            padding: 10px;
+            animation: piscarTexto 1.5s infinite ease-in-out;
+            transition: color 0.2s;
+        }
+
+        .btn-iniciar-lab:hover {
+            color: #00f0ff;
+        }
+
+        @keyframes piscarTexto {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
         /* --- IDENTIFICAÇÃO DO SISTEMA --- */
         #titulo-sistema {
             color: #00f0ff;
@@ -336,6 +426,16 @@
 </head>
 <body>
 
+    <div id="tela-entrada">
+        <div class="moldura-entrada">
+            <h1 class="titulo-entrada">Interruptor Simples para 1 Lâmpada</h1>
+            <h2 class="subtitulo-entrada">Circuito Monofásico - 127V</h2>
+            <div class="linha-divisora"></div>
+            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - ConectaeadPLUS - 2026</div>
+            <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
+        </div>
+    </div>
+
     <div id="titulo-sistema">Laboratório SMT Pro</div>
 
     <div id="painel-status">
@@ -369,7 +469,7 @@
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnica</h3>
+                <h3>Ajuda Técnico</h3>
                 <div class="lista-ajuda">
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
                     <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
@@ -400,6 +500,12 @@
         const btnAjuda = document.getElementById('btn-ajuda');
         const modalAjuda = document.getElementById('modal-ajuda');
         const placaConcluido = document.getElementById('placa-concluido');
+        const telaEntrada = document.getElementById('tela-entrada');
+
+        function iniciarLaboratorio() {
+            telaEntrada.style.opacity = "0";
+            telaEntrada.style.visibility = "hidden";
+        }
 
         const msgsSaida = [
             "CLIQUE NA REFERÊNCIA DO <span class='txt-laranja'>PONTO DE SAÍDA</span> DO CABO ATUAL.",
