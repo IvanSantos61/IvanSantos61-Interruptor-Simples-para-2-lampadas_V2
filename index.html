@@ -18,10 +18,10 @@
             align-items: center;
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* Garante que nada transborde da tela do PC */
+            overflow: hidden;
         }
 
-        /* --- TELA DE ENTRADA (SPLASH SCREEN) - AJUSTE FIEL AO ORIGINAL --- */
+        /* --- TELA DE ENTRADA (SPLASH SCREEN) --- */
         #tela-entrada {
             position: fixed;
             top: 0;
@@ -54,9 +54,9 @@
 
         .titulo-entrada {
             color: #00f0ff;
-            font-size: 52px; /* Fonte bem maior */
+            font-size: 52px;
             font-weight: 900;
-            line-height: 1.1; /* Título em 2 linhas */
+            line-height: 1.1;
             letter-spacing: 1px;
             text-transform: uppercase;
             text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
@@ -66,14 +66,14 @@
         .subtitulo-entrada {
             color: #00f0ff;
             font-size: 22px;
-            font-weight: 400; /* Mais leve que o título */
+            font-weight: 400;
             letter-spacing: 5px;
             text-transform: uppercase;
             margin: 0 0 50px 0;
         }
 
         .creditos-entrada {
-            color: #445566; /* Cor mais discreta como no original */
+            color: #445566;
             font-size: 15px;
             font-weight: 500;
             margin-bottom: 50px;
@@ -100,7 +100,7 @@
         /* --- IDENTIFICAÇÃO DO SISTEMA --- */
         #titulo-sistema {
             color: #00f0ff;
-            font-size: 36px; /* Tamanho restaurado conforme o padrão da imagem */
+            font-size: 36px;
             font-weight: 900;
             letter-spacing: 2px;
             margin-top: 2.5vh;
@@ -137,7 +137,6 @@
             line-height: 1.4;
         }
 
-        /* Classes de status do painel */
         .status-aceso {
             background: #006400 !important;
             color: #00ff00 !important;
@@ -505,7 +504,7 @@
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
-        let cicloAtivo = false; 
+        let cicloAtivo = false; 
         let timerPlacaSurgir = null;
         let timerPlacaSumir = null;
 
@@ -546,8 +545,8 @@
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
-                cicloAtivo = true; 
-                limparTimersConcluido(); 
+                cicloAtivo = true; 
+                limparTimersConcluido(); 
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
             } else {
                 document.getElementById('lampada1').style.display = "none";
@@ -637,7 +636,7 @@
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
                     if (callback) callback();
                 } else { quadroAtual++; }
-            }, 40); 
+            }, 40); 
         }
 
         pontoA.onclick = (e) => {
@@ -686,26 +685,42 @@
             });
         };
 
+        /* --- ATUALIZAÇÃO DO BOTÃO REINICIAR --- */
         btnReiniciar.onclick = (e) => {
             e.stopPropagation();
             fecharModalAjuda();
             limparTimersConcluido();
+            
+            // 1. Faz a tela de entrada reaparecer suavemente
+            telaEntrada.style.visibility = "visible";
+            telaEntrada.style.opacity = "1";
+
+            // 2. Reseta o estado completo do laboratório
             etapaAtual = 0;
             fiacaoConcluida = false;
-            cicloAtivo = false; 
+            cicloAtivo = false; 
             camadasFios.innerHTML = "";
             conectorN2.style.display = "none";
             conectorN3.style.display = "none";
             document.getElementById('lampada1').style.display = "none";
             document.getElementById('lampada2').style.display = "none";
-            const chaves = [{ id: 'tecla-dg', pref: 'al_dg' }, { id: 'tecla-dr', pref: 'al_dr' }, { id: 'tecla-int', pref: 'tec_int' }];
+            
+            // Desliga os disjuntores e interruptor
+            const chaves = [
+                { id: 'tecla-dg', pref: 'al_dg' }, 
+                { id: 'tecla-dr', pref: 'al_dr' }, 
+                { id: 'tecla-int', pref: 'tec_int' }
+            ];
             chaves.forEach(ch => {
                 const el = document.getElementById(ch.id);
                 el.setAttribute('data-status', 'off');
                 el.src = `${ch.pref}_off.png`;
             });
+            
             pontoA.classList.remove('verde');
             pontoB.classList.remove('verde');
+            
+            // Prepara a primeira etapa em background
             iniciarEtapa();
         };
 
