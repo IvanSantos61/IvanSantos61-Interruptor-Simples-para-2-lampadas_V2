@@ -184,6 +184,42 @@
             z-index: 5;
         }
 
+        /* --- NOVO: BALÃO DE INFORMAÇÃO --- */
+        #balao-info {
+            position: absolute;
+            background: #ffffff;
+            color: #000000;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            z-index: 200;
+            display: none; /* Inicia oculto */
+            width: 240px;
+            text-align: center;
+            line-height: 1.4;
+            pointer-events: auto;
+        }
+
+        #balao-info::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 30px;
+            border-width: 12px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+
+        .norma-vermelha {
+            display: block;
+            color: #d00000;
+            font-size: 11px;
+            margin-top: 8px;
+            font-weight: 900;
+        }
+
         /* --- COMPONENTES --- */
         .tecla-movel, .carga-movel, .acessorio-movel {
             position: absolute;
@@ -416,6 +452,12 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
+        <!-- BALÃO COM PROPRIEDADES PARA SEU AJUSTE DE POSIÇÃO -->
+        <div id="balao-info" style="top: 35%; left: 8%;">
+            A fase pode ter qualquer cor
+            <span class="norma-vermelha">(Item 6.1.5.3.4 da NBR-5410)</span>
+        </div>
+
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
         
@@ -471,6 +513,7 @@
         const modalAjuda = document.getElementById('modal-ajuda');
         const placaConcluido = document.getElementById('placa-concluido');
         const telaEntrada = document.getElementById('tela-entrada');
+        const balaoInfo = document.getElementById('balao-info');
 
         function iniciarLaboratorio() {
             telaEntrada.style.opacity = "0";
@@ -634,6 +677,12 @@
                     clearInterval(timer);
                     if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
                     if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
+                    
+                    // MOSTRA O BALÃO SE FOR O FINAL DA FASE 1
+                    if(config.nome === "FASE 1") {
+                        balaoInfo.style.display = "block";
+                    }
+
                     if (callback) callback();
                 } else { quadroAtual++; }
             }, 40); 
@@ -654,7 +703,7 @@
             } else if (nomeEtapa === "FASE 3") {
                 txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE";
             } else if (nomeEtapa === "RETORNO 1") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA";
+                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO AL CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA";
             } else if (nomeEtapa === "NEUTRO 3") {
                 txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO";
             } else if (nomeEtapa === "RETORNO 2") {
@@ -685,17 +734,22 @@
             });
         };
 
-        /* --- ATUALIZAÇÃO DO BOTÃO REINICIAR --- */
+        /* --- CLIQUE PARA FECHAR O BALÃO --- */
+        window.onclick = () => {
+            if (balaoInfo.style.display === "block") {
+                balaoInfo.style.display = "none";
+            }
+        };
+
         btnReiniciar.onclick = (e) => {
             e.stopPropagation();
             fecharModalAjuda();
             limparTimersConcluido();
+            balaoInfo.style.display = "none"; // Garante que o balão suma no reiniciar
             
-            // 1. Faz a tela de entrada reaparecer suavemente
             telaEntrada.style.visibility = "visible";
             telaEntrada.style.opacity = "1";
 
-            // 2. Reseta o estado completo do laboratório
             etapaAtual = 0;
             fiacaoConcluida = false;
             cicloAtivo = false; 
@@ -705,7 +759,6 @@
             document.getElementById('lampada1').style.display = "none";
             document.getElementById('lampada2').style.display = "none";
             
-            // Desliga os disjuntores e interruptor
             const chaves = [
                 { id: 'tecla-dg', pref: 'al_dg' }, 
                 { id: 'tecla-dr', pref: 'al_dr' }, 
@@ -720,7 +773,6 @@
             pontoA.classList.remove('verde');
             pontoB.classList.remove('verde');
             
-            // Prepara a primeira etapa em background
             iniciarEtapa();
         };
 
