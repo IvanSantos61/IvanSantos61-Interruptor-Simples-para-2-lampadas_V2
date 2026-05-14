@@ -4,152 +4,120 @@
     <meta charset="UTF-8">
     <title>Laboratório SMT Pro - FioCerto</title>
     <style>
-        /* Estilização Geral FioCerto */
-        body { 
-            background-color: #060b13; 
-            color: #ffd700; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            margin: 0;
-            overflow: hidden;
-        }
-
-        #projeto-container { 
-            position: relative; 
-            width: 1000px; 
-            height: 600px; 
-            background: #000; 
-            border: 3px solid #1f2937;
-            margin-top: 20px;
-        }
-
-        .camada-full { 
-            position: absolute; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            pointer-events: none; 
-        }
-
-        /* Balão NBR-5410 com Interrupção por Clique */
+        body { background-color: #060b13; color: #ffd700; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; }
+        #projeto-container { position: relative; width: 1000px; height: 600px; background: #000; border: 2px solid #1f2937; margin-top: 20px; }
+        .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+        
+        /* Balão NBR-5410 conforme sua solicitação */
         #balao-informativo {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 40%; left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(4, 10, 20, 0.98);
-            border: 2px solid #ffd700; /* Yellow Gold */
-            padding: 25px;
-            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #ffd700;
+            padding: 20px 40px;
+            border-radius: 15px;
             text-align: center;
-            z-index: 9999;
-            display: none; /* Inicia oculto */
+            z-index: 1000;
+            display: none; 
             cursor: pointer;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
         }
 
         .texto-norma {
             display: block;
-            color: #ff0000; /* Vermelho solicitado */
+            color: #ff0000; /* Caractere Vermelho solicitado */
             font-weight: bold;
-            margin-top: 12px;
-            font-size: 0.9em;
+            margin-top: 10px;
         }
 
-        /* Pontos de Interação */
-        .ponto { 
-            position: absolute; 
-            width: 26px; height: 26px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            z-index: 100; 
-            transform: translate(-50%, -50%); 
-            border: 2px solid #fff;
-        }
-        .fase { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
-        .verde { background: #00ff00 !important; box-shadow: 0 0 20px #00ff00 !important; }
-
-        #instrucao-topo {
-            margin-top: 20px;
-            font-size: 20px;
-            text-transform: uppercase;
-            color: #00f0ff;
-        }
+        .ponto { position: absolute; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); border: 2px solid #fff; }
+        .fase { background: #ff0000; }
+        .neutro { background: #0096ff; }
+        .verde { background: #00ff00 !important; box-shadow: 0 0 15px #00ff00; }
     </style>
 </head>
 <body>
 
-    <div id="instrucao-topo">Siga os pontos para instalar a FASE 1</div>
-
     <div id="projeto-container">
-        <!-- Imagem base do laboratório -->
-        <img src="ambiente.jpg" style="width:100%; height:100%; opacity: 0.7;">
-        
+        <img src="ambiente.jpg" style="width:100%; height:100%; opacity: 0.6;">
         <div id="camadas-fios"></div>
 
-        <!-- Balão Informativo -->
+        <!-- O Balão que só fecha no clique -->
         <div id="balao-informativo" onclick="fecharBalao()">
-            <div style="color: #fff; font-size: 20px; font-weight: bold;">
-                A fase pode ser de qualquer cor
-            </div>
-            <span class="texto-norma">
-                (Item 6.1.5.3.4 da NBR-5410)
-            </span>
-            <div style="font-size: 11px; color: #555; margin-top: 20px; text-transform: uppercase;">
-                [ Clique para fechar e continuar ]
-            </div>
+            <div style="color: #fff; font-size: 18px;">A fase pode ser de qualquer cor</div>
+            <span class="texto-norma">(Item 6.1.5.3.4 da NBR-5410)</span>
         </div>
 
-        <!-- Elementos de clique -->
-        <div id="pontoA" class="ponto fase" style="top: 38%; left: 27%;"></div>
-        <div id="pontoB" class="ponto fase" style="top: 79.3%; left: 40.5%; display: none;"></div>
+        <div id="pontoA" class="ponto"></div>
+        <div id="pontoB" class="ponto" style="display: none;"></div>
     </div>
 
     <script>
-        const containerFios = document.getElementById('camadas-fios');
-        const balao = document.getElementById('balao-informativo');
-        const pA = document.getElementById('pontoA');
-        const pB = document.getElementById('pontoB');
+        const etapas = [
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "fase", pA: {t:"38%", l:"27%"}, pB: {t:"79.3%", l:"40.5%"} },
+            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "neutro", pA: {t:"32.4%", l:"44.5%"}, pB: {t:"76.5%", l:"40%"} }
+        ];
 
-        // Logica de ativação dos pontos
-        pA.onclick = function() {
-            this.classList.add('verde');
-            pB.style.display = 'block';
-        };
+        let etapaAtual = 0;
 
-        pB.onclick = function() {
-            this.classList.add('verde');
-            animarFase1();
-        };
+        function carregarEtapa() {
+            const e = etapas[etapaAtual];
+            const pA = document.getElementById('pontoA');
+            const pB = document.getElementById('pontoB');
 
-        function animarFase1() {
-            const imgCabo = document.createElement('img');
-            imgCabo.className = "camada-full";
-            containerFios.appendChild(imgCabo);
+            pA.className = `ponto ${e.cor}`;
+            pA.style.top = e.pA.t;
+            pA.style.left = e.pA.l;
+            pA.style.display = "block";
+
+            pB.className = `ponto ${e.cor}`;
+            pB.style.top = e.pB.t;
+            pB.style.left = e.pB.l;
+            pB.style.display = "none";
+
+            pA.onclick = () => { pA.classList.add('verde'); pB.style.display = "block"; };
+            pB.onclick = () => { pB.classList.add('verde'); animar(); };
+        }
+
+        function animar() {
+            const e = etapas[etapaAtual];
+            const img = document.createElement('img');
+            img.className = "camada-full";
+            document.getElementById('camadas-fios').appendChild(img);
 
             let frame = 0;
-            const totalFrames = 24; // Conforme sua estrutura de pastas
-
-            const temporizador = setInterval(() => {
-                // Caminho da imagem conforme seu padrão de pastas
-                imgCabo.src = `FASE1/quadro${frame.toString().padStart(4, '0')}.png`;
-                
-                if (frame >= totalFrames) {
-                    clearInterval(temporizador);
-                    // EXIBE O BALÃO ASSIM QUE O ÚLTIMO FRAME CARREGA
-                    balao.style.display = 'block';
+            const loop = setInterval(() => {
+                img.src = `${e.pasta}/quadro${frame.toString().padStart(4, '0')}.png`;
+                if (frame >= e.max) {
+                    clearInterval(loop);
+                    // Regra do Balão para FASE 1
+                    if (e.nome === "FASE 1") {
+                        document.getElementById('balao-informativo').style.display = 'block';
+                    } else {
+                        proximaEtapa();
+                    }
                 }
                 frame++;
-            }, 45);
+            }, 40);
         }
 
         function fecharBalao() {
-            balao.style.display = 'none';
-            document.getElementById('instrucao-topo').innerText = "FASE 1 CONCLUÍDA. PROPRIA ETAPA: NEUTRO.";
-            // Aqui você dispararia a lógica para a próxima fiação
-            console.log("Usuário leu a norma e fechou o balão.");
+            document.getElementById('balao-informativo').style.display = 'none';
+            proximaEtapa();
         }
+
+        function proximaEtapa() {
+            etapaAtual++;
+            if (etapaAtual < etapas.length) {
+                carregarEtapa();
+            } else {
+                console.log("Fiação concluída.");
+            }
+        }
+
+        // Inicia o sistema
+        carregarEtapa();
     </script>
 </body>
 </html>
