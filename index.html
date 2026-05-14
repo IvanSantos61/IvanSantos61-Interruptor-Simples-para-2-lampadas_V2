@@ -18,13 +18,103 @@
             align-items: center;
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* Garante que nada transborde da tela do PC */
+            overflow: hidden;
+        }
+
+        /* --- TELA DE ENTRADA PADRÃO (CONFORME IMAGEM) --- */
+        #tela-entrada {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #060b13;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        /* Moldura Centralizada com Brilho Neon */
+        .moldura-entrada {
+            width: 75%;
+            max-width: 850px;
+            height: 65%;
+            max-height: 500px;
+            border: 2px solid #00f0ff;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .titulo-entrada {
+            color: #00f0ff;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            margin: 0 0 15px 0;
+        }
+
+        .subtitulo-entrada {
+            color: #00f0ff;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0 0 35px 0;
+        }
+
+        .linha-divisora {
+            width: 120px;
+            height: 1px;
+            background-color: rgba(0, 240, 255, 0.4);
+            margin-bottom: 40px;
+        }
+
+        .creditos-entrada {
+            color: #556270;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Link Piscante para Iniciar */
+        .btn-iniciar-lab {
+            color: #00a8b5;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            background: none;
+            border: none;
+            padding: 10px;
+            animation: piscarTexto 1.5s infinite ease-in-out;
+            transition: color 0.2s;
+        }
+
+        .btn-iniciar-lab:hover {
+            color: #00f0ff;
+        }
+
+        @keyframes piscarTexto {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
         }
 
         /* --- IDENTIFICAÇÃO DO SISTEMA --- */
         #titulo-sistema {
             color: #00f0ff;
-            font-size: 36px; /* Tamanho restaurado conforme o padrão da imagem */
+            font-size: 36px;
             font-weight: 900;
             letter-spacing: 2px;
             margin-top: 2.5vh;
@@ -34,7 +124,7 @@
             text-transform: uppercase;
         }
 
-        /* --- PAINEL DE FORA A FORA --- */
+        /* --- PAINEL DE INSTRUÇÃO / STATUS --- */
         #painel-status {
             width: 100%;
             max-width: 1200px;
@@ -51,35 +141,37 @@
         }
 
         #instrucao {
-            font-family: 'Arial Narrow', Arial, sans-serif;
-            font-stretch: condensed;
-            color: #ffd700;
-            font-size: 20px;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            font-size: 16px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             line-height: 1.4;
         }
 
-        /* Classes de status do painel */
+        /* Elementos dinâmicos do painel (Bolas de status) */
         .status-aceso {
-            background: #006400 !important;
-            color: #00ff00 !important;
-            padding: 8px 30px;
-            border-radius: 20px;
+            background: #006400;
+            color: #00ff00;
+            padding: 10px 40px;
+            border-radius: 30px;
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            font-size: 16px;
+            font-weight: 900;
         }
 
         .status-apagado {
-            background: #b80000 !important;
-            color: #ffffff !important;
-            padding: 8px 30px;
-            border-radius: 20px;
+            background: #b80000;
+            color: #ffffff;
+            padding: 10px 40px;
+            border-radius: 30px;
             box-shadow: 0 0 15px rgba(184, 0, 0, 0.4);
+            font-size: 16px;
+            font-weight: 900;
         }
 
         .txt-laranja { color: #ff9d00; font-weight: bold; }
-        .txt-verde { color: #00ff00; font-weight: bold; }
         .txt-vermelho { color: #ff3333; font-weight: bold; }
 
         /* --- ÁREA DO PROJETO --- */
@@ -128,42 +220,42 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
 
-        /* --- CONTROLES --- */
+        /* --- CONTROLES MUDADOS PARA DENTRO DO CONTEINER DA IMAGEM --- */
         .btn-controle {
             position: absolute;
             border: none;
-            padding: 8px 30px;
-            font-size: 15px;
-            font-weight: 900;
+            padding: 6px 22px;
+            font-size: 13px;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 20px;
+            letter-spacing: 0.5px;
+            border-radius: 15px;
             cursor: pointer;
             z-index: 110;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
             transition: background 0.2s, transform 0.1s;
         }
 
-        #btn-ajuda {
-            top: 83%; 
-            left: 14.5%;
-            background: #004f77;
-            color: #00f0ff;
-            border: 1px solid #00f0ff;
-        }
-        #btn-ajuda:hover { background: #007bb3; }
-
         #btn-reiniciar {
-            top: 92%;
-            left: 13%;
+            bottom: 25px;
+            left: 25px;
             background: #b80000;
             color: #ffffff;
         }
         #btn-reiniciar:hover { background: #d60000; }
+
+        #btn-ajuda {
+            bottom: 25px;
+            left: 140px;
+            background: #111b24;
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+        }
+        #btn-ajuda:hover { background: #1a2a38; }
         
         .btn-controle:active { transform: scale(0.96); }
 
-        /* --- PAINEL INTEGRADO DE CONCLUÍDO (PLACA METÁLICA) --- */
+        /* --- PLACA METÁLICA DE CONCLUÍDO ESTILIZADA --- */
         #placa-concluido {
             position: absolute;
             top: 50%; left: 50%;
@@ -194,10 +286,9 @@
             gap: 15px;
         }
 
-        /* --- PARAFUSOS PHILIPS AJUSTADOS --- */
         .parafuso {
             position: absolute;
-            width: 24px;  /* Tamanho proporcional e realista */
+            width: 24px;
             height: 24px;
             background: #4e5761;
             border: 2px solid #1c2229;
@@ -208,28 +299,17 @@
             justify-content: center;
         }
         
-        /* Construção da fenda em cruz (Philips) usando CSS puro */
         .parafuso::before, .parafuso::after {
             content: '';
             position: absolute;
-            background: #1c2229; /* Cor profunda da fenda */
+            background: #1c2229;
             border-radius: 1px;
-            box-shadow: 0px 1px 1px rgba(255,255,255,0.15);
         }
-        /* Linha Horizontal da fenda */
-        .parafuso::before {
-            width: 14px;
-            height: 3px;
-        }
-        /* Linha Vertical da fenda */
-        .parafuso::after {
-            width: 3px;
-            height: 14px;
-        }
+        .parafuso::before { width: 14px; height: 3px; }
+        .parafuso::after { width: 3px; height: 14px; }
 
-        /* Posicionamento nas quinas internas da placa */
         .p-tl { top: 12px; left: 12px; transform: rotate(15deg); }
-        .p-tr { top: 12px; right: 12px; transform: rotate(110deg); } /* Rotações variadas para realismo */
+        .p-tr { top: 12px; right: 12px; transform: rotate(110deg); }
         .p-bl { bottom: 12px; left: 12px; transform: rotate(45deg); }
         .p-br { bottom: 12px; right: 12px; transform: rotate(75deg); }
 
@@ -298,7 +378,6 @@
         }
         .btn-fechar-modal:hover { background: #333; color: #fff; }
 
-        /* TELA DE EXIBIÇÃO DA GRAVURA DE SUPORTE */
         #tela-imagem-ajuda {
             width: 100%;
             display: none;
@@ -336,6 +415,16 @@
 </head>
 <body>
 
+    <div id="tela-entrada">
+        <div class="moldura-entrada">
+            <h1 class="titulo-entrada">Interruptor Simples para 1 Lâmpada</h1>
+            <h2 class="subtitulo-entrada">Circuito Monofásico - 127V</h2>
+            <div class="linha-divisora"></div>
+            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - ConectaeadPLUS - 2026</div>
+            <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
+        </div>
+    </div>
+
     <div id="titulo-sistema">Laboratório SMT Pro</div>
 
     <div id="painel-status">
@@ -364,8 +453,8 @@
             <div id="texto-concluido">✓ Concluído</div>
         </div>
 
-        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
+        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
@@ -400,17 +489,22 @@
         const btnAjuda = document.getElementById('btn-ajuda');
         const modalAjuda = document.getElementById('modal-ajuda');
         const placaConcluido = document.getElementById('placa-concluido');
+        const telaEntrada = document.getElementById('tela-entrada');
+
+        // Função chamada no clique do link piscante
+        function iniciarLaboratorio() {
+            telaEntrada.style.opacity = "0";
+            telaEntrada.style.visibility = "hidden";
+        }
 
         const msgsSaida = [
             "CLIQUE NA REFERÊNCIA DO <span class='txt-laranja'>PONTO DE SAÍDA</span> DO CABO ATUAL.",
-            "INICIE A CONEXÃO CLICANDO NO <span class='txt-laranja'>BORNE DE ORIGEM</span> DESTACADO.",
-            "TOQUE NO PONTO INDICADO PARA <span class='txt-laranja'>INICIAR A PASSAGEM</span> DO CONDUTOR."
+            "INICIE A CONEXÃO CLICANDO NO <span class='txt-laranja'>BORNE DE ORIGEM</span> DESTACADO."
         ];
 
         const msgsDestino = [
-            "AGORA SELECIONE A REFERÊNCIA DO <span class='txt-verde'>PONTO DE DESTINO</span>.",
-            "LEVE O CABO CONECTADO ATÉ O <span class='txt-verde'>BORNE DE CHEGADA</span>.",
-            "CLIQUE NO PONTO ILUMINADO PARA <span class='txt-verde'>FINALIZAR O PERCURSO</span>."
+            "AGORA SELECIONE A REFERÊNCIA DO <span class='txt-laranja'>PONTO DE DESTINO</span>.",
+            "LEVE O CABO CONECTADO ATÉ O <span class='txt-laranja'>BORNE DE CHEGADA</span>."
         ];
 
         const etapas = [
@@ -483,11 +577,9 @@
                     txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
                     limparTimersConcluido();
 
-                    // 2 segundos para surgir
                     timerPlacaSurgir = setTimeout(() => {
                         placaConcluido.style.display = "flex";
                         
-                        // 3 segundos para sumir
                         timerPlacaSumir = setTimeout(() => {
                             placaConcluido.style.display = "none";
                         }, 3000);
@@ -525,28 +617,25 @@
             const config = etapas[etapaAtual];
 
             if (config.nome === "FASE 1") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> <span class='txt-laranja'>CONECTE A FASE.</span> CLIQUE NA REFERÊNCIA DO DR.";
             } else if (config.nome === "NEUTRO 1") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> <span class='txt-laranja'>CONECTE O NEUTRO.</span> CLIQUE NA REFERÊNCIA DO BARRAMENTO.";
             } else if (config.nome === "FASE 2") {
-                txtInstrucao.innerHTML = "REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NO CONECTOR DE EMENDA.";
             } else if (config.nome === "NEUTRO 2") {
-                txtInstrucao.innerHTML = "REDE: LEVE NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> LEVE O NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NO CONECTOR DE EMENDA.";
             } else if (config.nome === "FASE 3") {
-                txtInstrucao.innerHTML = "REDE: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> LEVE A FASE AO INTERRUPTOR. CLIQUE NO CONECTOR DE EMENDA.";
             } else if (config.nome === "RETORNO 1") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NO INTERRUPTOR.";
             } else if (config.nome === "NEUTRO 3") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> LEVE O NEUTRO À LÂMPADA 1. CLIQUE NO CONECTOR DE EMENDA.";
             } else if (config.nome === "RETORNO 2") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO À LÂMPADA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> LEVE O RETORNO À LÂMPADA. CLIQUE NO CONECTOR DE EMENDA.";
             } else if (config.nome === "RETORNO 3") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O RETORNO PARA A LÂMPADA 2";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NA LÂMPADA 1 PARA LEVAR O RETORNO PARA A LÂMPADA 2.";
             } else if (config.nome === "NEUTRO 4") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2";
-            } else {
-                const fraseAleatoria = msgsSaida[Math.floor(Math.random() * msgsSaida.length)];
-                txtInstrucao.innerHTML = `${config.nome} DETECTADO! ${fraseAleatoria}`;
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NA LÂMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2.";
             }
 
             pontoA.className = `ponto-clique ${config.cor}`;
@@ -587,28 +676,25 @@
             const nomeEtapa = etapas[etapaAtual].nome;
 
             if (nomeEtapa === "FASE 1") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> CLIQUE NA CAIXA DE PASSAGEM PARA LEVAR A FASE.";
             } else if (nomeEtapa === "NEUTRO 1") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> CLIQUE NA CAIXA DE PASSAGEM PARA LEVAR O NEUTRO.";
             } else if (nomeEtapa === "FASE 2") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR A FASE";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> CLIQUE NA PRÓXIMA CAIXA PARA PASSAR A FASE.";
             } else if (nomeEtapa === "NEUTRO 2") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> CLIQUE NA PRÓXIMA CAIXA PARA PASSAR O NEUTRO.";
             } else if (nomeEtapa === "FASE 3") {
-                txtInstrucao.innerHTML = "REDE: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>REDE:</span> CLIQUE NO INTERRUPTOR PARA CONECTAR A FASE.";
             } else if (nomeEtapa === "RETORNO 1") {
-                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NO CONECTOR DA CAIXA PARA LEVAR O RETORNO.";
             } else if (nomeEtapa === "NEUTRO 3") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NA LÂMPADA 1 PARA CONECTAR O NEUTRO.";
             } else if (nomeEtapa === "RETORNO 2") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O RETORNO";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NA LÂMPADA 1 PARA CONECTAR O RETORNO.";
             } else if (nomeEtapa === "RETORNO 3") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O RETORNO";
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NA LÂMPADA 2 PARA FINALIZAR O RETORNO.";
             } else if (nomeEtapa === "NEUTRO 4") {
-                txtInstrucao.innerHTML = "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O NEUTRO";
-            } else {
-                const fraseAleatoria = msgsDestino[Math.floor(Math.random() * msgsDestino.length)];
-                txtInstrucao.innerHTML = `${nomeEtapa} EM CURSO: ${fraseAleatoria}`;
+                txtInstrucao.innerHTML = "<span class='txt-vermelho'>CIRCUITO:</span> CLIQUE NA LÂMPADA 2 PARA FINALIZAR O NEUTRO.";
             }
             pontoB.style.display = "block";
         };
