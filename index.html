@@ -51,19 +51,14 @@
         }
 
         #instrucao {
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-stretch: condensed;
             color: #ffd700;
-            font-size: 19px;
+            font-size: 20px; /* Aumentado levemente para compensar a compressão da fonte */
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             line-height: 1.4;
-        }
-
-        /* Classe de teste alterada para Arial Narrow */
-        .font-teste {
-            font-family: 'Arial Narrow', Arial, sans-serif;
-            font-stretch: condensed; /* Garante a compressão em navegadores compatíveis */
-            text-transform: uppercase;
         }
 
         .txt-laranja { color: #ff9d00; font-weight: bold; }
@@ -416,8 +411,7 @@
             } else if (config.nome === "FASE 3") {
                 txtInstrucao.innerHTML = "REDE: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
             } else if (config.nome === "RETORNO 1") {
-                // APLICAÇÃO DA FONTE ARIAL NARROW APENAS NESTE TEXTO DE TESTE
-                txtInstrucao.innerHTML = "<span class='font-teste'>CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.</span>";
+                txtInstrucao.innerHTML = "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.";
             } else if (config.nome === "NEUTRO 3") {
                 txtInstrucao.innerHTML = "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA";
             } else if (config.nome === "RETORNO 2") {
