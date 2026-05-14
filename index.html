@@ -21,11 +21,13 @@
             overflow: hidden;
         }
 
-        /* --- TELA DE ENTRADA --- */
+        /* --- TELA DE ENTRADA (SPLASH SCREEN) --- */
         #tela-entrada {
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background-color: #060b13;
             z-index: 1000;
             display: flex;
@@ -35,23 +37,65 @@
         }
 
         .moldura-entrada {
-            width: 80%; max-width: 900px;
-            height: 70%; max-height: 450px;
+            width: 80%;
+            max-width: 900px;
+            height: 70%;
+            max-height: 450px;
             border: 3px solid #00f0ff;
             border-radius: 25px;
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 20px; text-align: center;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .titulo-entrada {
+            color: #00f0ff;
+            font-size: 52px;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+            margin: 0 0 25px 0;
+        }
+
+        .subtitulo-entrada {
+            color: #00f0ff;
+            font-size: 24px;
+            font-weight: 450;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0 0 50px 0;
+        }
+
+        .creditos-entrada {
+            color: #445566;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 50px;
         }
 
         .btn-iniciar-lab {
-            color: #00f0ff; font-size: 14px;
-            cursor: pointer; background: none; border: none;
+            color: #00f0ff;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             animation: piscarTexto 1.2s infinite ease-in-out;
         }
 
-        @keyframes piscarTexto { 0%, 100% { opacity: 0.1; } 50% { opacity: 1; } }
+        @keyframes piscarTexto {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 1; }
+        }
 
         /* --- BALÕES INFORMATIVOS NBR-5410 --- */
         .balao-informativo {
@@ -67,7 +111,7 @@
             z-index: 120;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             pointer-events: none;
-            opacity: 0; /* Começam invisíveis */
+            opacity: 0;
             display: none;
             transition: opacity 0.4s ease;
         }
@@ -82,71 +126,131 @@
             margin-top: 5px;
         }
 
-        /* --- UI SISTEMA --- */
+        /* --- UI PRINCIPAL --- */
         #titulo-sistema {
-            color: #00f0ff; font-size: 36px; font-weight: 900;
-            margin-top: 2.5vh; text-transform: uppercase;
+            color: #00f0ff;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-top: 2.5vh;
+            margin-bottom: 1vh;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+            text-transform: uppercase;
         }
 
         #painel-status {
-            width: 100%; max-width: 1200px;
-            margin: 1vh auto 2vh auto; padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 1vh auto 2vh auto;
+            padding: 20px 40px;
             background: rgba(4, 10, 20, 0.9);
-            border: 1px solid #16222f; border-radius: 12px;
-            text-align: center; min-height: 80px;
-            display: flex; align-items: center; justify-content: center;
+            border: 1px solid #16222f;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+            position: relative;
         }
 
-        #instrucao { color: #ffd700; font-size: 20px; font-weight: bold; text-transform: uppercase; }
+        #instrucao {
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
 
-        .status-aceso { background: #006400 !important; color: #00ff00 !important; padding: 8px 30px; border-radius: 20px; }
-        .txt-vermelho { color: #ff3333; font-weight: bold; }
-
-        /* --- PROJETO --- */
         #projeto-container {
             position: relative;
             display: inline-block;
+            margin-bottom: 2vh;
             border: 2px solid #1f2937;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
             max-height: 70vh;
         }
 
-        .imagem-base { max-width: 95vw; max-height: 70vh; display: block; border-radius: 8px; }
-        .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+        .imagem-base {
+            max-width: 95vw;
+            max-height: 70vh;
+            display: block;
+            object-fit: contain;
+            border-radius: 8px;
+        }
 
-        .tecla-movel { position: absolute; z-index: 20; cursor: pointer; }
+        .camada-full {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* --- COMPONENTES ORIGINAIS --- */
+        .tecla-movel, .carga-movel, .acessorio-movel { position: absolute; z-index: 20; user-select: none; }
+        .tecla-movel { cursor: pointer; padding: 10px; margin: -10px; }
         #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
         #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
         #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; z-index: 30; }
 
-        #conector-neutro { position: absolute; top: 75.2%; left: 39.5%; width: 9%; display: none; z-index: 15; }
-        #conector-neutro-3vias { position: absolute; top: 20%; left: 51.4%; width: 9%; display: none; z-index: 16; transform: rotate(90deg); }
+        #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; display: none; z-index: 15; }
+        #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; display: none; z-index: 16; transform: rotate(90deg); }
 
-        #lampada1, #lampada2 { position: absolute; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
+        #lampada1, #lampada2 { width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); pointer-events: none; }
         #lampada1 { top: 4.5%; left: 68.8%; }
         #lampada2 { top: 43.8%; left: 68.8%; }
 
-        .btn-controle { position: absolute; padding: 8px 30px; font-weight: 900; border-radius: 20px; cursor: pointer; z-index: 110; border: none; }
+        .btn-controle {
+            position: absolute;
+            border: none;
+            padding: 8px 30px;
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 110;
+        }
+        #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
 
         .ponto-clique {
-            position: absolute; width: 1.8%; aspect-ratio: 1/1;
-            border: 0.2vw solid #fff; border-radius: 50%;
-            cursor: pointer; z-index: 100; transform: translate(-50%, -50%);
+            position: absolute;
+            width: 1.8%; aspect-ratio: 1 / 1;
+            border: 0.2vw solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            transform: translate(-50%, -50%);
             display: none;
         }
         .ponto-fase { background: rgba(255, 0, 0, 0.7); }
         .ponto-neutro { background: rgba(0, 150, 255, 0.7); }
         .ponto-retorno { background: rgba(255, 165, 0, 0.7); }
         .ponto-clique.verde { background: #00ff00 !important; }
+
+        /* --- MODAL AJUDA --- */
+        #modal-ajuda {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8); z-index: 2000;
+            display: none; align-items: center; justify-content: center;
+        }
+        .conteudo-ajuda {
+            background: #111; border: 2px solid #00f0ff; padding: 30px;
+            border-radius: 15px; max-width: 500px; text-align: center;
+        }
     </style>
 </head>
 <body>
 
     <div id="tela-entrada">
         <div class="moldura-entrada">
-            <h1 style="color:#00f0ff; font-size:42px;">INTERRUPTOR SIMPLES PARA 2 LÂMPADAS</h1>
-            <h2 style="color:#00f0ff; letter-spacing:5px;">CIRCUITO MONOFÁSICO - 127V</h2>
-            <div style="color:#445566; margin: 30px 0;">© Ivan Santos - FioCerto 2026</div>
+            <h1 class="titulo-entrada">INTERRUPTOR SIMPLES PARA 2 LÂMPADAS</h1>
+            <h2 class="subtitulo-entrada">CIRCUITO MONOFÁSICO - 127V</h2>
+            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - FioCerto 2026</div>
             <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
         </div>
     </div>
@@ -167,24 +271,33 @@
         </div>
 
         <div id="balao-cores" class="balao-informativo">
-            A fase pode ser de qualquer cor, exceto azul claro ou verde/amarelo.
-            <span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span>
+            A fase pode ser de qualquer cor <span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span>
         </div>
 
-        <img src="conector2vias.png" id="conector-neutro">
-        <img src="conector3vias.png" id="conector-neutro-3vias">
+        <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
+        <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
         
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <img src="lamp_on.png" id="lampada1">
-        <img src="lamp_on.png" id="lampada2">
+        <img src="lamp_on.png" id="lampada1" class="carga-movel">
+        <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
+        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
+    </div>
+
+    <div id="modal-ajuda">
+        <div class="conteudo-ajuda">
+            <h2 style="color: #00f0ff;">Como Jogar</h2>
+            <p>1. Conecte os pontos destacados para fazer a fiação.</p>
+            <p>2. Ligue os disjuntores e o interruptor após concluir.</p>
+            <button onclick="fecharModalAjuda()" style="padding: 10px 20px; cursor: pointer;">Fechar</button>
+        </div>
     </div>
 
     <script>
@@ -193,22 +306,13 @@
         const pontoB = document.getElementById('ponto-B');
         const balaoSecao = document.getElementById('balao-secao');
         const balaoCores = document.getElementById('balao-cores');
+        const conectorN2 = document.getElementById('conector-neutro');
+        const conectorN3 = document.getElementById('conector-neutro-3vias');
         const txtInstrucao = document.getElementById('instrucao');
+        const btnReiniciar = document.getElementById('btn-reiniciar');
         const telaEntrada = document.getElementById('tela-entrada');
 
-        function iniciarLaboratorio() {
-            telaEntrada.style.opacity = "0";
-            setTimeout(() => { telaEntrada.style.visibility = "hidden"; }, 500);
-        }
-
-        // Lógica para esconder balões no primeiro clique
-        document.getElementById('projeto-container').addEventListener('mousedown', function() {
-            [balaoSecao, balaoCores].forEach(b => {
-                b.style.opacity = "0";
-                setTimeout(() => { b.style.display = "none"; }, 400);
-            });
-        }, { once: true });
-
+        // ETAPAS ORIGINAIS
         const etapas = [
             { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" } },
             { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" } },
@@ -225,6 +329,22 @@
         let etapaAtual = 0;
         let fiacaoConcluida = false;
 
+        function iniciarLaboratorio() {
+            telaEntrada.style.opacity = "0";
+            setTimeout(() => { telaEntrada.style.visibility = "hidden"; }, 500);
+            iniciarEtapa();
+        }
+
+        // FECHAR BALÕES NO PRIMEIRO CLIQUE
+        document.getElementById('projeto-container').addEventListener('mousedown', function() {
+            [balaoSecao, balaoCores].forEach(b => {
+                if(b.style.display === "block") {
+                    b.style.opacity = "0";
+                    setTimeout(() => { b.style.display = "none"; }, 400);
+                }
+            });
+        });
+
         function verificarCircuito() {
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
@@ -233,11 +353,11 @@
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
-                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
+                txtInstrucao.innerHTML = "LÂMPADAS ACESAS";
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
-                if (fiacaoConcluida) txtInstrucao.innerHTML = "FIAÇÃO OK! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR PARA TESTAR.</span>";
+                if (fiacaoConcluida) txtInstrucao.innerHTML = "FIAÇÃO OK! LIGUE TUDO.";
             }
         }
 
@@ -269,7 +389,6 @@
             pontoA.style.top = config.posA.top;
             pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
-            pontoB.className = `ponto-clique ${config.cor}`;
             pontoB.style.top = config.posB.top;
             pontoB.style.left = config.posB.left;
             pontoB.style.display = "none";
@@ -295,7 +414,7 @@
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
-                    // Lógica dos Balões após FASE 1
+                    // MOSTRAR BALÕES APÓS FASE 1
                     if (config.nome === "FASE 1") {
                         [balaoSecao, balaoCores].forEach(b => {
                             b.style.display = "block";
@@ -303,8 +422,8 @@
                         });
                     }
 
-                    if(config.nome === "NEUTRO 1") document.getElementById('conector-neutro').style.display = "block";
-                    if(config.nome === "NEUTRO 2") document.getElementById('conector-neutro-3vias').style.display = "block";
+                    if(config.nome === "NEUTRO 1") conectorN2.style.display = "block";
+                    if(config.nome === "NEUTRO 2") conectorN3.style.display = "block";
                     
                     setTimeout(() => {
                         pontoA.style.display = "none";
@@ -318,9 +437,10 @@
             }, 40);
         };
 
-        document.getElementById('btn-reiniciar').onclick = () => location.reload();
-
-        iniciarEtapa();
+        document.getElementById('btn-ajuda').onclick = () => document.getElementById('modal-ajuda').style.display = "flex";
+        function fecharModalAjuda() { document.getElementById('modal-ajuda').style.display = "none"; }
+        
+        btnReiniciar.onclick = () => location.reload();
     </script>
 </body>
 </html>
