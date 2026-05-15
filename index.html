@@ -95,7 +95,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES INFORMATIVOS (COORDENADAS CORRIGIDAS) --- */
+        /* --- BALÕES INFORMATIVOS (COORDENADAS ORIGINAIS RESTAURADAS) --- */
         .balao-informativo {
             position: absolute;
             background: rgba(4, 10, 20, 0.95);
@@ -112,14 +112,14 @@
             line-height: 1.4;
         }
 
-        #balao-secao { width: 230px; top: 42%; left: 5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-        #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-        #balao-conector { width: 210px; top: 14%; left: 34%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
-        #balao-retorno-cor { width: 220px; top: 40%; left: 44.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
-        #balao-retorno-comum { width: 200px; top: 15%; left: 69.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
-        #balao-cores { width: 230px; top: 68%; left: 5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
-        #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
-        #balao-neutro-comum { width: 180px; top: 12%; left: 73%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-secao { width: 230px; top: 40%; left: 5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-fase-norma { width: 210px; top: 38%; left: 46%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-conector { width: 210px; top: 12%; left: 32%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-retorno-cor { width: 220px; top: 38%; left: 42.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
+        #balao-retorno-comum { width: 200px; top: 13%; left: 67.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-cores { width: 230px; top: 65%; left: 5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        #balao-neutro-norma { width: 260px; top: 32%; left: 21%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
+        #balao-neutro-comum { width: 180px; top: 10%; left: 71%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
 
         .balao-informativo:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -233,7 +233,6 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <!-- BALÕES INFORMATIVOS -->
         <div id="balao-secao" class="balao-informativo">A seção mínima dos fios de iluminação é 1,5mm²<span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span></div>
         <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
         <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
