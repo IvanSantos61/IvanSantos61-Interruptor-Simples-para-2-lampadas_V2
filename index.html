@@ -208,7 +208,6 @@
         .ponto-clique.verde { background: #00ff00 !important; }
 
         .status-aceso { background: #006400 !important; color: #00ff00 !important; padding: 8px 30px; border-radius: 20px; }
-        .status-apagado { background: #b80000 !important; color: #ffffff !important; padding: 8px 30px; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -270,7 +269,6 @@
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
-        let cicloAtivo = false;
 
         const baloesIds = ['balao-secao', 'balao-cores', 'balao-neutro-norma', 'balao-fase-norma', 'balao-conector', 'balao-retorno-cor', 'balao-neutro-comum', 'balao-retorno-comum'];
 
@@ -378,6 +376,20 @@
             });
         }
 
+        document.getElementById('btn-ajuda').onclick = (e) => {
+            e.stopPropagation();
+            if (fiacaoConcluida) {
+                alert("Fiação OK! Agora acione o DG, DR e o Interruptor para ligar as lâmpadas.");
+            } else {
+                pontoA.style.boxShadow = "0 0 30px #fff";
+                if(pontoB.style.display === "block") pontoB.style.boxShadow = "0 0 30px #fff";
+                setTimeout(() => {
+                    pontoA.style.boxShadow = "none";
+                    pontoB.style.boxShadow = "none";
+                }, 1000);
+            }
+        };
+
         function verificarCircuito() {
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
@@ -387,7 +399,6 @@
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
-                cicloAtivo = true;
                 placaConcluido.style.display = "flex";
             } else {
                 document.getElementById('lampada1').style.display = "none";
