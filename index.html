@@ -111,22 +111,15 @@
             line-height: 1.4;
         }
 
-        /* Balão com Fundo Vermelho (Destaque) */
-        .balao-alerta {
-            background: rgba(184, 0, 0, 0.95) !important;
-            border: 2px solid #ff3333 !important;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4) !important;
-        }
-
         /* Definição de Larguras e Posições Individuais */
         #balao-secao { width: 230px; top: 42%; left: 5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 47%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-conector { width: 210px; top: 14%; left: 34%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-retorno-cor { width: 220px; top: 40%; left: 44.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
-        #balao-retorno-comum { width: 240px; top: 15%; left: 65.4%; }
+        #balao-retorno-comum { width: 240px; top: 15%; left: 65.4%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
         #balao-cores { width: 230px; top: 68%; left: 5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
-        #balao-neutro-comum { width: 240px; top: 12%; left: 68%; }
+        #balao-neutro-comum { width: 240px; top: 12%; left: 68%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
 
         .balao-informativo:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -134,19 +127,15 @@
         }
         
         #balao-secao:after, #balao-fase-norma:after, #balao-conector:after { border-left: 10px solid #ffd700; }
-        #balao-retorno-cor:after { border-left: 10px solid #ffa500; }
-        #balao-retorno-comum:after, #balao-neutro-comum:after { border-left: 10px solid #ff3333; }
+        #balao-retorno-cor:after, #balao-retorno-comum:after { border-left: 10px solid #ffa500; }
         #balao-cores:after { border-left: 10px solid #00f0ff; }
-        #balao-neutro-norma:after { border-left: 10px solid #0096ff; }
+        #balao-neutro-norma:after, #balao-neutro-comum:after { border-left: 10px solid #0096ff; }
 
         .balao-informativo:before {
             content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
             border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 8px solid rgba(4, 10, 20, 0.95);
             z-index: 1;
         }
-
-        /* Ajuste da cor interna da seta para balões vermelhos */
-        .balao-alerta:before { border-left-color: rgba(184, 0, 0, 0.95) !important; }
 
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
 
@@ -169,6 +158,7 @@
             letter-spacing: 1.5px; line-height: 1.4;
         }
 
+        /* Cores solicitadas para as tags */
         .tag-circuito { color: #ff3333; font-weight: 900; }
         .tag-rede { color: #00ff00; font-weight: 900; }
 
@@ -248,9 +238,8 @@
         <div id="balao-fase-norma" class="balao-informativo">O interruptor deve seccionar o condutor vivo (Fase)<span class="txt-norma-vermelho">(Item 6.3.7.2.1 da NBR-5410)</span></div>
         <div id="balao-conector" class="balao-informativo">Conectores de emenda garantem conexões firmes e energia sem interrupções</div>
         <div id="balao-retorno-cor" class="balao-informativo">O retorno também pode ser de qualquer cor <span class="txt-norma-vermelho">(continuidade da fase NBR-5410)</span></div>
-        
-        <div id="balao-neutro-comum" class="balao-informativo balao-alerta">O Neutro será comum às duas lâmpadas</div>
-        <div id="balao-retorno-comum" class="balao-informativo balao-alerta">O Retorno será comum às duas lâmpadas</div>
+        <div id="balao-neutro-comum" class="balao-informativo">O Neutro será comum às duas lâmpadas</div>
+        <div id="balao-retorno-comum" class="balao-informativo">O Retorno será comum às duas lâmpadas</div>
 
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
@@ -317,6 +306,7 @@
             setTimeout(() => { telaEntrada.style.visibility = "hidden"; iniciarEtapa(); }, 500);
         }
 
+        // Nova função para formatar o texto das instruções com cores
         function formatarTextoInstrucao(texto) {
             return texto
                 .replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>')
@@ -345,7 +335,7 @@
         }
 
         const etapas = [
-            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" }, msgA: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE" },
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" }, msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE" },
             { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" }, msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO" },
             { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "56%" }, msgA: "REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR A FASE" },
             { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76.8%", left: "49%" }, posB: { top: "31%", left: "54.5%" }, msgA: "REDE: LEVE NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO" },
@@ -402,7 +392,10 @@
         function iniciarEtapa() {
             if (etapaAtual >= etapas.length) { fiacaoConcluida = true; verificarCircuito(); return; }
             const config = etapas[etapaAtual];
+            
+            // Aplicando a formatação de cores aqui
             txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
+            
             pontoA.className = "ponto-clique " + config.cor;
             pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
@@ -414,6 +407,7 @@
         pontoA.onclick = (e) => {
             e.stopPropagation();
             pontoA.classList.add('verde');
+            // Aplicando a formatação de cores aqui também
             txtInstrucao.innerHTML = formatarTextoInstrucao(etapas[etapaAtual].msgB);
             pontoB.style.display = "block";
         };
@@ -453,10 +447,8 @@
         function mostrarBalao(ids) {
             ids.forEach(id => {
                 const b = document.getElementById(id);
-                if(b) {
-                    b.style.display = "block";
-                    setTimeout(() => { b.style.opacity = "1"; }, 50);
-                }
+                b.style.display = "block";
+                setTimeout(() => { b.style.opacity = "1"; }, 50);
             });
         }
 
