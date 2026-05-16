@@ -106,7 +106,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES INFORMATIVOS --- */
+        /* --- BALÕES INFORMATIVOS ORIGINAIS EM CSS --- */
         .balao-informativo {
             position: absolute;
             background: rgba(4, 10, 20, 0.95);
@@ -306,7 +306,7 @@
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnico</h3>
+                <h3>Ajuda Técnica</h3>
                 <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
                 <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
                 <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas4.png')">3. Emendas e conexões (Caixa 01)</button>
@@ -325,7 +325,7 @@
     </div>
 
     <script>
-        // --- INSTÂNCIAS DE ÁUDIO ---
+        // --- INSTÂNCIAS DE ÁUDIO MANTIDAS ---
         const somDisjuntor = new Audio('disj.mp3');
         const somInterruptor = new Audio('int.mp3');
         const somConexao = new Audio('conexao.mp3');
