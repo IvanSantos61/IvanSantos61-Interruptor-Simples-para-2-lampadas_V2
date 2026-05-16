@@ -106,7 +106,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES INFORMATIVOS ORIGINAIS DA NBR 5410 --- */
+        /* --- BALÕES INFORMATIVOS --- */
         .balao-informativo {
             position: absolute;
             background: rgba(4, 10, 20, 0.95);
@@ -207,40 +207,13 @@
         .item-ajuda { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #162e3d; color: #fff; padding: 12px; margin-bottom: 10px; cursor: pointer; text-align: left; }
         .btn-fechar-modal { background: #222; color: #aaa; border: 1px solid #444; padding: 10px 40px; cursor: pointer; margin-top: 10px; }
 
-        /* --- PLACA CONCLUÍDO COM OS PARAFUSOS CSS --- */
         #placa-concluido {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 60%; height: 38%; background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
             border: 3px solid #111; border-radius: 10px; z-index: 150;
             display: none; align-items: center; justify-content: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
-        #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); z-index: 2; }
-
-        /* Parafusos metálicos adicionados nos cantos */
-        .parafuso {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle at 4px 4px, #a1a1a1, #555555 70%, #222);
-            border-radius: 50%;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.6), inset -1px -1px 2px rgba(0,0,0,0.4);
-            z-index: 5;
-        }
-        .parafuso::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 2px;
-            width: 10px;
-            height: 2px;
-            background: #222;
-            box-shadow: 0 1px 1px rgba(255,255,255,0.2);
-        }
-        .p-tl { top: 12px; left: 12px; }
-        .p-tr { top: 12px; right: 12px; }
-        .p-bl { bottom: 12px; left: 12px; }
-        .p-br { bottom: 12px; right: 12px; }
+        #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); }
 
         .ponto-clique { position: absolute; width: 1.8%; aspect-ratio: 1 / 1; border: 0.2vw solid #fff; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); display: none; }
         .ponto-fase { background: rgba(255, 0, 0, 0.7); }
@@ -272,6 +245,7 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
+        <!-- BALÕES INFORMATIVOS -->
         <div id="balao-secao" class="balao-informativo">A seção mínima dos fios de iluminação é 1,5mm²<span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span></div>
         <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
         <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
@@ -291,13 +265,7 @@
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
-        <div id="placa-concluido">
-            <div class="parafuso p-tl"></div>
-            <div class="parafuso p-tr"></div>
-            <div class="parafuso p-bl"></div>
-            <div class="parafuso p-br"></div>
-            <div id="texto-concluido">✓ Concluído</div>
-        </div>
+        <div id="placa-concluido"><div id="texto-concluido">✓ Concluído</div></div>
 
         <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
@@ -323,6 +291,7 @@
     </div>
 
     <script>
+        // --- INSTÂNCIAS DE ÁUDIO ---
         const somDisjuntor = new Audio('disj.mp3');
         const somInterruptor = new Audio('int.mp3');
         const somConexao = new Audio('conexao.mp3');
@@ -363,7 +332,6 @@
                 .replace(/REDE:/g, '<span class="tag-rede">REDE:</span>');
         }
 
-        // FECHAMENTO DOS BALÕES COM CLIQUE NA TELA INTEIRA (PROJETO)
         document.getElementById('projeto-container').addEventListener('mousedown', () => {
             baloes.forEach(b => {
                 if(b.style.display === "block") {
@@ -433,6 +401,7 @@
                 el.src = prefixo + "_" + novoStatus + ".png";
                 el.setAttribute('data-status', novoStatus);
                 
+                // DISPARAR SONS DOS COMPONENTES
                 if (id === 'tecla-dg' || id === 'tecla-dr') {
                     somDisjuntor.currentTime = 0;
                     somDisjuntor.play();
@@ -482,6 +451,7 @@
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
                     
+                    // DISPARAR SOM DE FIACAO CONCLUÍDA
                     somConexao.currentTime = 0;
                     somConexao.play();
                     
