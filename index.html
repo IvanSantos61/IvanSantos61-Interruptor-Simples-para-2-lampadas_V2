@@ -106,48 +106,51 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES INFORMATIVOS ORIGINAIS --- */
+        /* --- BALÕES INFORMATIVOS ORIGINAIS DA NBR 5410 --- */
         .balao-informativo {
             position: absolute;
-            background: #fff;
-            border-radius: 5px;
-            padding: 10px;
-            color: #000;
-            font-size: 12px;
-            font-weight: bold;
+            background: rgba(4, 10, 20, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            font-size: 14px;
             text-align: center;
             z-index: 120;
             pointer-events: none;
             opacity: 0;
             display: none;
             transition: opacity 0.4s ease;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+            line-height: 1.4;
         }
 
-        #balao-secao { width: 180px; top: 40%; left: 5%; }
-        #balao-fase-norma { width: 180px; top: 38%; left: 50%; }
-        #balao-conector { width: 180px; top: 12%; left: 35%; }
-        #balao-retorno-cor { width: 180px; top: 38%; left: 45%; }
-        #balao-retorno-comum { width: 150px; top: 12%; left: 72%; }
-        #balao-cores { width: 180px; top: 68%; left: 5%; }
-        #balao-neutro-norma { width: 180px; top: 32%; left: 25%; }
-        #balao-neutro-comum { width: 150px; top: 10%; left: 75%; }
+        #balao-secao { width: 230px; top: 42%; left: 3%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-fase-norma { width: 210px; top: 39%; left: 47%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-conector { width: 210px; top: 14%; left: 32%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-retorno-cor { width: 210px; top: 40%; left: 42.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
+        #balao-retorno-comum { width: 180px; top: 15%; left: 70%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-cores { width: 230px; top: 68%; left: 3%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        #balao-neutro-norma { width: 260px; top: 34%; left: 21%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
+        #balao-neutro-comum { width: 180px; top: 12%; left: 72%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
 
         .balao-informativo:after {
-            content: '';
-            position: absolute;
-            border-style: solid;
-            border-width: 10px 10px 0;
-            border-color: #fff transparent;
-            display: block;
-            width: 0;
+            content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+            border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+        }
+        
+        #balao-secao:after, #balao-fase-norma:after, #balao-conector:after { border-left: 10px solid #ffd700; }
+        #balao-retorno-cor:after, #balao-retorno-comum:after { border-left: 10px solid #ffa500; }
+        #balao-cores:after { border-left: 10px solid #00f0ff; }
+        #balao-neutro-norma:after, #balao-neutro-comum:after { border-left: 10px solid #0096ff; }
+
+        .balao-informativo:before {
+            content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+            border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 8px solid rgba(4, 10, 20, 0.95);
             z-index: 1;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
-        .txt-norma-vermelho { color: #ff0000; font-weight: bold; }
+        #balao-retorno-comum:before, #balao-neutro-comum:before, #balao-conector:before { border-left: 8px solid rgba(255, 0, 0, 0.95); }
+
+        .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
 
         /* --- INTERFACE --- */
         #titulo-sistema {
@@ -204,7 +207,7 @@
         .item-ajuda { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #162e3d; color: #fff; padding: 12px; margin-bottom: 10px; cursor: pointer; text-align: left; }
         .btn-fechar-modal { background: #222; color: #aaa; border: 1px solid #444; padding: 10px 40px; cursor: pointer; margin-top: 10px; }
 
-        /* --- PLACA CONCLUÍDO COM PARAFUSOS --- */
+        /* --- PLACA CONCLUÍDO COM OS PARAFUSOS CSS --- */
         #placa-concluido {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 60%; height: 38%; background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
@@ -214,7 +217,7 @@
         }
         #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); z-index: 2; }
 
-        /* Estilo mecânico dos parafusos */
+        /* Parafusos metálicos adicionados nos cantos */
         .parafuso {
             position: absolute;
             width: 14px;
@@ -269,12 +272,12 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <div id="balao-secao" class="balao-informativo">A seção mínima dos fios de iluminação é 1,5mm²<br><span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span></div>
-        <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<br><span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
-        <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<br><span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
-        <div id="balao-fase-norma" class="balao-informativo">O interruptor deve seccionar o condutor vivo (Fase)<br><span class="txt-norma-vermelho">(Item 6.3.7.2.1 da NBR-5410)</span></div>
+        <div id="balao-secao" class="balao-informativo">A seção mínima dos fios de iluminação é 1,5mm²<span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span></div>
+        <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
+        <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
+        <div id="balao-fase-norma" class="balao-informativo">O interruptor deve seccionar o condutor vivo (Fase)<span class="txt-norma-vermelho">(Item 6.3.7.2.1 da NBR-5410)</span></div>
         <div id="balao-conector" class="balao-informativo">Conectores de emenda garantem conexões firmes e energia sem interrupções</div>
-        <div id="balao-retorno-cor" class="balao-informativo">O retorno também pode ser de qualquer cor<br><span class="txt-norma-vermelho">(continuidade da fase NBR-5410)</span></div>
+        <div id="balao-retorno-cor" class="balao-informativo">O retorno também pode ser de qualquer cor <span class="txt-norma-vermelho">(continuidade da fase NBR-5410)</span></div>
         <div id="balao-neutro-comum" class="balao-informativo">O Neutro será comum às duas lâmpadas</div>
         <div id="balao-retorno-comum" class="balao-informativo">O Retorno também será comum às duas lâmpadas</div>
 
@@ -360,8 +363,8 @@
                 .replace(/REDE:/g, '<span class="tag-rede">REDE:</span>');
         }
 
-        // ESCONDE OS BALÕES CLICANDO EM QUALQUER LUGAR DA TELA
-        document.addEventListener('mousedown', () => {
+        // FECHAMENTO DOS BALÕES COM CLIQUE NA TELA INTEIRA (PROJETO)
+        document.getElementById('projeto-container').addEventListener('mousedown', () => {
             baloes.forEach(b => {
                 if(b.style.display === "block") {
                     b.style.opacity = "0";
