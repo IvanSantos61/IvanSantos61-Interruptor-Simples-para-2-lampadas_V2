@@ -53,7 +53,7 @@
         }
 
         .intro-entrada {
-            color: #008b8b; /* Tom de Cyan Escuro e Profundo invertido para cá */
+            color: #008b8b;
             font-size: 55px;
             font-weight: 400;
             line-height: 1.1;
@@ -64,7 +64,7 @@
         }
 
         .titulo-entrada {
-            color: #00f0ff; /* Tom de Cyan Elétrico vivo invertido para cá */
+            color: #00f0ff;
             font-size: 38px;
             font-weight: 400;
             line-height: 1.2;
@@ -106,7 +106,7 @@
             50% { opacity: 1; }
         }
 
-        /* --- BALÕES INFORMATIVOS (COORDENADAS CORRIGIDAS) --- */
+        /* --- BALÕES INFORMATIVOS --- */
         .balao-informativo {
             position: absolute;
             background: rgba(4, 10, 20, 0.95);
@@ -291,6 +291,11 @@
     </div>
 
     <script>
+        // --- INSTÂNCIAS DE ÁUDIO ---
+        const somDisjuntor = new Audio('disj.mp3');
+        const somInterruptor = new Audio('int.mp3');
+        const somConexao = new Audio('conexao.mp3');
+
         const camadasFios = document.getElementById('camadas-fios');
         const pontoA = document.getElementById('ponto-A');
         const pontoB = document.getElementById('ponto-B');
@@ -395,6 +400,16 @@
                 const novoStatus = status === 'off' ? 'on' : 'off';
                 el.src = prefixo + "_" + novoStatus + ".png";
                 el.setAttribute('data-status', novoStatus);
+                
+                // DISPARAR SONS DOS COMPONENTES
+                if (id === 'tecla-dg' || id === 'tecla-dr') {
+                    somDisjuntor.currentTime = 0;
+                    somDisjuntor.play();
+                } else if (id === 'tecla-int') {
+                    somInterruptor.currentTime = 0;
+                    somInterruptor.play();
+                }
+
                 verificarCircuito();
             };
         }
@@ -435,6 +450,10 @@
                 imgFio.src = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
+                    
+                    // DISPARAR SOM DE FIACAO CONCLUÍDA
+                    somConexao.currentTime = 0;
+                    somConexao.play();
                     
                     if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
                     if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
