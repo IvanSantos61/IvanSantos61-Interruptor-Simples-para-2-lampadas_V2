@@ -308,7 +308,7 @@
 
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnica</h3>
+                <h3>Ajuda Técnico</h3>
                 <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
                 <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
                 <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas4.png')">3. Emendas e conexões (Caixa 01)</button>
@@ -491,13 +491,14 @@
                     somConexao.currentTime = 0;
                     somConexao.play();
                     
+                    // --- VALIDAÇÃO REORGANIZADA DOS BALÕES ---
                     if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
                     if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
                     if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
                     if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
                     if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
-                    if (config.nome === "NEUTRO 3") mostrarBalao(['balao-neutro-comum']);
-                    if (config.nome === "RETORNO 2") mostrarBalao(['balao-retorno-comum']);
+                    if (config.nome === "NEUTRO 3") mostrarBalao(['balao-neutro-comum']); // Alterado para disparar após NEUTRO 3
+                    if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']); // Alterado para disparar após RETORNO 3
 
                     setTimeout(() => {
                         pontoA.style.display = "none"; pontoB.style.display = "none";
