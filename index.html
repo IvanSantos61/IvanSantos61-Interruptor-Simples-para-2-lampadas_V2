@@ -179,7 +179,7 @@
 
         /* --- QUADRO DE DISPOSITIVOS --- */
         #quadro-chaves-status {
-            display: none; /* Inicia oculto e aparece após fiação concluída */
+            display: none;
             gap: 20px;
             margin-top: 5px;
             font-size: 14px;
@@ -396,7 +396,7 @@
         }
 
         function formatarTextoInstrucao(texto) {
-            return text
+            return texto
                 .replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>')
                 .replace(/REDE:/g, '<span class="tag-rede">REDE:</span>');
         }
@@ -456,7 +456,7 @@
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
             if (fiacaoConcluida) {
-                quadroStatus.style.display = "flex"; // Mostra o checklist quando acaba a fiação
+                quadroStatus.style.display = "flex";
                 atualizarChecklist(dg, dr, int);
             }
 
