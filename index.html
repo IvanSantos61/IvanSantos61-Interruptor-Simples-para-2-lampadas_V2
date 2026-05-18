@@ -80,30 +80,37 @@
             font-weight: 450;
             letter-spacing: 5px;
             text-transform: uppercase;
-            margin: 0 0 50px 0;
+            margin: 0 0 40px 0;
         }
 
         .creditos-entrada {
             color: #445566;
             font-size: 15px;
             font-weight: 500;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
         }
 
+        /* NOVO BOTÃO PULSANTE SMT PRO */
         .btn-iniciar-lab {
+            background: transparent;
+            border: 2px solid #00f0ff;
+            border-radius: 50px;
             color: #00f0ff;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
+            text-transform: uppercase;
+            padding: 12px 35px;
             cursor: pointer;
-            background: none;
-            border: none;
-            padding: 15px;
-            animation: piscarTexto 1.2s infinite ease-in-out;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: pulsarBotao 1.5s infinite;
         }
 
-        @keyframes piscarTexto {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 1; }
+        @keyframes pulsarBotao {
+            0% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+            50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); }
+            100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
         }
 
         /* --- BALÕES INFORMATIVOS --- */
