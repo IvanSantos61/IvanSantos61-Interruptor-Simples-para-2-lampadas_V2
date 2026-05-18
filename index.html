@@ -129,14 +129,15 @@
             line-height: 1.4;
         }
 
+        #balao-secao font-size: 14px; text-align: center; z-index: 120; pointer-events: none; opacity: 0; display: none; transition: opacity 0.4s ease; line-height: 1.4; }
         #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-conector { width: 210px; top: 16.3%; left: 34%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
         #balao-retorno-cor { width: 220px; top: 40%; left: 44.3%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
-        #balao-retorno-comum { width: 195px; top: 38%; left: 65.5%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-retorno-comum { width: 195px; top: 15%; left: 70%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
         #balao-cores { width: 230px; top: 68%; left: 4.5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
-        #balao-neutro-comum { width: 170px; top: 38%; left: 80%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
+        #balao-neutro-comum { width: 170px; top: 11.5%; left: 74.3%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
 
         .balao-informativo:after {
             content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -354,6 +355,7 @@
         let etapaAtual = 0;
         let fiacaoConcluida = false;
         let cicloAtivo = false;
+        let placaJaExibida = false; // Controle para exibir apenas uma vez
         let timerPlaca;
 
         function iniciarLaboratorio() {
@@ -410,14 +412,16 @@
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
-                cicloAtivo = true;
+                cicloAtivo = true; // O circuito chegou a ligar com sucesso pelo menos uma vez
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
                 if (fiacaoConcluida) {
-                    if (cicloAtivo) {
+                    // Verifica se o ciclo foi ativo e se a placa ainda NÃO foi exibida
+                    if (cicloAtivo && !placaJaExibida) {
                         txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
                         placaConcluido.style.display = "flex";
+                        placaJaExibida = true; // Bloqueia futuras exibições
                         clearTimeout(timerPlaca);
                         timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
                     } else {
@@ -488,14 +492,13 @@
                     somConexao.currentTime = 0;
                     somConexao.play();
                     
-                    // --- VALIDAÇÃO DE DISPARO DOS BALÕES ATUALIZADA ---
                     if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
                     if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
                     if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
                     if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
                     if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
                     if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
-                    if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']); // Movido para disparar após o NEUTRO 4
+                    if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']);
 
                     setTimeout(() => {
                         pontoA.style.display = "none"; pontoB.style.display = "none";
