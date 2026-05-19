@@ -177,7 +177,7 @@
             letter-spacing: 1.5px; line-height: 1.4;
         }
 
-        /* --- PAINEL DE STATUS FLUTUANTE --- */
+        /* --- NOVO PAINEL DE STATUS (CONFORME GRAVURA) --- */
         #quadro-chaves-status {
             position: absolute;
             top: 48%;
@@ -217,9 +217,11 @@
         }
 
         .item-chave-status:last-child { border-bottom: none; }
+
         .chk-ok { color: #00ff00; font-size: 14px; }
         .chk-no { color: #ff3333; font-size: 12px; }
 
+        /* --- RESTO DA ESTRUTURA --- */
         .tag-circuito { color: #ff3333; font-weight: 900; }
         .tag-rede { color: #00ff00; font-weight: 900; }
 
@@ -246,6 +248,15 @@
         .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
+
+        #modal-ajuda {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 55%; background: #0a111a; border: 2px solid #00f0ff;
+            border-radius: 12px; padding: 20px; z-index: 200; display: none;
+            flex-direction: column; align-items: center;
+        }
+        .item-ajuda { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #162e3d; color: #fff; padding: 12px; margin-bottom: 10px; cursor: pointer; text-align: left; }
+        .btn-fechar-modal { background: #222; color: #aaa; border: 1px solid #444; padding: 10px 40px; cursor: pointer; margin-top: 10px; }
 
         #placa-concluido {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -326,6 +337,22 @@
         <button id="btn-ajuda" class="btn-controle">Ajuda</button>
         <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
 
+        <div id="modal-ajuda">
+            <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+                <h3>Ajuda Técnico</h3>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas4.png')">3. Emendas e conexões (Caixa 01)</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas3.png')">4. Emendas e conexões (Caixa 02)</button>
+                <button class="item-ajuda" onclick="abrirGravuraAjuda('listamat.png')">5. Lista de material</button>
+                <button class="btn-fechar-modal" onclick="fecharModalAjuda()">Fechar</button>
+            </div>
+            <div id="tela-imagem-ajuda" style="display:none; flex-direction:column; align-items:center;">
+                <img src="" id="img-suporte" style="max-width:100%; margin-bottom:15px;">
+                <button class="btn-fechar-modal" onclick="voltarParaListaAjuda()">Voltar</button>
+            </div>
+        </div>
+
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
     </div>
@@ -343,18 +370,8 @@
         const txtInstrucao = document.getElementById('instrucao');
         const telaEntrada = document.getElementById('tela-entrada');
         const placaConcluido = document.getElementById('placa-concluido');
+        const modalAjuda = document.getElementById('modal-ajuda');
         const quadroStatus = document.getElementById('quadro-chaves-status');
-
-        const baloes = [
-            document.getElementById('balao-secao'),
-            document.getElementById('balao-cores'),
-            document.getElementById('balao-neutro-norma'),
-            document.getElementById('balao-fase-norma'),
-            document.getElementById('balao-conector'),
-            document.getElementById('balao-retorno-cor'),
-            document.getElementById('balao-neutro-comum'),
-            document.getElementById('balao-retorno-comum')
-        ];
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
@@ -365,24 +382,6 @@
         function iniciarLaboratorio() {
             telaEntrada.style.opacity = "0";
             setTimeout(() => { telaEntrada.style.visibility = "hidden"; iniciarEtapa(); }, 500);
-        }
-
-        // --- OCULTAR BALÕES AO CLICAR NA TELA ---
-        document.getElementById('projeto-container').addEventListener('mousedown', () => {
-            baloes.forEach(b => {
-                if(b.style.display === "block") {
-                    b.style.opacity = "0";
-                    setTimeout(() => { b.style.display = "none"; }, 400);
-                }
-            });
-        });
-
-        function mostrarBalao(ids) {
-            ids.forEach(id => {
-                const b = document.getElementById(id);
-                b.style.display = "block";
-                setTimeout(() => { b.style.opacity = "1"; }, 50);
-            });
         }
 
         function formatarTextoInstrucao(texto) {
@@ -458,6 +457,7 @@
         alternarTecla('tecla-dr', 'al_dr');
         alternarTecla('tecla-int', 'tec_int');
 
+        // Etapas de fiação mantidas conforme lógica anterior
         const etapas = [
             { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" }, msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE" },
             { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" }, msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO" },
@@ -500,14 +500,9 @@
                     clearInterval(timer);
                     somConexao.currentTime = 0; somConexao.play();
                     
-                    // --- REATIVANDO GATILHOS DE ACESSÓRIOS E BALÕES ---
-                    if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
-                    if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
-                    if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
-                    if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
-                    if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
-                    if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
-                    if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']);
+                    // Exibição de acessórios e balões
+                    if (config.nome === "NEUTRO 1") conectorN2.style.display = "block";
+                    if (config.nome === "NEUTRO 2") conectorN3.style.display = "block";
 
                     setTimeout(() => {
                         pontoA.style.display = "none"; pontoB.style.display = "none";
@@ -519,6 +514,10 @@
         };
 
         document.getElementById('btn-reiniciar').onclick = () => { location.reload(); };
+        document.getElementById('btn-ajuda').onclick = () => { modalAjuda.style.display = "flex"; };
+        function fecharModalAjuda() { modalAjuda.style.display = "none"; }
+        function abrirGravuraAjuda(img) { document.getElementById('menu-lista-ajuda').style.display = "none"; document.getElementById('tela-imagem-ajuda').style.display = "flex"; document.getElementById('img-suporte').src = img; }
+        function voltarParaListaAjuda() { document.getElementById('tela-imagem-ajuda').style.display = "none"; document.getElementById('menu-lista-ajuda').style.display = "flex"; }
     </script>
 </body>
 </html>
