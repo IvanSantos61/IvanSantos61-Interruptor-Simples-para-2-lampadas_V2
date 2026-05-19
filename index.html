@@ -350,15 +350,15 @@
             <div id="titulo-dispositivos">Status do Circuito</div>
             <div class="container-item">
                 <span class="label-dispositivo">DG:</span>
-                <span id="status-dg" class="status-emoji">✘</span>
+                <span id="status-dg" class="status-emoji" style="color: #ff3333;">✘</span>
             </div>
             <div class="container-item">
                 <span class="label-dispositivo">DR:</span>
-                <span id="status-dr" class="status-emoji">✘</span>
+                <span id="status-dr" class="status-emoji" style="color: #ff3333;">✘</span>
             </div>
             <div class="container-item">
                 <span class="label-dispositivo">INT:</span>
-                <span id="status-int" class="status-emoji">✘</span>
+                <span id="status-int" class="status-emoji" style="color: #ff3333;">✘</span>
             </div>
         </div>
         <div id="placa-concluido">
@@ -478,9 +478,9 @@
             if (fiacaoConcluida) {
                 painelDispositivos.style.display = "flex";
                 // LÓGICA DE TROCA DOS ÍCONES
-                document.getElementById('status-dg').textContent = dg === 'on' ? '✔' : '✘';
-                document.getElementById('status-dr').textContent = dr === 'on' ? '✔' : '✘';
-                document.getElementById('status-int').textContent = int === 'on' ? '✔' : '✘';
+                const elDg = document.getElementById('status-dg'); elDg.textContent = dg === 'on' ? '✔' : '✘'; elDg.style.color = dg === 'on' ? '#00ff00' : '#ff3333';
+                const elDr = document.getElementById('status-dr'); elDr.textContent = dr === 'on' ? '✔' : '✘'; elDr.style.color = dr === 'on' ? '#00ff00' : '#ff3333';
+                const elInt = document.getElementById('status-int'); elInt.textContent = int === 'on' ? '✔' : '✘'; elInt.style.color = int === 'on' ? '#00ff00' : '#ff3333';
             }
 
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
