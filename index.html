@@ -204,14 +204,14 @@
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
 
-        /* --- PAINEL DE DISPOSITIVOS ATUALIZADO (Padrão Gravura) --- */
+        /* --- PAINEL DE DISPOSITIVOS --- */
         #painel-dispositivos {
             position: absolute;
-            top: 55%; /* Centralizado verticalmente */
+            top: 55%;
             left: 4.5%;
             width: 200px;
             background: rgba(4, 10, 20, 0.9);
-            border: 2px solid #1f2937; /* Borda externa escura padrão */
+            border: 2px solid #1f2937;
             border-radius: 10px;
             padding: 12px;
             z-index: 110;
@@ -239,7 +239,7 @@
             align-items: center;
             padding: 6px 10px;
             background: #040a14;
-            border: 1.5px solid #00f0ff; /* Borda ciano padrão em cada item */
+            border: 1.5px solid #00f0ff;
             border-radius: 15px;
             box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
         }
@@ -256,8 +256,6 @@
             font-size: 16px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
-
-        /* --- FIM DO PAINEL ATUALIZADO --- */
 
         #modal-ajuda {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -276,7 +274,6 @@
         }
         #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); }
 
-        /* Estilos dos Parafusos */
         .parafuso {
             position: absolute;
             width: 14px;
@@ -425,7 +422,7 @@
         let etapaAtual = 0;
         let fiacaoConcluida = false;
         let cicloAtivo = false;
-        let placaJaExibida = false; // Controle para exibir apenas uma vez
+        let placaJaExibida = false;
         let timerPlaca;
 
         function iniciarLaboratorio() {
@@ -478,9 +475,9 @@
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
-            // Atualiza o painel de emojis dinamicamente quando a fiação estiver concluída
             if (fiacaoConcluida) {
                 painelDispositivos.style.display = "flex";
+                // LÓGICA DE TROCA DOS ÍCONES
                 document.getElementById('status-dg').textContent = dg === 'on' ? '✔️' : '❌';
                 document.getElementById('status-dr').textContent = dr === 'on' ? '✔️' : '❌';
                 document.getElementById('status-int').textContent = int === 'on' ? '✔️' : '❌';
@@ -490,16 +487,15 @@
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
-                cicloAtivo = true; // O circuito chegou a ligar com sucesso pelo menos uma vez
+                cicloAtivo = true;
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
                 if (fiacaoConcluida) {
-                    // Verifica se o ciclo foi ativo e se a placa ainda NÃO foi exibida
                     if (cicloAtivo && !placaJaExibida) {
                         txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
                         placaConcluido.style.display = "flex";
-                        placaJaExibida = true; // Bloqueia futuras exibições
+                        placaJaExibida = true;
                         clearTimeout(timerPlaca);
                         timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
                     } else {
@@ -566,7 +562,6 @@
                 imgFio.src = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
-                    
                     somConexao.currentTime = 0;
                     somConexao.play();
                     
