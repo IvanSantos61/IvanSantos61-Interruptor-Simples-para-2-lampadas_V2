@@ -47,7 +47,7 @@
             50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); }
         }
 
-        /* --- BALÕES INFORMATIVOS (CORRIGIDO) --- */
+        /* --- BALÕES INFORMATIVOS --- */
         .balao-informativo {
             position: absolute;
             background: rgba(4, 10, 20, 0.95);
@@ -64,7 +64,7 @@
             line-height: 1.4;
         }
 
-        /* AJUSTE AS COORDENADAS ABAIXO */
+        /* COORDENADAS PARA ALTERAÇÃO */
         #balao-secao         { width: 230px; top: 42%;    left: 4.5%;  border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma    { width: 210px; top: 39%;    left: 48%;   border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-conector      { width: 210px; top: 16.3%;  left: 34%;   border: 2px solid #ffd700; background: rgba(255, 0, 0, 0.95); }
@@ -81,7 +81,7 @@
         #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto; padding: 20px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center; }
         #instrucao { color: #ffd700; font-size: 20px; font-weight: bold; text-transform: uppercase; }
         
-        #projeto-container { position: relative; display: inline-block; border: 2px solid #1f2937; }
+        #projeto-container { position: relative; display: inline-block; border: 2px solid #1f2937; cursor: crosshair; }
         .imagem-base { max-width: 95vw; max-height: 70vh; display: block; border-radius: 8px; }
         .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
@@ -108,7 +108,8 @@
 
         #placa-concluido { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40%; height: 20%; background: #1a242f; border: 3px solid #00ff00; border-radius: 15px; z-index: 200; display: none; align-items: center; justify-content: center; color: #00ff00; font-size: 30px; font-weight: bold; }
         .tag-circuito { color: #ff3333; } .tag-rede { color: #00ff00; }
-        .status-aceso { color: #00ff00; } .status-apagado { color: #ff0000; }
+        .status-aceso { background: #004d00; color: #00ff00; padding: 5px 15px; border-radius: 10px; } 
+        .status-apagado { background: #4d0000; color: #ff0000; padding: 5px 15px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -126,7 +127,7 @@
     <div id="titulo-sistema">Laboratório SMT Pro</div>
     <div id="painel-status"><span id="instrucao">AGUARDANDO...</span></div>
 
-    <div id="projeto-container">
+    <div id="projeto-container" onclick="limparBaloes()">
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
@@ -192,22 +193,21 @@
         function iniciarEtapa() {
             if (etapaAtual >= etapas.length) { 
                 fiacaoConcluida = true; 
-                txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! LIGUE DG, DR E INTERRUPTOR."; 
+                txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! TESTE O CIRCUITO."; 
                 return; 
             }
             const c = etapas[etapaAtual];
             txtInstrucao.innerHTML = c.msgA.replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>').replace(/REDE:/g, '<span class="tag-rede">REDE:</span>');
-            pontoA.className = "ponto-clique " + c.cor;
             pontoA.style.top = c.posA.top; pontoA.style.left = c.posA.left;
             pontoA.style.display = "block";
-            pontoB.className = "ponto-clique " + c.cor;
             pontoB.style.top = c.posB.top; pontoB.style.left = c.posB.left;
             pontoB.style.display = "none";
         }
 
-        pontoA.onclick = () => { pontoA.classList.add('verde'); pontoB.style.display = "block"; txtInstrucao.innerHTML = etapas[etapaAtual].msgB; };
+        pontoA.onclick = (e) => { e.stopPropagation(); pontoA.classList.add('verde'); pontoB.style.display = "block"; txtInstrucao.innerHTML = etapas[etapaAtual].msgB; };
         
-        pontoB.onclick = () => {
+        pontoB.onclick = (e) => {
+            e.stopPropagation();
             pontoB.classList.add('verde');
             const config = etapas[etapaAtual];
             const imgFio = document.createElement('img');
@@ -227,7 +227,12 @@
                     if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
                     if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']);
 
-                    setTimeout(() => { etapaAtual++; pontoA.classList.remove('verde'); pontoB.classList.remove('verde'); iniciarEtapa(); }, 600);
+                    setTimeout(() => { 
+                        etapaAtual++; 
+                        pontoA.classList.remove('verde'); pontoB.classList.remove('verde'); 
+                        pontoA.style.display = "none"; pontoB.style.display = "none";
+                        iniciarEtapa(); 
+                    }, 600);
                 } else q++;
             }, 40);
         };
@@ -235,8 +240,16 @@
         function mostrarBalao(ids) {
             ids.forEach(id => {
                 const b = document.getElementById(id);
-                b.style.display = "block"; setTimeout(() => b.style.opacity = "1", 50);
-                setTimeout(() => { b.style.opacity = "0"; setTimeout(() => b.style.display = "none", 400); }, 5000);
+                b.style.display = "block"; 
+                setTimeout(() => b.style.opacity = "1", 50);
+            });
+        }
+
+        function limparBaloes() {
+            const baloes = document.querySelectorAll('.balao-informativo');
+            baloes.forEach(b => {
+                b.style.opacity = "0";
+                setTimeout(() => b.style.display = "none", 400);
             });
         }
 
@@ -259,7 +272,8 @@
 
         function configurarTecla(id, pre) {
             const el = document.getElementById(id);
-            el.onclick = () => {
+            el.onclick = (e) => {
+                e.stopPropagation();
                 const s = el.getAttribute('data-status') === 'off' ? 'on' : 'off';
                 el.src = `${pre}_${s}.png`; el.setAttribute('data-status', s);
                 if(id.includes('dg') || id.includes('dr')) somDisjuntor.play(); else somInterruptor.play();
