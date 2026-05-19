@@ -25,101 +25,107 @@
         .moldura-entrada {
             width: 80%; max-width: 900px; height: 70%; max-height: 450px;
             border: 3px solid #00f0ff; border-radius: 25px;
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
         }
 
-        .intro-entrada { color: #008b8b; font-size: 55px; text-transform: uppercase; margin: 0 0 10px 0; }
-        .titulo-entrada { color: #00f0ff; font-size: 38px; text-transform: uppercase; margin: 0 0 25px 0; }
-        .subtitulo-entrada { color: #00f0ff; font-size: 24px; letter-spacing: 5px; text-transform: uppercase; margin: 0 0 40px 0; }
+        .intro-entrada { color: #008b8b; font-size: 55px; font-weight: 400; line-height: 1.1; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 139, 139, 0.5); margin: 0 0 10px 0; }
+        .titulo-entrada { color: #00f0ff; font-size: 38px; font-weight: 400; line-height: 1.2; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 25px rgba(0, 240, 255, 0.6); margin: 0 0 25px 0; }
+        .subtitulo-entrada { color: #00f0ff; font-size: 24px; font-weight: 450; letter-spacing: 5px; text-transform: uppercase; margin: 0 0 40px 0; }
+        .creditos-entrada { color: #445566; font-size: 15px; font-weight: 500; margin-bottom: 30px; }
 
         .btn-iniciar-lab {
             background: transparent; border: 2px solid #00f0ff; border-radius: 50px;
             color: #00f0ff; font-size: 16px; font-weight: bold; text-transform: uppercase;
-            padding: 12px 35px; cursor: pointer; animation: pulsarBotao 1.5s infinite;
+            padding: 12px 35px; cursor: pointer; letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease;
+            animation: pulsarBotao 1.5s infinite;
         }
 
         @keyframes pulsarBotao {
-            0%, 100% { opacity: 0.5; } 50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); }
+            0% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+            50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); }
+            100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
         }
 
-        /* --- BALÕES COM SETINHAS CSS (SEM IMAGENS) --- */
+        /* --- BALÕES INFORMATIVOS --- */
         .balao-informativo {
-            position: absolute; background: rgba(4, 10, 20, 0.95);
-            border-radius: 12px; padding: 15px; color: #fff; font-size: 14px;
-            text-align: center; z-index: 120; opacity: 0; display: none;
-            transition: opacity 0.4s ease; line-height: 1.4; pointer-events: none;
+            position: absolute; background: rgba(4, 10, 20, 0.95); border-radius: 12px;
+            padding: 15px; color: #fff; font-size: 14px; text-align: center;
+            z-index: 120; pointer-events: none; opacity: 0; display: none;
+            transition: opacity 0.4s ease; line-height: 1.4;
         }
 
-        /* Triângulo da setinha */
-        .balao-informativo::after {
-            content: ""; position: absolute; border-width: 10px; border-style: solid;
+        /* Setinhas CSS dos balões */
+        .balao-informativo:after {
+            content: ''; position: absolute; border-top: 10px solid transparent; border-bottom: 10px solid transparent;
         }
 
-        /* Posicionamento e Cores dos Balões */
-        #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; }
-        #balao-secao::after { border-color: transparent transparent transparent #ffd700; top: 40%; left: 100%; }
+        #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-secao:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #ffd700; }
 
-        #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; }
-        #balao-fase-norma::after { border-color: #ffd700 transparent transparent transparent; top: 100%; left: 50%; margin-left: -10px; }
+        #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #balao-fase-norma:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #ffd700; }
 
         #balao-conector { width: 210px; top: 16.3%; left: 34%; border: 2px solid #ffd700; background: rgba(255, 0, 0, 0.95); }
-        #balao-conector::after { border-color: transparent transparent transparent #ffd700; top: 40%; left: 100%; }
+        #balao-conector:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #ffd700; }
 
-        #balao-retorno-cor { width: 220px; top: 40%; left: 44.3%; border: 2px solid #ffa500; }
-        #balao-retorno-cor::after { border-color: #ffa500 transparent transparent transparent; top: 100%; left: 50%; margin-left: -10px; }
+        #balao-retorno-cor { width: 220px; top: 40%; left: 44.3%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
+        #balao-retorno-cor:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #ffa500; }
 
         #balao-retorno-comum { width: 195px; top: 38%; left: 65.5%; border: 2px solid #ffa500; background: rgba(255, 0, 0, 0.95); }
-        #balao-retorno-comum::after { border-color: transparent transparent transparent #ffa500; top: 40%; left: 100%; }
+        #balao-retorno-comum:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #ffa500; }
 
-        #balao-cores { width: 230px; top: 68%; left: 4.5%; border: 2px solid #00f0ff; }
-        #balao-cores::after { border-color: transparent transparent transparent #00f0ff; top: 40%; left: 100%; }
+        #balao-cores { width: 230px; top: 68%; left: 4.5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        #balao-cores:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #00f0ff; }
 
-        #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; }
-        #balao-neutro-norma::after { border-color: #0096ff transparent transparent transparent; top: 100%; left: 50%; margin-left: -10px; }
+        #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
+        #balao-neutro-norma:after { right: -10px; top: 50%; transform: translateY(-50%); border-left: 10px solid #0096ff; }
 
         #balao-neutro-comum { width: 170px; top: 38%; left: 80%; border: 2px solid #0096ff; background: rgba(255, 0, 0, 0.95); }
-        #balao-neutro-comum::after { border-color: transparent #0096ff transparent transparent; top: 40%; right: 100%; }
+        #balao-neutro-comum:after { left: -10px; top: 50%; transform: translateY(-50%); border-right: 10px solid #0096ff; }
 
-        .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 5px; font-size: 11px; }
+        .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
 
         /* --- INTERFACE --- */
-        #titulo-sistema { color: #00f0ff; font-size: 40px; margin-top: 2.5vh; text-transform: uppercase; text-align: center; }
-        #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto; padding: 20px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; }
-        #instrucao { color: #ffd700; font-size: 20px; font-weight: bold; text-transform: uppercase; }
+        #titulo-sistema { color: #00f0ff; font-size: 40px; font-weight: 400; letter-spacing: 2px; margin-top: 2.5vh; margin-bottom: 1vh; text-align: center; text-shadow: 0 0 15px rgba(0, 240, 255, 0.6); text-transform: uppercase; }
+        #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto 2vh auto; padding: 20px 40px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; }
+        #instrucao { color: #ffd700; font-size: 20px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.4; }
         .tag-circuito { color: #ff3333; font-weight: 900; }
         .tag-rede { color: #00ff00; font-weight: 900; }
 
-        #projeto-container { position: relative; display: inline-block; border: 2px solid #1f2937; }
-        .imagem-base { max-width: 95vw; max-height: 70vh; display: block; }
+        #projeto-container { position: relative; display: inline-block; margin-bottom: 2vh; border: 2px solid #1f2937; }
+        .imagem-base { max-width: 95vw; max-height: 70vh; display: block; object-fit: contain; }
         .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
-        /* PAINEL DISPOSITIVOS */
-        #painel-dispositivos { position: absolute; top: 52%; left: 4.5%; width: 200px; background: rgba(4, 10, 20, 0.95); border: 2px solid #1f2937; border-radius: 12px; padding: 12px; z-index: 110; display: none; flex-direction: column; gap: 8px; }
-        .container-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border: 1.5px solid #00f0ff; border-radius: 20px; background: rgba(0, 240, 255, 0.05); }
-        .label-dispositivo { font-size: 13px; font-weight: 700; color: #fff; }
-        .status-emoji { font-size: 16px; }
-
-        .tecla-movel { position: absolute; z-index: 20; cursor: pointer; }
+        .tecla-movel { position: absolute; z-index: 20; cursor: pointer; padding: 10px; margin: -10px; }
         #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
         #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
         #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; z-index: 30; }
 
-        #lampada1, #lampada2 { position: absolute; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
-        #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; }
-        #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; }
+        #lampada1, #lampada2 { position: absolute; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); width: 49.5%; }
+        #lampada1 { top: 4.5%; left: 68.8%; }
+        #lampada2 { top: 43.8%; left: 68.8%; }
 
-        .ponto-clique { position: absolute; width: 1.8%; aspect-ratio: 1/1; border: 2px solid #fff; border-radius: 50%; z-index: 100; transform: translate(-50%, -50%); display: none; cursor: pointer; }
+        /* PAINEL DE DISPOSITIVOS */
+        #painel-dispositivos { position: absolute; top: 55%; left: 4.5%; width: 200px; background: rgba(4, 10, 20, 0.9); border: 2px solid #1f2937; border-radius: 10px; padding: 12px; z-index: 110; display: none; flex-direction: column; gap: 8px; }
+        #titulo-dispositivos { text-align: center; font-size: 14px; font-weight: bold; color: #00f0ff; text-transform: uppercase; margin-bottom: 5px; }
+        .container-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #040a14; border: 1.5px solid #00f0ff; border-radius: 15px; }
+        .label-dispositivo { font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase; }
+        .status-emoji { font-size: 16px; }
+
+        .ponto-clique { position: absolute; width: 1.8%; aspect-ratio: 1 / 1; border: 0.2vw solid #fff; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); display: none; }
         .ponto-fase { background: rgba(255, 0, 0, 0.7); }
         .ponto-neutro { background: rgba(0, 150, 255, 0.7); }
         .ponto-retorno { background: rgba(255, 165, 0, 0.7); }
         .verde { background: #00ff00 !important; }
 
-        #btn-ajuda { position: absolute; top: 83%; left: 14.5%; padding: 8px 30px; background: #004f77; color: #00f0ff; border-radius: 20px; cursor: pointer; z-index: 110; }
-        #btn-reiniciar { position: absolute; top: 92%; left: 13%; padding: 8px 30px; background: #b80000; color: #fff; border-radius: 20px; cursor: pointer; z-index: 110; }
+        .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
+        #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
+        #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
 
-        .status-aceso { background: #006400; color: #00ff00; padding: 5px 15px; border-radius: 10px; }
-        .status-apagado { background: #b80000; color: #fff; padding: 5px 15px; border-radius: 10px; }
+        .status-aceso { background: #006400 !important; color: #00ff00 !important; padding: 8px 30px; border-radius: 20px; }
+        .status-apagado { background: #b80000 !important; color: #ffffff !important; padding: 8px 30px; border-radius: 20px; }
     </style>
 </head>
 <body onmousedown="limparBaloes()">
@@ -127,8 +133,9 @@
     <div id="tela-entrada">
         <div class="moldura-entrada">
             <div class="intro-entrada">Laboratório SMT Pro</div>
-            <h1 class="titulo-entrada">INTERRUPTOR SIMPLES PARA 2 LÂMPADAS</h1>
+            <h1 class="titulo-entrada">INTERRUPTOR SIMPLES PARA 2<br>LÂMPADAS</h1>
             <h2 class="subtitulo-entrada">CIRCUITO MONOFÁSICO - 127V</h2>
+            <div class="creditos-entrada">© Desenvolvido por Ivan Santos - ConectaeadPLUS - 2026</div>
             <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Clique para iniciar o Laboratório</button>
         </div>
     </div>
@@ -144,101 +151,107 @@
         <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
         <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
         <div id="balao-fase-norma" class="balao-informativo">O interruptor deve seccionar a Fase<span class="txt-norma-vermelho">(Item 6.3.7.2.1 da NBR-5410)</span></div>
-        <div id="balao-conector" class="balao-informativo">Conectores garantem conexões firmes</div>
-        <div id="balao-retorno-cor" class="balao-informativo">O retorno segue a cor da fase</div>
+        <div id="balao-conector" class="balao-informativo">Conectores de emenda garantem conexões firmes</div>
+        <div id="balao-retorno-cor" class="balao-informativo">O retorno também segue as normas de cor</div>
         <div id="balao-neutro-comum" class="balao-informativo">O Neutro será comum às duas lâmpadas</div>
-        <div id="balao-retorno-comum" class="balao-informativo">O Retorno será comum às duas lâmpadas</div>
+        <div id="balao-retorno-comum" class="balao-informativo">O Retorno também será comum às duas lâmpadas</div>
 
         <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
         <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
         <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <img src="lamp_on.png" id="lampada1">
-        <img src="lamp_on.png" id="lampada2">
+        <img src="lamp_on.png" id="lampada1" class="carga-movel">
+        <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
         <div id="painel-dispositivos">
-            <div class="container-item"><span class="label-dispositivo">DG</span><span id="status-dg" class="status-emoji">❌</span></div>
-            <div class="container-item"><span class="label-dispositivo">DR</span><span id="status-dr" class="status-emoji">❌</span></div>
-            <div class="container-item"><span class="label-dispositivo">INT</span><span id="status-int" class="status-emoji">❌</span></div>
+            <div id="titulo-dispositivos">Status do Circuito</div>
+            <div class="container-item"><span class="label-dispositivo">DG:</span><span id="status-dg" class="status-emoji">❌</span></div>
+            <div class="container-item"><span class="label-dispositivo">DR:</span><span id="status-dr" class="status-emoji">❌</span></div>
+            <div class="container-item"><span class="label-dispositivo">INT:</span><span id="status-int" class="status-emoji">❌</span></div>
         </div>
+
+        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
+        <button id="btn-reiniciar" class="btn-controle" onclick="location.reload()">Reiniciar</button>
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
-        <div id="btn-ajuda">Ajuda</div>
-        <div id="btn-reiniciar" onclick="location.reload()">Reiniciar</div>
     </div>
 
     <script>
+        const camadasFios = document.getElementById('camadas-fios');
         const pontoA = document.getElementById('ponto-A');
         const pontoB = document.getElementById('ponto-B');
         const txtInstrucao = document.getElementById('instrucao');
+        const painelDispositivos = document.getElementById('painel-dispositivos');
+
         let etapaAtual = 0;
         let fiacaoConcluida = false;
 
         function limparBaloes() {
             document.querySelectorAll('.balao-informativo').forEach(b => {
                 b.style.opacity = "0";
-                setTimeout(() => b.style.display = "none", 400);
+                setTimeout(() => { b.style.display = "none"; }, 400);
             });
         }
 
         const etapas = [
-            { pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { t: "38%", l: "27%" }, posB: { t: "79.3%", l: "40.5%" }, msgA: "REDE: CLIQUE NO DR PARA INICIAR A FASE", msgB: "REDE: LEVE A FASE À CAIXA", baloes: ["balao-secao", "balao-cores"] },
-            { pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { t: "32.4%", l: "44.5%" }, posB: { t: "76.5%", l: "40%" }, msgA: "REDE: CLIQUE NO BARRAMENTO PARA O NEUTRO", msgB: "REDE: LEVE O NEUTRO À CAIXA", baloes: ["balao-neutro-norma"] },
-            { pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { t: "79%", l: "49%" }, posB: { t: "31%", l: "56%" }, msgA: "REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA", msgB: "CONECTE NA CAIXA", baloes: [] },
-            { pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { t: "76.8%", l: "49%" }, posB: { t: "31%", l: "54.5%" }, msgA: "REDE: LEVE O NEUTRO ATÉ A PRÓXIMA CAIXA", msgB: "CONECTE NA CAIXA", baloes: ["balao-conector"] },
-            { pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { t: "16%", l: "56%" }, posB: { t: "56%", l: "72%" }, msgA: "CIRCUITO: LEVE A FASE AO INTERRUPTOR", msgB: "CONECTE NO INTERRUPTOR", baloes: ["balao-fase-norma"] },
-            { pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { t: "62%", l: "72%" }, posB: { t: "30%", l: "57%" }, msgA: "CIRCUITO: LEVE O RETORNO PARA A CAIXA", msgB: "CONECTE NA CAIXA", baloes: ["balao-retorno-cor"] },
-            { pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { t: "17%", l: "54.7%" }, posB: { t: "23%", l: "91%" }, msgA: "CIRCUITO: NEUTRO À LÂMPADA 1", msgB: "CONECTE NA LÂMPADA", baloes: [] },
-            { pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { t: "16%", l: "57%" }, posB: { t: "25%", l: "89%" }, msgA: "CIRCUITO: RETORNO À LÂMPADA 1", msgB: "CONECTE NA LÂMPADA", baloes: [] },
-            { pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { t: "25%", l: "89%" }, posB: { t: "64%", l: "89%" }, msgA: "CIRCUITO: RETORNO À LÂMPADA 2", msgB: "INTERLIGUE", baloes: ["balao-retorno-comum"] },
-            { pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { t: "25%", l: "91.5%" }, posB: { t: "63%", l: "91%" }, msgA: "CIRCUITO: NEUTRO À LÂMPADA 2", msgB: "INTERLIGUE", baloes: ["balao-neutro-comum"] }
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" }, msgA: "REDE: CLIQUE NO DR PARA INICIAR A FASE", msgB: "REDE: LEVE A FASE À CAIXA", baloes: ['balao-secao', 'balao-cores'] },
+            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" }, msgA: "REDE: CLIQUE NO BARRAMENTO PARA O NEUTRO", msgB: "REDE: LEVE O NEUTRO À CAIXA", baloes: ['balao-neutro-norma'] },
+            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "56%" }, msgA: "REDE: LEVE A FASE À PRÓXIMA CAIXA", msgB: "CONECTE NA CAIXA", baloes: [] },
+            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76.8%", left: "49%" }, posB: { top: "31%", left: "54.5%" }, msgA: "REDE: LEVE O NEUTRO À PRÓXIMA CAIXA", msgB: "CONECTE NA CAIXA", baloes: ['balao-conector'] },
+            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" }, msgA: "CIRCUITO: LEVE A FASE AO INTERRUPTOR", msgB: "CONECTE NO INTERRUPTOR", baloes: ['balao-fase-norma'] },
+            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" }, msgA: "CIRCUITO: LEVE O RETORNO PARA A CAIXA", msgB: "CONECTE NA CAIXA", baloes: ['balao-retorno-cor'] },
+            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54.7%" }, posB: { top: "23%", left: "91%" }, msgA: "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1", msgB: "CONECTE NA LÂMPADA", baloes: [] },
+            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "16%", left: "57%" }, posB: { top: "25%", left: "89%" }, msgA: "CIRCUITO: LEVE O RETORNO À LÂMPADA 1", msgB: "CONECTE NA LÂMPADA", baloes: [] },
+            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" }, msgA: "CIRCUITO: RETORNO À LÂMPADA 2", msgB: "INTERLIGUE", baloes: ['balao-retorno-comum'] },
+            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" }, msgA: "CIRCUITO: NEUTRO À LÂMPADA 2", msgB: "INTERLIGUE", baloes: ['balao-neutro-comum'] }
         ];
 
         function iniciarLaboratorio() {
-            document.getElementById('tela-entrada').style.display = "none";
-            proximaEtapa();
+            document.getElementById('tela-entrada').style.visibility = "hidden";
+            iniciarEtapa();
         }
 
-        function proximaEtapa() {
+        function iniciarEtapa() {
             if (etapaAtual >= etapas.length) { 
                 fiacaoConcluida = true; 
-                txtInstrucao.innerHTML = "FIAÇÃO CONCLUÍDA! TESTE O CIRCUITO.";
-                document.getElementById('painel-dispositivos').style.display = "flex";
+                txtInstrucao.innerHTML = "FIAÇÃO CONCLUÍDA! LIGUE O DG, DR E INTERRUPTOR.";
+                painelDispositivos.style.display = "flex";
                 return; 
             }
-            const c = etapas[etapaAtual];
-            txtInstrucao.innerHTML = c.msgA.replace(/REDE:/g, '<span class="tag-rede">REDE:</span>').replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>');
-            pontoA.className = "ponto-clique " + c.cor;
-            pontoA.style.top = c.posA.t; pontoA.style.left = c.posA.l;
+            const config = etapas[etapaAtual];
+            txtInstrucao.innerHTML = config.msgA.replace(/REDE:/g, '<span class="tag-rede">REDE:</span>').replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>');
+            pontoA.className = "ponto-clique " + config.cor;
+            pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left;
             pontoA.style.display = "block";
-            pontoB.className = "ponto-clique " + c.cor;
-            pontoB.style.top = c.posB.t; pontoB.style.left = c.posB.l;
+            pontoB.className = "ponto-clique " + config.cor;
+            pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left;
             pontoB.style.display = "none";
         }
 
         pontoA.onclick = (e) => { e.stopPropagation(); pontoA.classList.add('verde'); pontoB.style.display = "block"; txtInstrucao.innerHTML = etapas[etapaAtual].msgB; };
+
         pontoB.onclick = (e) => {
             e.stopPropagation(); pontoB.classList.add('verde');
-            let q = 0; const c = etapas[etapaAtual];
-            const imgFio = document.createElement('img'); imgFio.className = "camada-full"; document.getElementById('camadas-fios').appendChild(imgFio);
+            let q = 0; const config = etapas[etapaAtual];
+            const imgFio = document.createElement('img'); imgFio.className = "camada-full"; camadasFios.appendChild(imgFio);
             const timer = setInterval(() => {
-                imgFio.src = c.pasta + "/quadro" + q.toString().padStart(4, '0') + ".png";
-                if (q >= c.max) {
+                imgFio.src = config.pasta + "/quadro" + q.toString().padStart(4, '0') + ".png";
+                if (q >= config.max) {
                     clearInterval(timer);
-                    c.baloes.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => b.style.opacity = "1", 50); });
-                    pontoA.style.display="none"; pontoB.style.display="none"; pontoA.classList.remove('verde');
-                    etapaAtual++; proximaEtapa();
+                    config.baloes.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => b.style.opacity = "1", 50); });
+                    pontoA.style.display = "none"; pontoB.style.display = "none"; pontoA.classList.remove('verde');
+                    etapaAtual++; iniciarEtapa();
                 } q++;
             }, 40);
         };
 
         function verificarCircuito() {
-            if(!fiacaoConcluida) return;
+            if (!fiacaoConcluida) return;
             const dg = document.getElementById('tecla-dg').getAttribute('data-status');
             const dr = document.getElementById('tecla-dr').getAttribute('data-status');
             const int = document.getElementById('tecla-int').getAttribute('data-status');
-            
+
             document.getElementById('status-dg').textContent = dg === 'on' ? '✔️' : '❌';
             document.getElementById('status-dr').textContent = dr === 'on' ? '✔️' : '❌';
             document.getElementById('status-int').textContent = int === 'on' ? '✔️' : '❌';
@@ -259,9 +272,10 @@
                 e.stopPropagation();
                 const s = t.getAttribute('data-status') === 'off' ? 'on' : 'off';
                 t.setAttribute('data-status', s);
-                t.src = (t.id === 'tecla-int' ? 'tec_int_' : t.id.replace('tecla-', 'al_') + '_') + s + ".png";
+                let prefixo = t.id === 'tecla-int' ? 'tec_int_' : t.id.replace('tecla-', 'al_') + '_';
+                t.src = prefixo + s + ".png";
                 verificarCircuito();
-            }
+            };
         });
     </script>
 </body>
