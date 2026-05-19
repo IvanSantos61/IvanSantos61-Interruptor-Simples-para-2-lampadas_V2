@@ -177,28 +177,59 @@
             letter-spacing: 1.5px; line-height: 1.4;
         }
 
-        /* --- QUADRO DE DISPOSITIVOS --- */
+        /* --- NOVO QUADRO DE STATUS (CONFORME FOTO) --- */
+        #quadro-status-circuito {
+            position: absolute;
+            top: 32%;
+            left: 24%;
+            width: 210px;
+            background: rgba(4, 10, 20, 0.95);
+            border: 2px solid #003344;
+            border-radius: 15px;
+            padding: 12px;
+            z-index: 100;
+            display: none; /* Inicialmente oculto */
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .titulo-quadro-status {
+            color: #00f0ff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 5px;
+        }
+
+        .linha-status-dispositivo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid #00f0ff;
+            border-radius: 10px;
+            padding: 4px 12px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-icon {
+            font-size: 16px;
+        }
+
+        .status-icon.ok { color: #00ff00; }
+        .status-icon.no { color: #ff0000; }
+
+        /* --- QUADRO DE DISPOSITIVOS ANTIGO (REMOVIDO DA VISUALIZAÇÃO) --- */
         #quadro-chaves-status {
             display: none;
-            gap: 20px;
-            margin-top: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
         }
-        .item-chave-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px 15px;
-            border-radius: 6px;
-            border: 1px solid #1c2d3d;
-            color: #fff;
-        }
-        .chk-ok { color: #00ff00; }
-        .chk-no { color: #ff3333; }
 
         .tag-circuito { color: #ff3333; font-weight: 900; }
         .tag-rede { color: #00ff00; font-weight: 900; }
@@ -306,6 +337,23 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
+        <!-- NOVO QUADRO DE STATUS (CONFORME FOTO) -->
+        <div id="quadro-status-circuito">
+            <div class="titulo-quadro-status">STATUS DO CIRCUITO</div>
+            <div class="linha-status-dispositivo">
+                <span>DG</span>
+                <span id="icon-dg" class="status-icon no">✘</span>
+            </div>
+            <div class="linha-status-dispositivo">
+                <span>DR</span>
+                <span id="icon-dr" class="status-icon no">✘</span>
+            </div>
+            <div class="linha-status-dispositivo">
+                <span>INT</span>
+                <span id="icon-int" class="status-icon no">✘</span>
+            </div>
+        </div>
+
         <div id="balao-secao" class="balao-informativo">A seção mínima dos fios de iluminação é 1,5mm²<span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span></div>
         <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
         <div id="balao-neutro-norma" class="balao-informativo">O neutro deve ser de cor Azul Claro<span class="txt-norma-vermelho">(Item 6.1.5.3.1 da NBR-5410)</span></div>
@@ -317,188 +365,123 @@
 
         <img src="conector2vias.png" id="conector-neutro" class="acessorio-movel">
         <img src="conector3vias.png" id="conector-neutro-3vias" class="acessorio-movel">
-        
-        <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel" data-status="off">
-        <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel" data-status="off">
-        <img src="tec_int_off.png" id="tecla-int" class="tecla-movel" data-status="off">
 
-        <img src="lamp_on.png" id="lampada1" class="carga-movel">
-        <img src="lamp_on.png" id="lampada2" class="carga-movel">
+        <img src="al_dg_off.png" id="tecla-dg" class="tecla-movel">
+        <img src="al_dr_off.png" id="tecla-dr" class="tecla-movel">
+        <img src="tec_int_off.png" id="tecla-int" class="tecla-movel">
 
-        <div id="placa-concluido">
-            <div class="parafuso p-tl"></div>
-            <div class="parafuso p-tr"></div>
-            <div class="parafuso p-bl"></div>
-            <div class="parafuso p-br"></div>
-            <div id="texto-concluido">✓ Concluído</div>
-        </div>
+        <img src="lampada_acesa.png" id="lampada1" class="carga-movel">
+        <img src="lampada_acesa.png" id="lampada2" class="carga-movel">
 
-        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
-        <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
+        <div id="pontoA" class="ponto-clique"></div>
+        <div id="pontoB" class="ponto-clique"></div>
+
+        <button id="btn-ajuda" class="btn-controle" onclick="abrirAjuda()">AJUDA</button>
+        <button id="btn-reiniciar" class="btn-controle">REINICIAR</button>
 
         <div id="modal-ajuda">
-            <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-                <h3>Ajuda Técnico</h3>
-                <button class="item-ajuda" onclick="abrirGravuraAjuda('ligaint.png')">1. Ligação do Interruptor</button>
-                <button class="item-ajuda" onclick="abrirGravuraAjuda('ligabocal.png')">2. Ligação da Lâmpada</button>
-                <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas4.png')">3. Emendas e conexões (Caixa 01)</button>
-                <button class="item-ajuda" onclick="abrirGravuraAjuda('emendas3.png')">4. Emendas e conexões (Caixa 02)</button>
-                <button class="item-ajuda" onclick="abrirGravuraAjuda('listamat.png')">5. Lista de material</button>
-                <button class="btn-fechar-modal" onclick="fecharModalAjuda()">Fechar</button>
-            </div>
-            <div id="tela-imagem-ajuda" style="display:none; flex-direction:column; align-items:center;">
-                <img src="" id="img-suporte" style="max-width:100%; margin-bottom:15px;">
-                <button class="btn-fechar-modal" onclick="voltarParaListaAjuda()">Voltar</button>
-            </div>
+            <h2 style="color:#00f0ff; margin-bottom:20px;">GUIA DE CONEXÕES</h2>
+            <div id="lista-ajuda"></div>
+            <button class="btn-fechar-modal" onclick="fecharAjuda()">FECHAR</button>
         </div>
 
-        <div id="ponto-A" class="ponto-clique"></div>
-        <div id="ponto-B" class="ponto-clique"></div>
+        <div id="placa-concluido">
+            <div id="texto-concluido">PROJETO CONCLUÍDO!</div>
+        </div>
     </div>
 
-    <script>
-        // --- INSTÂNCIAS DE ÁUDIO ---
-        const somDisjuntor = new Audio('disj.mp3');
-        const somInterruptor = new Audio('int.mp3');
-        const somConexao = new Audio('conexao.mp3');
+    <audio id="som-conexao" src="conexao.mp3"></audio>
+    <audio id="som-luz" src="luz_acesa.mp3" loop></audio>
+    <audio id="som-clique" src="clique.mp3"></audio>
 
-        const camadasFios = document.getElementById('camadas-fios');
-        const pontoA = document.getElementById('ponto-A');
-        const pontoB = document.getElementById('ponto-B');
-        const baloes = [
-            document.getElementById('balao-secao'),
-            document.getElementById('balao-cores'),
-            document.getElementById('balao-neutro-norma'),
-            document.getElementById('balao-fase-norma'),
-            document.getElementById('balao-conector'),
-            document.getElementById('balao-retorno-cor'),
-            document.getElementById('balao-neutro-comum'),
-            document.getElementById('balao-retorno-comum')
+    <script>
+        const etapas = [
+            { nome: "FASE 1", cor: "ponto-fase", pasta: "fase1", max: 32, posA: {top:"28.2%", left:"3.4%"}, posB: {top:"23.5%", left:"11.8%"}, msgA: "CONECTE A <span class='tag-rede'>FASE DA REDE</span> NA ENTRADA DO <span class='tag-circuito'>DG</span>", msgB: "AGORA LEVE ATÉ A ENTRADA DO <span class='tag-circuito'>DG</span>" },
+            { nome: "FASE 2", cor: "ponto-fase", pasta: "fase2", max: 18, posA: {top:"28.2%", left:"11.8%"}, posB: {top:"25.5%", left:"23.2%"}, msgA: "CONECTE A SAÍDA DO <span class='tag-circuito'>DG</span> NA ENTRADA DO <span class='tag-circuito'>DR</span>", msgB: "LEVE O FIO ATÉ A ENTRADA DO <span class='tag-circuito'>DR</span>" },
+            { nome: "NEUTRO 1", cor: "ponto-neutro", pasta: "neutro1", max: 40, posA: {top:"18.3%", left:"3.4%"}, posB: {top:"20.8%", left:"23.2%"}, msgA: "CONECTE O <span class='tag-rede'>NEUTRO DA REDE</span> NA ENTRADA DO <span class='tag-circuito'>DR</span>", msgB: "LEVE O FIO ATÉ A ENTRADA DO <span class='tag-circuito'>DR</span>" },
+            { nome: "FASE 3", cor: "ponto-fase", pasta: "fase3", max: 45, posA: {top:"30.5%", left:"23.2%"}, posB: {top:"53.7%", left:"75.6%"}, msgA: "CONECTE A SAÍDA DE FASE DO <span class='tag-circuito'>DR</span> NA ENTRADA DO <span class='tag-circuito'>INTERRUPTOR</span>", msgB: "LEVE O FIO ATÉ O <span class='tag-circuito'>INTERRUPTOR</span>" },
+            { nome: "RETORNO 1", cor: "ponto-retorno", pasta: "retorno1", max: 35, posA: {top:"56.3%", left:"75.6%"}, posB: {top:"18.2%", left:"78.2%"}, msgA: "CONECTE A SAÍDA DO <span class='tag-circuito'>INTERRUPTOR</span> NO RECEPTÁCULO DA <span class='tag-circuito'>LÂMPADA 1</span>", msgB: "LEVE O FIO ATÉ A <span class='tag-circuito'>LÂMPADA 1</span>" },
+            { nome: "RETORNO 2", cor: "ponto-retorno", pasta: "retorno2", max: 15, posA: {top:"18.2%", left:"78.2%"}, posB: {top:"57.5%", left:"78.2%"}, msgA: "CONECTE O RETORNO DA <span class='tag-circuito'>LÂMPADA 1</span> NO RECEPTÁCULO DA <span class='tag-circuito'>LÂMPADA 2</span>", msgB: "LEVE O FIO ATÉ A <span class='tag-circuito'>LÂMPADA 2</span>" },
+            { nome: "NEUTRO 2", cor: "ponto-neutro", pasta: "neutro2", max: 15, posA: {top:"23.3%", left:"23.2%"}, posB: {top:"23.5%", left:"51.4%"}, msgA: "CONECTE A SAÍDA DE NEUTRO DO <span class='tag-circuito'>DR</span> NO <span class='tag-circuito'>CONECTOR DE 3 VIAS</span>", msgB: "LEVE O FIO ATÉ O <span class='tag-circuito'>CONECTOR</span>" },
+            { nome: "NEUTRO 3", cor: "ponto-neutro", pasta: "neutro3", max: 35, posA: {top:"23.5%", left:"51.4%"}, posB: {top:"18.2%", left:"85.3%"}, msgA: "CONECTE O NEUTRO DO CONECTOR NO RECEPTÁCULO DA <span class='tag-circuito'>LÂMPADA 1</span>", msgB: "LEVE O FIO ATÉ A <span class='tag-circuito'>LÂMPADA 1</span>" },
+            { nome: "NEUTRO 4", cor: "ponto-neutro", pasta: "neutro4", max: 15, posA: {top:"18.2%", left:"85.3%"}, posB: {top:"57.5%", left:"85.3%"}, msgA: "CONECTE O NEUTRO DA <span class='tag-circuito'>LÂMPADA 1</span> NO RECEPTÁCULO DA <span class='tag-circuito'>LÂMPADA 2</span>", msgB: "LEVE O FIO ATÉ A <span class='tag-circuito'>LÂMPADA 2</span>" }
         ];
-        const conectorN2 = document.getElementById('conector-neutro');
-        const conectorN3 = document.getElementById('conector-neutro-3vias');
-        const txtInstrucao = document.getElementById('instrucao');
-        const telaEntrada = document.getElementById('tela-entrada');
-        const placaConcluido = document.getElementById('placa-concluido');
-        const modalAjuda = document.getElementById('modal-ajuda');
-        const quadroStatus = document.getElementById('quadro-chaves-status');
 
         let etapaAtual = 0;
         let fiacaoConcluida = false;
-        let cicloAtivo = false;
-        let placaJaExibida = false;
-        let timerPlaca;
+        const estadosBotoes = { 'tecla-dg': false, 'tecla-dr': false, 'tecla-int': false };
+
+        const txtInstrucao = document.getElementById('instrucao');
+        const camadasFios = document.getElementById('camadas-fios');
+        const pontoA = document.getElementById('pontoA');
+        const pontoB = document.getElementById('pontoB');
+        const lamp1 = document.getElementById('lampada1');
+        const lamp2 = document.getElementById('lampada2');
+        const conectorN2 = document.getElementById('conector-neutro');
+        const conectorN3 = document.getElementById('conector-neutro-3vias');
+        const somConexao = document.getElementById('som-conexao');
+        const somLuz = document.getElementById('som-luz');
+        const somClique = document.getElementById('som-clique');
+
+        function formatarTextoInstrucao(texto) { return texto; }
 
         function iniciarLaboratorio() {
-            telaEntrada.style.opacity = "0";
-            setTimeout(() => { telaEntrada.style.visibility = "hidden"; iniciarEtapa(); }, 500);
+            document.getElementById('tela-entrada').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('tela-entrada').style.visibility = 'hidden';
+                iniciarEtapa();
+            }, 500);
         }
 
-        function formatarTextoInstrucao(texto) {
-            return texto
-                .replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>')
-                .replace(/REDE:/g, '<span class="tag-rede">REDE:</span>');
-        }
-
-        document.getElementById('projeto-container').addEventListener('mousedown', () => {
-            baloes.forEach(b => {
-                if(b.style.display === "block") {
-                    b.style.opacity = "0";
-                    setTimeout(() => { b.style.display = "none"; }, 400);
-                }
+        function abrirAjuda() {
+            const lista = document.getElementById('lista-ajuda');
+            lista.innerHTML = "";
+            etapas.forEach((et, i) => {
+                const item = document.createElement('div');
+                item.className = "item-ajuda";
+                item.style.opacity = i <= etapaAtual ? "1" : "0.4";
+                item.innerHTML = `<strong>${i+1}. ${et.nome}:</strong> ${et.msgA}`;
+                lista.appendChild(item);
             });
-        });
-
-        document.getElementById('btn-ajuda').onclick = () => { modalAjuda.style.display = "flex"; };
-        function fecharModalAjuda() { modalAjuda.style.display = "none"; voltarParaListaAjuda(); }
-        function abrirGravuraAjuda(img) {
-            document.getElementById('menu-lista-ajuda').style.display = "none";
-            document.getElementById('tela-imagem-ajuda').style.display = "flex";
-            document.getElementById('img-suporte').src = img;
+            document.getElementById('modal-ajuda').style.display = "flex";
         }
-        function voltarParaListaAjuda() {
-            document.getElementById('tela-imagem-ajuda').style.display = "none";
-            document.getElementById('menu-lista-ajuda').style.display = "flex";
-        }
-
-        const etapas = [
-            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" }, msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE" },
-            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" }, msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO" },
-            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "56%" }, msgA: "REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR A FASE" },
-            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 24, cor: "ponto-neutro", posA: { top: "76.8%", left: "49%" }, posB: { top: "31%", left: "54.5%" }, msgA: "REDE: LEVE NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO" },
-            { nome: "FASE 3", pasta: "FASE3", max: 30, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" }, msgA: "CIRCUITO: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE" },
-            { nome: "RETORNO 1", pasta: "RETORNO1", max: 36, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" }, msgA: "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.", msgB: "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA" },
-            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 30, cor: "ponto-neutro", posA: { top: "17%", left: "54.7%" }, posB: { top: "23%", left: "91%" }, msgA: "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO" },
-            { nome: "RETORNO 2", pasta: "RETORNO2", max: 30, cor: "ponto-retorno", posA: { top: "16%", left: "57%" }, posB: { top: "25%", left: "89%" }, msgA: "CIRCUITO: LEVE O RETORNO À LÂMPADA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O RETORNO" },
-            { nome: "RETORNO 3", pasta: "RETORNO3", max: 30, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" }, msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O RETORNO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O RETORNO" },
-            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 24, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" }, msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O NEUTRO" }
-        ];
-
-        function atualizarChecklist(dg, dr, int) {
-            const chkDG = document.getElementById('chk-dg');
-            const chkDR = document.getElementById('chk-dr');
-            const chkInt = document.getElementById('chk-int');
-
-            if (dg === 'on') { chkDG.innerHTML = "✔ ON"; chkDG.className = "chk-ok"; }
-            else { chkDG.innerHTML = "✖ OFF"; chkDG.className = "chk-no"; }
-
-            if (dr === 'on') { chkDR.innerHTML = "✔ ON"; chkDR.className = "chk-ok"; }
-            else { chkDR.innerHTML = "✖ OFF"; chkDR.className = "chk-no"; }
-
-            if (int === 'on') { chkInt.innerHTML = "✔ ON"; chkInt.className = "chk-ok"; }
-            else { chkInt.innerHTML = "✖ OFF"; chkInt.className = "chk-no"; }
-        }
+        function fecharAjuda() { document.getElementById('modal-ajuda').style.display = "none"; }
 
         function verificarCircuito() {
-            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
-            const dr = document.getElementById('tecla-dr').getAttribute('data-status');
-            const int = document.getElementById('tecla-int').getAttribute('data-status');
+            const dgOn = estadosBotoes['tecla-dg'];
+            const drOn = estadosBotoes['tecla-dr'];
+            const intOn = estadosBotoes['tecla-int'];
 
-            if (fiacaoConcluida) {
-                quadroStatus.style.display = "flex";
-                atualizarChecklist(dg, dr, int);
-            }
+            // Atualiza o novo quadro visual (ícones Check/X)
+            const iconDG = document.getElementById('icon-dg');
+            const iconDR = document.getElementById('icon-dr');
+            const iconInt = document.getElementById('icon-int');
 
-            if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-                document.getElementById('lampada1').style.display = "block";
-                document.getElementById('lampada2').style.display = "block";
-                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
-                cicloAtivo = true; // Circuito testado com sucesso
+            if (dgOn) { iconDG.innerText = "✔"; iconDG.className = "status-icon ok"; } else { iconDG.innerText = "✘"; iconDG.className = "status-icon no"; }
+            if (drOn) { iconDR.innerText = "✔"; iconDR.className = "status-icon ok"; } else { iconDR.innerText = "✘"; iconDR.className = "status-icon no"; }
+            if (intOn) { iconInt.innerText = "✔"; iconInt.className = "status-icon ok"; } else { iconInt.innerText = "✘"; iconInt.className = "status-icon no"; }
+
+            if (!fiacaoConcluida) return;
+
+            if (dgOn && drOn && intOn) {
+                txtInstrucao.innerHTML = '<span class="status-aceso">CIRCUITO ENERGIZADO - LÂMPADAS ACESAS</span>';
+                lamp1.style.display = "block"; lamp2.style.display = "block";
+                if (somLuz.paused) somLuz.play();
             } else {
-                document.getElementById('lampada1').style.display = "none";
-                document.getElementById('lampada2').style.display = "none";
-                if (fiacaoConcluida) {
-                    // SE o circuito foi testado (cicloAtivo) e a placa AINDA NÃO apareceu
-                    if (cicloAtivo && !placaJaExibida) {
-                        txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
-                        placaConcluido.style.display = "flex";
-                        placaJaExibida = true; // Bloqueia para não aparecer mais
-                        clearTimeout(timerPlaca);
-                        timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
-                    } else {
-                        txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>";
-                    }
-                }
+                // Removida a indicação de (LIGUE: DG, DR, INTERRUPTOR) conforme solicitado
+                txtInstrucao.innerHTML = `<span class="status-apagado">CIRCUITO DESLIGADO</span>`;
+                lamp1.style.display = "none"; lamp2.style.display = "none";
+                somLuz.pause(); somLuz.currentTime = 0;
             }
         }
 
         function alternarTecla(id, prefixo) {
             const el = document.getElementById(id);
-            el.onclick = (e) => {
-                e.stopPropagation();
-                const status = el.getAttribute('data-status');
-                const novoStatus = status === 'off' ? 'on' : 'off';
-                el.src = prefixo + "_" + novoStatus + ".png";
-                el.setAttribute('data-status', novoStatus);
-                
-                if (id === 'tecla-dg' || id === 'tecla-dr') {
-                    somDisjuntor.currentTime = 0;
-                    somDisjuntor.play();
-                } else if (id === 'tecla-int') {
-                    somInterruptor.currentTime = 0;
-                    somInterruptor.play();
-                }
-
+            el.onclick = () => {
+                estadosBotoes[id] = !estadosBotoes[id];
+                el.src = prefixo + (estadosBotoes[id] ? '_on.png' : '_off.png');
+                somClique.currentTime = 0;
+                somClique.play();
                 verificarCircuito();
             };
         }
@@ -508,7 +491,11 @@
         alternarTecla('tecla-int', 'tec_int');
 
         function iniciarEtapa() {
-            if (etapaAtual >= etapas.length) { fiacaoConcluida = true; verificarCircuito(); return; }
+            if (etapaAtual >= etapas.length) { 
+                fiacaoConcluida = true; 
+                verificarCircuito(); 
+                return; 
+            }
             const config = etapas[etapaAtual];
             txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
             pontoA.className = "ponto-clique " + config.cor;
@@ -549,7 +536,12 @@
                     if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
                     if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
                     if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
-                    if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']);
+                    if (config.nome === "NEUTRO 4") {
+                        mostrarBalao(['balao-neutro-comum']);
+                        // Mostrar o quadro de status após a conclusão do último fio (NEUTRO 4)
+                        const quadroStatus = document.getElementById('quadro-status-circuito');
+                        quadroStatus.style.display = "flex";
+                    }
 
                     setTimeout(() => {
                         pontoA.style.display = "none"; pontoB.style.display = "none";
