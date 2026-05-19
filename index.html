@@ -177,24 +177,46 @@
             letter-spacing: 1.5px; line-height: 1.4;
         }
 
-        /* --- NOVO QUADRO DE STATUS (CONFORME FOTO) --- */
-        #quadro-status-circuito {
+        /* --- QUADRO DE DISPOSITIVOS --- */
+        #quadro-chaves-status {
+            display: none;
+            gap: 20px;
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .item-chave-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 6px;
+            border: 1px solid #1c2d3d;
+            color: #fff;
+        }
+        .chk-ok { color: #00ff00; }
+        .chk-no { color: #ff3333; }
+
+        /* --- NOVO QUADRO DE STATUS (ESTILO DA FOTO) --- */
+        #novo-quadro-status {
             position: absolute;
             top: 32%;
             left: 24%;
-            width: 210px;
+            width: 220px;
             background: rgba(4, 10, 20, 0.95);
             border: 2px solid #003344;
             border-radius: 15px;
             padding: 12px;
             z-index: 100;
-            display: none; /* Inicialmente oculto */
+            display: none;
             flex-direction: column;
             gap: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
         }
-
-        .titulo-quadro-status {
+        .titulo-novo-quadro {
             color: #00f0ff;
             text-align: center;
             font-size: 13px;
@@ -205,8 +227,7 @@
             border-bottom: 1px solid rgba(0, 240, 255, 0.2);
             padding-bottom: 5px;
         }
-
-        .linha-status-dispositivo {
+        .linha-novo-status {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -218,18 +239,8 @@
             font-weight: bold;
             font-size: 14px;
         }
-
-        .status-icon {
-            font-size: 16px;
-        }
-
-        .status-icon.ok { color: #00ff00; }
-        .status-icon.no { color: #ff0000; }
-
-        /* --- QUADRO DE DISPOSITIVOS ANTIGO (REMOVIDO DA VISUALIZAÇÃO) --- */
-        #quadro-chaves-status {
-            display: none;
-        }
+        .icon-status.ok { color: #00ff00; }
+        .icon-status.no { color: #ff0000; }
 
         .tag-circuito { color: #ff3333; font-weight: 900; }
         .tag-rede { color: #00ff00; font-weight: 900; }
@@ -337,20 +348,20 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <!-- NOVO QUADRO DE STATUS (CONFORME FOTO) -->
-        <div id="quadro-status-circuito">
-            <div class="titulo-quadro-status">STATUS DO CIRCUITO</div>
-            <div class="linha-status-dispositivo">
+        <!-- NOVO QUADRO DE STATUS (ESTILO DA FOTO) -->
+        <div id="novo-quadro-status">
+            <div class="titulo-novo-quadro">STATUS DO CIRCUITO</div>
+            <div class="linha-novo-status">
                 <span>DG</span>
-                <span id="icon-dg" class="status-icon no">✘</span>
+                <span id="novo-icon-dg" class="icon-status no">✘</span>
             </div>
-            <div class="linha-status-dispositivo">
+            <div class="linha-novo-status">
                 <span>DR</span>
-                <span id="icon-dr" class="status-icon no">✘</span>
+                <span id="novo-icon-dr" class="icon-status no">✘</span>
             </div>
-            <div class="linha-status-dispositivo">
+            <div class="linha-novo-status">
                 <span>INT</span>
-                <span id="icon-int" class="status-icon no">✘</span>
+                <span id="novo-icon-int" class="icon-status no">✘</span>
             </div>
         </div>
 
@@ -452,14 +463,14 @@
             const drOn = estadosBotoes['tecla-dr'];
             const intOn = estadosBotoes['tecla-int'];
 
-            // Atualiza o novo quadro visual (ícones Check/X)
-            const iconDG = document.getElementById('icon-dg');
-            const iconDR = document.getElementById('icon-dr');
-            const iconInt = document.getElementById('icon-int');
-
-            if (dgOn) { iconDG.innerText = "✔"; iconDG.className = "status-icon ok"; } else { iconDG.innerText = "✘"; iconDG.className = "status-icon no"; }
-            if (drOn) { iconDR.innerText = "✔"; iconDR.className = "status-icon ok"; } else { iconDR.innerText = "✘"; iconDR.className = "status-icon no"; }
-            if (intOn) { iconInt.innerText = "✔"; iconInt.className = "status-icon ok"; } else { iconInt.innerText = "✘"; iconInt.className = "status-icon no"; }
+            // Atualiza o novo quadro visual
+            const iconDG = document.getElementById('novo-icon-dg');
+            const iconDR = document.getElementById('novo-icon-dr');
+            const iconInt = document.getElementById('novo-icon-int');
+            
+            if (dgOn) { iconDG.innerText = "✔"; iconDG.className = "icon-status ok"; } else { iconDG.innerText = "✘"; iconDG.className = "icon-status no"; }
+            if (drOn) { iconDR.innerText = "✔"; iconDR.className = "icon-status ok"; } else { iconDR.innerText = "✘"; iconDR.className = "icon-status no"; }
+            if (intOn) { iconInt.innerText = "✔"; iconInt.className = "icon-status ok"; } else { iconInt.innerText = "✘"; iconInt.className = "icon-status no"; }
 
             if (!fiacaoConcluida) return;
 
@@ -468,7 +479,6 @@
                 lamp1.style.display = "block"; lamp2.style.display = "block";
                 if (somLuz.paused) somLuz.play();
             } else {
-                // Removida a indicação de (LIGUE: DG, DR, INTERRUPTOR) conforme solicitado
                 txtInstrucao.innerHTML = `<span class="status-apagado">CIRCUITO DESLIGADO</span>`;
                 lamp1.style.display = "none"; lamp2.style.display = "none";
                 somLuz.pause(); somLuz.currentTime = 0;
@@ -491,11 +501,7 @@
         alternarTecla('tecla-int', 'tec_int');
 
         function iniciarEtapa() {
-            if (etapaAtual >= etapas.length) { 
-                fiacaoConcluida = true; 
-                verificarCircuito(); 
-                return; 
-            }
+            if (etapaAtual >= etapas.length) { fiacaoConcluida = true; verificarCircuito(); return; }
             const config = etapas[etapaAtual];
             txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
             pontoA.className = "ponto-clique " + config.cor;
@@ -539,8 +545,7 @@
                     if (config.nome === "NEUTRO 4") {
                         mostrarBalao(['balao-neutro-comum']);
                         // Mostrar o quadro de status após a conclusão do último fio (NEUTRO 4)
-                        const quadroStatus = document.getElementById('quadro-status-circuito');
-                        quadroStatus.style.display = "flex";
+                        document.getElementById('novo-quadro-status').style.display = "flex";
                     }
 
                     setTimeout(() => {
