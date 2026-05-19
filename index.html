@@ -15,7 +15,7 @@
             width: 100vw; height: 100vh; overflow: hidden;
         }
 
-        /* --- TELA DE ENTRADA ORIGINAL --- */
+        /* --- TELA DE ENTRADA (LAYOUT IVAN SANTOS) --- */
         #tela-entrada {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: #060b13; z-index: 1000;
@@ -39,7 +39,7 @@
         }
         @keyframes pulsarBotao { 0%, 100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); } }
 
-        /* --- BALÕES INFORMATIVOS ORIGINAIS --- */
+        /* --- BALÕES INFORMATIVOS (NBR 5410) --- */
         .balao-informativo {
             position: absolute; background: rgba(4, 10, 20, 0.95);
             border-radius: 12px; padding: 15px; color: #fff; font-size: 14px;
@@ -55,16 +55,16 @@
         #balao-neutro-comum { width: 170px; top: 11.5%; left: 74.3%; border: 2px solid #0096ff; background: rgba(255, 0, 0, 0.95); }
         #balao-retorno-comum { width: 195px; top: 15%; left: 70%; border: 2px solid #ffa500; background: rgba(255, 0, 0, 0.95); }
 
-        /* --- INTERFACE --- */
+        /* --- INTERFACE E STATUS --- */
         #titulo-sistema { color: #00f0ff; font-size: 40px; margin-top: 2.5vh; text-transform: uppercase; }
-        #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto; padding: 20px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; min-height: 80px; }
+        #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto; padding: 20px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; }
         #instrucao { color: #ffd700; font-size: 20px; font-weight: bold; text-transform: uppercase; }
         
         #projeto-container { position: relative; display: inline-block; border: 2px solid #1f2937; }
         .imagem-base { max-width: 95vw; max-height: 70vh; display: block; border-radius: 8px; }
         .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
-        /* PAINEL LATERAL (STATUS) - INICIA OCULTO */
+        /* PAINEL LATERAL - SÓ APARECE NO FINAL */
         #painel-lateral-status {
             position: absolute; top: 48%; left: 60.5%; width: 220px;
             background: #060b13; border: 2px solid #00f0ff; border-radius: 15px;
@@ -72,7 +72,8 @@
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
         .moldura-item-status { display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; margin: 5px 0; border: 1.5px solid #00f0ff; border-radius: 10px; background: rgba(0, 240, 255, 0.05); }
-        .icone-status-texto { font-size: 22px; line-height: 1; font-weight: bold; }
+        .nome-dispositivo { color: #00f0ff; font-size: 16px; font-weight: 800; }
+        .icone-status-texto { font-size: 22px; line-height: 1; }
         .status-ligado { color: #00ff00; text-shadow: 0 0 10px #00ff00; }
         .status-desligado { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
 
@@ -143,9 +144,9 @@
 
         <div id="painel-lateral-status">
             <div style="color:#00f0ff; font-weight:bold; text-align:center; margin-bottom:12px;">STATUS DO CIRCUITO</div>
-            <div class="moldura-item-status"><span style="color:#00f0ff; font-weight:800;">DG</span><span id="ico-dg" class="icone-status-texto status-desligado">✘</span></div>
-            <div class="moldura-item-status"><span style="color:#00f0ff; font-weight:800;">DR</span><span id="ico-dr" class="icone-status-texto status-desligado">✘</span></div>
-            <div class="moldura-item-status"><span style="color:#00f0ff; font-weight:800;">INT</span><span id="ico-int" class="icone-status-texto status-desligado">✘</span></div>
+            <div class="moldura-item-status"><span class="nome-dispositivo">DG</span><span id="ico-dg" class="icone-status-texto status-desligado">✘</span></div>
+            <div class="moldura-item-status"><span class="nome-dispositivo">DR</span><span id="ico-dr" class="icone-status-texto status-desligado">✘</span></div>
+            <div class="moldura-item-status"><span class="nome-dispositivo">INT</span><span id="ico-int" class="icone-status-texto status-desligado">✘</span></div>
         </div>
 
         <button id="btn-ajuda" class="btn-controle">Ajuda</button>
@@ -184,6 +185,7 @@
         let etapaAtual = 0;
         let fiacaoConcluida = false;
 
+        // ETAPAS E MENSAGENS ORIGINAIS RESTAURADAS
         const etapas = [
             { pasta: "FASE1", max: 24, cor: "ponto-fase", posA: {top:"38%", left:"27%"}, posB: {top:"79.3%", left:"40.5%"}, msgA: "REDE: CLIQUE NO DR PARA INICIAR A FASE", msgB: "LEVE A FASE À CAIXA", balao: "balao-secao" },
             { pasta: "NEUTRO1", max: 54, cor: "ponto-neutro", posA: {top:"32.4%", left:"44.5%"}, posB: {top:"76.5%", left:"40%"}, msgA: "REDE: INICIE O NEUTRO NO BARRAMENTO", msgB: "LEVE O NEUTRO À CAIXA", balao: "balao-neutro-norma" },
@@ -279,6 +281,7 @@
             }, 40);
         };
 
+        // AJUDA
         document.getElementById('btn-ajuda').onclick = () => document.getElementById('modal-ajuda').style.display='flex';
         function abrirAjuda(img) { document.getElementById('menu-lista-ajuda').style.display='none'; document.getElementById('tela-imagem-ajuda').style.display='block'; document.getElementById('img-suporte').src=img; }
         function voltarAjuda() { document.getElementById('menu-lista-ajuda').style.display='flex'; document.getElementById('tela-imagem-ajuda').style.display='none'; }
