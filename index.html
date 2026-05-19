@@ -555,13 +555,17 @@
             imgFio.className = "camada-full";
             camadasFios.appendChild(imgFio);
             
+            // CADÊNCIA AJUSTADA PARA 50MS PARA PERMITIR DESCOMPRESSÃO DE IMAGEM
             const timer = setInterval(() => {
-                imgFio.src = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
+                const proximoCaminho = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
                 
-                // LÓGICA DE PRÉ-CARREGAMENTO PARA ELIMINAR DELAY E PANCADA
+                // PRÉ-CARREGAMENTO AGRESSIVO
                 if (quadroAtual + 1 <= config.max) {
-                    new Image().src = config.pasta + "/quadro" + (quadroAtual + 1).toString().padStart(4, '0') + ".png";
+                    const pre = new Image();
+                    pre.src = config.pasta + "/quadro" + (quadroAtual + 1).toString().padStart(4, '0') + ".png";
                 }
+
+                imgFio.src = proximoCaminho;
 
                 if (quadroAtual >= config.max) {
                     clearInterval(timer);
@@ -583,7 +587,7 @@
                         iniciarEtapa();
                     }, 600);
                 } else { quadroAtual++; }
-            }, 30); 
+            }, 50); 
         };
 
         function mostrarBalao(ids) {
