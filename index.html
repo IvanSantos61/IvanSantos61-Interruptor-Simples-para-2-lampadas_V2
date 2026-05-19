@@ -204,35 +204,60 @@
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
 
-        /* --- NOVO QUADRO DE DISPOSITIVOS --- */
+        /* --- PAINEL DE DISPOSITIVOS ATUALIZADO (Padrão Gravura) --- */
         #painel-dispositivos {
             position: absolute;
-            top: 55%;
+            top: 55%; /* Centralizado verticalmente */
             left: 4.5%;
             width: 200px;
             background: rgba(4, 10, 20, 0.9);
-            border: 2px solid #00f0ff;
+            border: 2px solid #1f2937; /* Borda externa escura padrão */
             border-radius: 10px;
             padding: 12px;
             z-index: 110;
             display: none;
             flex-direction: column;
             gap: 8px;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
             font-family: 'Segoe UI', Arial, sans-serif;
         }
-        .item-dispositivo {
+
+        #titulo-dispositivos {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #00f0ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+        }
+
+        .container-item {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 6px 10px;
+            background: #040a14;
+            border: 1.5px solid #00f0ff; /* Borda ciano padrão em cada item */
+            border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+
+        .label-dispositivo {
+            font-size: 13px;
+            font-weight: 700;
             color: #ffffff;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .status-emoji {
             font-size: 16px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
+
+        /* --- FIM DO PAINEL ATUALIZADO --- */
 
         #modal-ajuda {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -324,13 +349,21 @@
         <img src="lamp_on.png" id="lampada1" class="carga-movel">
         <img src="lamp_on.png" id="lampada2" class="carga-movel">
 
-        <!-- NOVO PAINEL DE DISPOSITIVOS -->
         <div id="painel-dispositivos">
-            <div class="item-dispositivo"><span>DG:</span><span id="status-dg" class="status-emoji">❌</span></div>
-            <div class="item-dispositivo"><span>DR:</span><span id="status-dr" class="status-emoji">❌</span></div>
-            <div class="item-dispositivo"><span>INTERRUPTOR:</span><span id="status-int" class="status-emoji">❌</span></div>
+            <div id="titulo-dispositivos">Status do Circuito</div>
+            <div class="container-item">
+                <span class="label-dispositivo">DG:</span>
+                <span id="status-dg" class="status-emoji">❌</span>
+            </div>
+            <div class="container-item">
+                <span class="label-dispositivo">DR:</span>
+                <span id="status-dr" class="status-emoji">❌</span>
+            </div>
+            <div class="container-item">
+                <span class="label-dispositivo">INT:</span>
+                <span id="status-int" class="status-emoji">❌</span>
+            </div>
         </div>
-
         <div id="placa-concluido">
             <div class="parafuso p-tl"></div>
             <div class="parafuso p-tr"></div>
