@@ -129,12 +129,13 @@
             line-height: 1.4;
         }
 
+        #balao-secao font-size: 14px; text-align: center; z-index: 120; pointer-events: none; opacity: 0; display: none; transition: opacity 0.4s ease; line-height: 1.4; }
         #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-conector { width: 210px; top: 16.3%; left: 34%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
         #balao-retorno-cor { width: 220px; top: 40%; left: 44.3%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); }
         #balao-retorno-comum { width: 195px; top: 15%; left: 70%; border: 2px solid #ffa500; box-shadow: 0 0 20px rgba(255, 165, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
-        #balao-cores { width: 230px; top: 15%; left: 75%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        #balao-cores { width: 230px; top: 68%; left: 4.5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
         #balao-neutro-comum { width: 170px; top: 11.5%; left: 74.3%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
 
@@ -408,4 +409,116 @@
             const int = document.getElementById('tecla-int').getAttribute('data-status');
 
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
-               
+                document.getElementById('lampada1').style.display = "block";
+                document.getElementById('lampada2').style.display = "block";
+                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
+                cicloAtivo = true; // O circuito chegou a ligar com sucesso pelo menos uma vez
+            } else {
+                document.getElementById('lampada1').style.display = "none";
+                document.getElementById('lampada2').style.display = "none";
+                if (fiacaoConcluida) {
+                    // Verifica se o ciclo foi ativo e se a placa ainda NÃO foi exibida
+                    if (cicloAtivo && !placaJaExibida) {
+                        txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
+                        placaConcluido.style.display = "flex";
+                        placaJaExibida = true; // Bloqueia futuras exibições
+                        clearTimeout(timerPlaca);
+                        timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
+                    } else {
+                        txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>";
+                    }
+                }
+            }
+        }
+
+        function alternarTecla(id, prefixo) {
+            const el = document.getElementById(id);
+            el.onclick = (e) => {
+                e.stopPropagation();
+                const status = el.getAttribute('data-status');
+                const novoStatus = status === 'off' ? 'on' : 'off';
+                el.src = prefixo + "_" + novoStatus + ".png";
+                el.setAttribute('data-status', novoStatus);
+                
+                if (id === 'tecla-dg' || id === 'tecla-dr') {
+                    somDisjuntor.currentTime = 0;
+                    somDisjuntor.play();
+                } else if (id === 'tecla-int') {
+                    somInterruptor.currentTime = 0;
+                    somInterruptor.play();
+                }
+
+                verificarCircuito();
+            };
+        }
+
+        alternarTecla('tecla-dg', 'al_dg');
+        alternarTecla('tecla-dr', 'al_dr');
+        alternarTecla('tecla-int', 'tec_int');
+
+        function iniciarEtapa() {
+            if (etapaAtual >= etapas.length) { fiacaoConcluida = true; verificarCircuito(); return; }
+            const config = etapas[etapaAtual];
+            txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
+            pontoA.className = "ponto-clique " + config.cor;
+            pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left;
+            pontoA.style.display = "block";
+            pontoB.className = "ponto-clique " + config.cor;
+            pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left;
+            pontoB.style.display = "none";
+        }
+
+        pontoA.onclick = (e) => {
+            e.stopPropagation();
+            pontoA.classList.add('verde');
+            txtInstrucao.innerHTML = formatarTextoInstrucao(etapas[etapaAtual].msgB);
+            pontoB.style.display = "block";
+        };
+
+        pontoB.onclick = (e) => {
+            e.stopPropagation();
+            pontoB.classList.add('verde');
+            let quadroAtual = 0;
+            const config = etapas[etapaAtual];
+            const imgFio = document.createElement('img');
+            imgFio.className = "camada-full";
+            camadasFios.appendChild(imgFio);
+            
+            const timer = setInterval(() => {
+                imgFio.src = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
+                if (quadroAtual >= config.max) {
+                    clearInterval(timer);
+                    
+                    somConexao.currentTime = 0;
+                    somConexao.play();
+                    
+                    if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
+                    if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
+                    if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
+                    if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
+                    if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
+                    if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
+                    if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']);
+
+                    setTimeout(() => {
+                        pontoA.style.display = "none"; pontoB.style.display = "none";
+                        pontoA.classList.remove('verde'); pontoB.classList.remove('verde');
+                        etapaAtual++;
+                        iniciarEtapa();
+                    }, 600);
+                } else { quadroAtual++; }
+            }, 40);
+        };
+
+        function mostrarBalao(ids) {
+            ids.forEach(id => {
+                const b = document.getElementById(id);
+                b.style.display = "block";
+                setTimeout(() => { b.style.opacity = "1"; }, 50);
+            });
+        }
+
+        document.getElementById('btn-reiniciar').onclick = () => { location.reload(); };
+    </script>
+</body>
+</html>
