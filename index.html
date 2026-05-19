@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -251,7 +252,6 @@
       .status-apagado { background: #b80000!important; color: #ffffff!important; padding: 8px 30px; border-radius: 20px; }
       .txt-vermelho { color: #ff3333; font-weight: bold; }
 
-      /* NOVO: Quadro de Status dos Dispositivos */
       #quadro-status {
             position: absolute;
             top: 10%;
@@ -309,7 +309,6 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <!-- NOVO: Quadro de Status -->
         <div id="quadro-status">
             <h3>Status Circuito</h3>
             <div class="status-item">
@@ -374,12 +373,11 @@
 
         <div id="ponto-A" class="ponto-clique"></div>
         <div id="ponto-B" class="ponto-clique"></div>
-    </div>
-    const dg = document.getElementById('tecla-dg').getAttribute('data-status');
+    </div>            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
     const dr = document.getElementById('tecla-dr').getAttribute('data-status');
     const int = document.getElementById('tecla-int').getAttribute('data-status');
 
-    // NOVO: Atualiza quadro sempre que verificar circuito
+    // Atualiza o quadro de status sempre que verificar o circuito
     atualizarQuadroStatus();
 
     if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
@@ -399,6 +397,9 @@
                 timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
             } else {
                 txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>";
+                // MOSTRA O QUADRO DE STATUS quando a fiação termina
+                quadroStatus.style.display = "block";
+                atualizarQuadroStatus();
             }
         }
     }
@@ -432,19 +433,18 @@ alternarTecla('tecla-int', 'tec_int');
 function iniciarEtapa() {
     if (etapaAtual >= etapas.length) {
         fiacaoConcluida = true;
-        // NOVO: Mostra o quadro quando termina a fiação
-        quadroStatus.style.display = "block";
-        atualizarQuadroStatus();
         verificarCircuito();
         return;
     }
     const config = etapas[etapaAtual];
     txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
     pontoA.className = "ponto-clique " + config.cor;
-    pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left;
+    pontoA.style.top = config.posA.top;
+    pontoA.style.left = config.posA.left;
     pontoA.style.display = "block";
     pontoB.className = "ponto-clique " + config.cor;
-    pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left;
+    pontoB.style.top = config.posB.top;
+    pontoB.style.left = config.posB.left;
     pontoB.style.display = "none";
 }
 
@@ -481,12 +481,16 @@ pontoB.onclick = (e) => {
             if (config.nome === "NEUTRO 4") mostrarBalao(['balao-neutro-comum']);
 
             setTimeout(() => {
-                pontoA.style.display = "none"; pontoB.style.display = "none";
-                pontoA.classList.remove('verde'); pontoB.classList.remove('verde');
+                pontoA.style.display = "none";
+                pontoB.style.display = "none";
+                pontoA.classList.remove('verde');
+                pontoB.classList.remove('verde');
                 etapaAtual++;
                 iniciarEtapa();
             }, 600);
-        } else { quadroAtual++; }
+        } else {
+            quadroAtual++;
+        }
     }, 40);
 };
 
