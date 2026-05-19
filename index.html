@@ -182,7 +182,7 @@
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
 
-        /* --- ESTILO DO NOVO PAINEL (FIGURINHAS CSS) --- */
+        /* --- ESTILO DO PAINEL DE STATUS (FIGURINHAS CSS) --- */
         #painel-dispositivos {
             position: absolute; top: 52%; left: 4.5%; width: 200px;
             background: rgba(4, 10, 20, 0.95); border: 2px solid #1f2937;
@@ -339,6 +339,19 @@
         let cicloAtivo = false;
         let placaJaExibida = false;
 
+        // --- CORREÇÃO: FUNÇÃO PARA LIMPAR BALÕES ---
+        function limparBaloes() {
+            baloes.forEach(b => {
+                if(b.style.display === "block") {
+                    b.style.opacity = "0";
+                    setTimeout(() => { b.style.display = "none"; }, 400);
+                }
+            });
+        }
+
+        // --- EVENTO DE CLIQUE NO CONTAINER PARA LIMPAR ---
+        document.getElementById('projeto-container').addEventListener('mousedown', limparBaloes);
+
         function iniciarLaboratorio() {
             telaEntrada.style.opacity = "0";
             setTimeout(() => { telaEntrada.style.visibility = "hidden"; iniciarEtapa(); }, 500);
@@ -401,7 +414,8 @@
 
         function alternarTecla(id, prefixo) {
             const el = document.getElementById(id);
-            el.onclick = () => {
+            el.onclick = (e) => {
+                e.stopPropagation(); // Evita limpar balões ao clicar nas teclas
                 const status = el.getAttribute('data-status');
                 const novoStatus = status === 'off' ? 'on' : 'off';
                 el.src = prefixo + "_" + novoStatus + ".png";
@@ -425,8 +439,15 @@
             pontoB.style.display = "none";
         }
 
-        pontoA.onclick = () => { pontoA.classList.add('verde'); pontoB.style.display = "block"; txtInstrucao.innerHTML = formatarTextoInstrucao(etapas[etapaAtual].msgB); };
-        pontoB.onclick = () => {
+        pontoA.onclick = (e) => { 
+            e.stopPropagation();
+            pontoA.classList.add('verde'); 
+            pontoB.style.display = "block"; 
+            txtInstrucao.innerHTML = formatarTextoInstrucao(etapas[etapaAtual].msgB); 
+        };
+
+        pontoB.onclick = (e) => {
+            e.stopPropagation();
             pontoB.classList.add('verde');
             let q = 0; const c = etapas[etapaAtual];
             const imgFio = document.createElement('img'); imgFio.className = "camada-full"; camadasFios.appendChild(imgFio);
