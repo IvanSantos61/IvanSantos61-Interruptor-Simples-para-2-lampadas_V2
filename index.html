@@ -201,7 +201,7 @@
         .chk-no { color: #ff3333; }
 
         /* --- NOVO QUADRO DE STATUS (ESTILO DA FOTO) --- */
-        #novo-quadro-status {
+        #novo-quadro-visual {
             position: absolute;
             top: 32%;
             left: 24%;
@@ -348,20 +348,20 @@
         <img src="ambiente.jpg" class="imagem-base">
         <div id="camadas-fios"></div>
 
-        <!-- NOVO QUADRO DE STATUS (ESTILO DA FOTO) -->
-        <div id="novo-quadro-status">
+        <!-- NOVO QUADRO VISUAL -->
+        <div id="novo-quadro-visual">
             <div class="titulo-novo-quadro">STATUS DO CIRCUITO</div>
             <div class="linha-novo-status">
                 <span>DG</span>
-                <span id="novo-icon-dg" class="icon-status no">✘</span>
+                <span id="v-icon-dg" class="icon-status no">✘</span>
             </div>
             <div class="linha-novo-status">
                 <span>DR</span>
-                <span id="novo-icon-dr" class="icon-status no">✘</span>
+                <span id="v-icon-dr" class="icon-status no">✘</span>
             </div>
             <div class="linha-novo-status">
                 <span>INT</span>
-                <span id="novo-icon-int" class="icon-status no">✘</span>
+                <span id="v-icon-int" class="icon-status no">✘</span>
             </div>
         </div>
 
@@ -464,9 +464,9 @@
             const intOn = estadosBotoes['tecla-int'];
 
             // Atualiza o novo quadro visual
-            const iconDG = document.getElementById('novo-icon-dg');
-            const iconDR = document.getElementById('novo-icon-dr');
-            const iconInt = document.getElementById('novo-icon-int');
+            const iconDG = document.getElementById('v-icon-dg');
+            const iconDR = document.getElementById('v-icon-dr');
+            const iconInt = document.getElementById('v-icon-int');
             
             if (dgOn) { iconDG.innerText = "✔"; iconDG.className = "icon-status ok"; } else { iconDG.innerText = "✘"; iconDG.className = "icon-status no"; }
             if (drOn) { iconDR.innerText = "✔"; iconDR.className = "icon-status ok"; } else { iconDR.innerText = "✘"; iconDR.className = "icon-status no"; }
@@ -544,8 +544,8 @@
                     if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
                     if (config.nome === "NEUTRO 4") {
                         mostrarBalao(['balao-neutro-comum']);
-                        // Mostrar o quadro de status após a conclusão do último fio (NEUTRO 4)
-                        document.getElementById('novo-quadro-status').style.display = "flex";
+                        // Mostrar o quadro visual apenas após o Neutro 4
+                        document.getElementById('novo-quadro-visual').style.display = "flex";
                     }
 
                     setTimeout(() => {
