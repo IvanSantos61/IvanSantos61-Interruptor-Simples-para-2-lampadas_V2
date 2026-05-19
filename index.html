@@ -295,6 +295,7 @@
     
     <div id="painel-status">
         <span id="instrucao">CARREGANDO...</span>
+        <!-- QUADRO DE STATUS DAS CHAVES (CHECKLIST) -->
         <div id="quadro-chaves-status">
             <div class="item-chave-status">DG: <span id="chk-dg" class="chk-no">✖ OFF</span></div>
             <div class="item-chave-status">DR: <span id="chk-dr" class="chk-no">✖ OFF</span></div>
@@ -463,16 +464,15 @@
                 document.getElementById('lampada1').style.display = "block";
                 document.getElementById('lampada2').style.display = "block";
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>";
-                cicloAtivo = true; // Circuito testado com sucesso
+                cicloAtivo = true;
             } else {
                 document.getElementById('lampada1').style.display = "none";
                 document.getElementById('lampada2').style.display = "none";
                 if (fiacaoConcluida) {
-                    // SE o circuito foi testado (cicloAtivo) e a placa AINDA NÃO apareceu
                     if (cicloAtivo && !placaJaExibida) {
                         txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
                         placaConcluido.style.display = "flex";
-                        placaJaExibida = true; // Bloqueia para não aparecer mais
+                        placaJaExibida = true;
                         clearTimeout(timerPlaca);
                         timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
                     } else {
