@@ -7,15 +7,8 @@
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; background-color: #060b13; color: #ffd700; font-family: 'Segoe UI', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; width: 100vw; height: 100vh; overflow: hidden; }
-        
-        /* --- ESTILOS DO CHECKLIST AUTOMÁTICO --- */
-        #modal-checklist-auto { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        .box-check { background: #060b13; border: 3px solid #ffd700; padding: 30px; border-radius: 15px; width: 450px; color: #fff; text-align: center; }
-        .item-ck { margin: 15px 0; font-size: 18px; color: #555; transition: 0.3s; text-align: left; }
-        .item-ck.ativo { color: #00ff00; }
-        #placa-final-check { display: none; margin-top: 25px; padding: 15px; background: #ffd700; color: #000; font-weight: 900; border-radius: 5px; text-transform: uppercase; line-height: 1.4; }
 
-        /* --- SEU CSS ORIGINAL --- */
+        /* --- TELA DE ENTRADA --- */
         #tela-entrada { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #060b13; z-index: 1000; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s; }
         .moldura-entrada { width: 80%; max-width: 900px; height: 70%; max-height: 450px; border: 3px solid #00f0ff; border-radius: 25px; box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
         .intro-entrada { color: #008b8b; font-size: 55px; font-weight: 400; line-height: 1.1; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 139, 139, 0.5); margin: 0 0 10px 0; }
@@ -24,6 +17,8 @@
         .creditos-entrada { color: #445566; font-size: 15px; font-weight: 500; margin-bottom: 30px; }
         .btn-iniciar-lab { background: transparent; border: 2px solid #00f0ff; border-radius: 50px; color: #00f0ff; font-size: 16px; font-weight: bold; text-transform: uppercase; padding: 12px 35px; cursor: pointer; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; animation: pulsarBotao 1.5s infinite; }
         @keyframes pulsarBotao { 0% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); } 100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } }
+        
+        /* --- DEMAIS ELEMENTOS --- */
         .balao-informativo { position: absolute; background: rgba(4, 10, 20, 0.95); border-radius: 12px; padding: 15px; color: #fff; font-size: 14px; text-align: center; z-index: 120; pointer-events: none; opacity: 0; display: none; transition: opacity 0.4s ease; line-height: 1.4; }
         #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
@@ -82,20 +77,6 @@
     </style>
 </head>
 <body>
-
-    <div id="modal-checklist-auto">
-        <div class="box-check">
-            <h2 style="color:#ffd700; margin-top:0;">⚡ Inspeção NBR 5410</h2>
-            <div id="lista-checklist">
-                <div class="item-ck">✔ Seccionamento da Fase</div>
-                <div class="item-ck">✔ Identificação do Neutro</div>
-                <div class="item-ck">✔ Uso de Conectores</div>
-                <div class="item-ck">✔ Dimensionamento 1,5mm²</div>
-                <div class="item-ck">✔ Segurança dos Bornes</div>
-            </div>
-            <div id="placa-final-check">INSTALAÇÃO FINALIZADA.<br>TESTE SEU CIRCUITO.</div>
-        </div>
-    </div>
 
     <div id="tela-entrada">
         <div class="moldura-entrada">
@@ -160,76 +141,130 @@
     </div>
 
     <script>
-        // --- ADIÇÃO DE VARIÁVEL DE CONTROLE ---
-        let checklistLiberado = false;
+        const somDisjuntor = new Audio('disj.mp3');
+        const somInterruptor = new Audio('int.mp3');
+        const somConexao = new Audio('conexao.mp3');
+        const camadasFios = document.getElementById('camadas-fios');
+        const pontoA = document.getElementById('ponto-A');
+        const pontoB = document.getElementById('ponto-B');
+        const baloes = [document.getElementById('balao-secao'), document.getElementById('balao-cores'), document.getElementById('balao-neutro-norma'), document.getElementById('balao-fase-norma'), document.getElementById('balao-conector'), document.getElementById('balao-retorno-cor'), document.getElementById('balao-neutro-comum'), document.getElementById('balao-retorno-comum')];
+        const conectorN2 = document.getElementById('conector-neutro');
+        const conectorN3 = document.getElementById('conector-neutro-3vias');
+        const txtInstrucao = document.getElementById('instrucao');
+        const telaEntrada = document.getElementById('tela-entrada');
+        const placaConcluido = document.getElementById('placa-concluido');
+        const modalAjuda = document.getElementById('modal-ajuda');
+        const painelDispositivos = document.getElementById('painel-dispositivos');
+        let etapaAtual = 0;
+        let fiacaoConcluida = false;
+        let cicloAtivo = false;
+        let placaJaExibida = false;
+        let timerPlaca;
 
-        // --- LÓGICA DO CHECKLIST AUTOMÁTICO ---
-        function dispararChecklist() {
-            const modal = document.getElementById('modal-checklist-auto');
-            const itens = document.querySelectorAll('.item-ck');
-            const placa = document.getElementById('placa-final-check');
-            modal.style.display = 'flex';
-            itens.forEach((item, index) => {
-                setTimeout(() => {
-                    item.classList.add('ativo');
-                    if (index === itens.length - 1) {
-                        setTimeout(() => {
-                            placa.style.display = 'block';
-                            setTimeout(() => { checklistLiberado = true; }, 500);
-                        }, 800);
-                    }
-                }, (index + 1) * 1000);
-            });
-        }
-        document.getElementById('modal-checklist-auto').addEventListener('click', () => {
-            if (checklistLiberado) {
-                document.getElementById('modal-checklist-auto').style.display = 'none';
-                checklistLiberado = false;
+        function iniciarLaboratorio() { telaEntrada.style.opacity = "0"; setTimeout(() => { telaEntrada.style.visibility = "hidden"; iniciarEtapa(); }, 500); }
+        function formatarTextoInstrucao(texto) { return texto.replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>').replace(/REDE:/g, '<span class="tag-rede">REDE:</span>'); }
+        document.getElementById('projeto-container').addEventListener('mousedown', () => { baloes.forEach(b => { if(b.style.display === "block") { b.style.opacity = "0"; setTimeout(() => { b.style.display = "none"; }, 400); } }); });
+        document.getElementById('btn-ajuda').onclick = () => { modalAjuda.style.display = "flex"; };
+        function fecharModalAjuda() { modalAjuda.style.display = "none"; voltarParaListaAjuda(); }
+        function abrirGravuraAjuda(img) { document.getElementById('menu-lista-ajuda').style.display = "none"; document.getElementById('tela-imagem-ajuda').style.display = "flex"; document.getElementById('img-suporte').src = img; }
+        function voltarParaListaAjuda() { document.getElementById('tela-imagem-ajuda').style.display = "none"; document.getElementById('menu-lista-ajuda').style.display = "flex"; }
+
+        const etapas = [
+            { nome: "FASE 1", pasta: "FASE1", max: 24, cor: "ponto-fase", posA: { top: "38%", left: "27%" }, posB: { top: "79.3%", left: "40.5%" }, msgA: "REDE: CLIQUE NA REFERENCIA INDICADA NO DR, PARA INICIAR A PASSAGEM DA FASE", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR A FASE" },
+            { nome: "NEUTRO 1", pasta: "NEUTRO1", max: 47, cor: "ponto-neutro", posA: { top: "32.4%", left: "44.5%" }, posB: { top: "76.5%", left: "40%" }, msgA: "REDE: CLIQUE NA REFERÊNCIA INDICADA NO BARRAMENTO PARA INICIAR A PASSAGEM DO NEUTRO", msgB: "REDE: CLIQUE NO PONTO INDICADO NA CAIXA DE PASSAGEM, PARA LEVAR O NEUTRO" },
+            { nome: "FASE 2", pasta: "FASE2", max: 24, cor: "ponto-fase", posA: { top: "79%", left: "49%" }, posB: { top: "31%", left: "56%" }, msgA: "REDE: LEVE A FASE ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR A FASE" },
+            { nome: "NEUTRO 2", pasta: "NEUTRO2", max: 23, cor: "ponto-neutro", posA: { top: "76.8%", left: "49%" }, posB: { top: "31%", left: "54.5%" }, msgA: "REDE: LEVE NEUTRO ATÉ A PRÓXIMA CAIXA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "REDE: CLIQUE NA REFERENCIA INDICADA NA CAIXA PARA LEVAR O NEUTRO" },
+            { nome: "FASE 3", pasta: "FASE3", max: 29, cor: "ponto-fase", posA: { top: "16%", left: "56%" }, posB: { top: "56%", left: "72%" }, msgA: "CIRCUITO: LEVE A FASE AO INTERRUPTOR. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR PARA LEVAR A FASE" },
+            { nome: "RETORNO 1", pasta: "RETORNO1", max: 34, cor: "ponto-retorno", posA: { top: "62%", left: "72%" }, posB: { top: "30%", left: "57%" }, msgA: "CIRCUITO: LEVE O RETORNO PARA A CAIXA DE PASSAGEM. CLIQUE NA REFERENCIA INDICADA NO INTERRUPTOR.", msgB: "CIRCUITO: LEVE O RETORNO AO CONECTOR DE EMENDA. CLIQUE NA REFERENCIA INDICADA NA CAIXA" },
+            { nome: "NEUTRO 3", pasta: "NEUTRO3", max: 29, cor: "ponto-neutro", posA: { top: "17%", left: "54.7%" }, posB: { top: "23%", left: "91%" }, msgA: "CIRCUITO: LEVE O NEUTRO À LÂMPADA 1. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O NEUTRO" },
+            { nome: "RETORNO 2", pasta: "RETORNO2", max: 29, cor: "ponto-retorno", posA: { top: "16%", left: "57%" }, posB: { top: "25%", left: "89%" }, msgA: "CIRCUITO: LEVE O RETORNO À LÂMPADA. CLIQUE NA REFERENCIA INDICADA NO CONECTOR DE EMENDA", msgB: "CIRCUITO: CLIQUE NA REFERENCIA INDICADA NA LÂMPADA PARA LEVAR O RETORNO" },
+            { nome: "RETORNO 3", pasta: "RETORNO3", max: 35, cor: "ponto-retorno", posA: { top: "25%", left: "89%" }, posB: { top: "64%", left: "89%" }, msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O RETORNO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O RETORNO" },
+            { nome: "NEUTRO 4", pasta: "NEUTRO4", max: 23, cor: "ponto-neutro", posA: { top: "25%", left: "91.5%" }, posB: { top: "63%", left: "91%" }, msgA: "CIRCUITO: CLIQUE NA REFERENCIA DA LAMPADA 1 PARA LEVAR O NEUTRO PARA A LÂMPADA 2", msgB: "CIRCUITO: CLIQUE NA REFERENCIA DA LÂMPADA 2 PARA INTERLIGAR O NEUTRO" }
+        ];
+
+        function verificarCircuito() {
+            const dg = document.getElementById('tecla-dg').getAttribute('data-status');
+            const dr = document.getElementById('tecla-dr').getAttribute('data-status');
+            const int = document.getElementById('tecla-int').getAttribute('data-status');
+            if (fiacaoConcluida) {
+                painelDispositivos.style.display = "flex";
+                const elDg = document.getElementById('status-dg'); elDg.textContent = dg === 'on' ? '✔' : '✘'; elDg.style.color = dg === 'on' ? '#00ff00' : '#ff3333';
+                const elDr = document.getElementById('status-dr'); elDr.textContent = dr === 'on' ? '✔' : '✘'; elDr.style.color = dr === 'on' ? '#00ff00' : '#ff3333';
+                const elInt = document.getElementById('status-int'); elInt.textContent = int === 'on' ? '✔' : '✘'; elInt.style.color = int === 'on' ? '#00ff00' : '#ff3333';
             }
-        });
+            if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
+                document.getElementById('lampada1').style.display = "block"; document.getElementById('lampada2').style.display = "block";
+                txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>"; cicloAtivo = true;
+            } else {
+                document.getElementById('lampada1').style.display = "none"; document.getElementById('lampada2').style.display = "none";
+                if (fiacaoConcluida) {
+                    if (cicloAtivo && !placaJaExibida) {
+                        txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>"; placaConcluido.style.display = "flex"; placaJaExibida = true; clearTimeout(timerPlaca);
+                        timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
+                    } else { txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>"; }
+                }
+            }
+        }
 
-        // ... (O RESTO DO SEU SCRIPT ORIGINAL AQUI) ...
-        // ... (MANTENHA TUDO IGUAL ATÉ O pontoB.onclick) ...
+        function alternarTecla(id, prefixo) {
+            const el = document.getElementById(id);
+            el.onclick = (e) => { e.stopPropagation(); const status = el.getAttribute('data-status'); const novoStatus = status === 'off' ? 'on' : 'off'; el.src = prefixo + "_" + novoStatus + ".png"; el.setAttribute('data-status', novoStatus); if (id === 'tecla-dg' || id === 'tecla-dr') { somDisjuntor.currentTime = 0; somDisjuntor.play(); } else if (id === 'tecla-int') { somInterruptor.currentTime = 0; somInterruptor.play(); } verificarCircuito(); };
+        }
+        alternarTecla('tecla-dg', 'al_dg'); alternarTecla('tecla-dr', 'al_dr'); alternarTecla('tecla-int', 'tec_int');
 
-        // --- ALTERAÇÃO NO PONTO B ---
-        pontoB.onclick = (e) => {
-            e.stopPropagation();
-            pontoB.classList.add('verde');
-            let quadroAtual = 0;
+        function iniciarEtapa() {
+            if (etapaAtual >= etapas.length) { fiacaoConcluida = true; verificarCircuito(); return; }
             const config = etapas[etapaAtual];
-            const imgFio = document.createElement('img');
-            imgFio.className = "camada-full";
-            camadasFios.appendChild(imgFio);
+            txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
+            pontoA.className = "ponto-clique " + config.cor; pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left; pontoA.style.display = "block";
+            pontoB.className = "ponto-clique " + config.cor; pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left; pontoB.style.display = "none";
+        }
+
+        pontoA.onclick = (e) => { e.stopPropagation(); pontoA.classList.add('verde'); txtInstrucao.innerHTML = formatarTextoInstrucao(etapas[etapaAtual].msgB); pontoB.style.display = "block"; };
+
+        pontoB.onclick = (e) => {
+            e.stopPropagation(); pontoB.classList.add('verde'); let quadroAtual = 0; const config = etapas[etapaAtual]; const imgFio = document.createElement('img'); imgFio.className = "camada-full"; camadasFios.appendChild(imgFio);
             const timer = setInterval(() => {
                 const proximoCaminho = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
                 if (quadroAtual + 1 <= config.max) { const pre = new Image(); pre.src = config.pasta + "/quadro" + (quadroAtual + 1).toString().padStart(4, '0') + ".png"; }
                 imgFio.src = proximoCaminho;
                 if (quadroAtual >= config.max) {
-                    clearInterval(timer);
-                    somConexao.currentTime = 0; somConexao.play();
-                    
+                    clearInterval(timer); somConexao.currentTime = 0; somConexao.play();
                     if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
                     if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
                     if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
                     if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
                     if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
                     if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
-                    if (config.nome === "NEUTRO 4") {
-                        mostrarBalao(['balao-neutro-comum']);
-                        setTimeout(dispararChecklist, 1500); // <-- GATILHO AUTOMÁTICO
-                    }
-
-                    setTimeout(() => {
-                        pontoA.style.display = "none"; pontoB.style.display = "none";
-                        pontoA.classList.remove('verde'); pontoB.classList.remove('verde');
-                        etapaAtual++;
-                        iniciarEtapa();
-                    }, 600);
+                    if (config.nome === "NEUTRO 4") { mostrarBalao(['balao-neutro-comum']); setTimeout(exibirChecklistFinal, 1000); }
+                    setTimeout(() => { pontoA.style.display = "none"; pontoB.style.display = "none"; pontoA.classList.remove('verde'); pontoB.classList.remove('verde'); etapaAtual++; iniciarEtapa(); }, 600);
                 } else { quadroAtual++; }
-            }, 50); 
+            }, 50);
         };
 
-        // ... MANTENHA O RESTO DO SCRIPT ORIGINAL ...
+        function mostrarBalao(ids) { ids.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => { b.style.opacity = "1"; }, 50); }); }
+
+        // --- LÓGICA DO CHECKLIST FINAL ---
+        function exibirChecklistFinal() {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;';
+            overlay.innerHTML = `<div style="background:#060b13; border:3px solid #ffd700; padding:30px; border-radius:15px; width:400px; color:#fff; text-align:center;">
+                <h2 style="color:#ffd700;">CHECKLIST TÉCNICO</h2>
+                <div id="check-itens" style="text-align:left; font-size:18px;">
+                    <div class="c-item" style="margin:10px 0;">☐ Seccionamento da Fase</div>
+                    <div class="c-item" style="margin:10px 0;">☐ Identificação do Neutro</div>
+                    <div class="c-item" style="margin:10px 0;">☐ Uso de Conectores</div>
+                </div>
+            </div>`;
+            document.body.appendChild(overlay);
+            const itens = overlay.querySelectorAll('.c-item');
+            itens.forEach((it, idx) => {
+                setTimeout(() => { it.textContent = it.textContent.replace('☐', '✔'); it.style.color = '#00ff00'; }, (idx + 1) * 800);
+            });
+            overlay.onclick = () => { overlay.remove(); };
+        }
+
+        document.getElementById('btn-reiniciar').onclick = () => { location.reload(); };
     </script>
 </body>
 </html>
