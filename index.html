@@ -21,114 +21,96 @@
             overflow: hidden;
         }
 
-        /* --- TELA DE ENTRADA --- */
-        #tela-entrada {
+        /* --- ESTILO DO MODAL CHECKLIST (IMPLEMENTADO) --- */
+        #modal-checklist {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #060b13;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-
-        .moldura-entrada {
-            width: 80%;
-            max-width: 900px;
-            height: 70%;
-            max-height: 450px;
-            border: 3px solid #00f0ff;
-            border-radius: 25px;
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .intro-entrada {
-            color: #008b8b;
-            font-size: 55px;
-            font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(0, 139, 139, 0.5);
-            margin: 0 0 10px 0;
-        }
-
-        .titulo-entrada {
-            color: #00f0ff;
-            font-size: 38px;
-            font-weight: 400;
-            line-height: 1.2;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
-            margin: 0 0 25px 0;
-        }
-
-        .subtitulo-entrada {
-            color: #00f0ff;
-            font-size: 24px;
-            font-weight: 450;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin: 0 0 40px 0;
-        }
-
-        .creditos-entrada {
-            color: #445566;
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 30px;
-        }
-
-        .btn-iniciar-lab {
-            background: transparent;
-            border: 2px solid #00f0ff;
-            border-radius: 50px;
-            color: #00f0ff;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            padding: 12px 35px;
-            cursor: pointer;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-            transition: all 0.3s ease;
-            animation: pulsarBotao 1.5s infinite;
-        }
-
-        @keyframes pulsarBotao {
-            0% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
-            50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); }
-            100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
-        }
-
-        /* --- BALÕES INFORMATIVOS --- */
-        .balao-informativo {
-            position: absolute;
-            background: rgba(4, 10, 20, 0.95);
-            border-radius: 12px;
-            padding: 15px;
-            color: #fff;
-            font-size: 14px;
-            text-align: center;
-            z-index: 120;
-            pointer-events: none;
-            opacity: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(6, 11, 19, 0.98);
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            color: #FFFFFF;
+            padding: 25px;
+            z-index: 2000;
+            width: 450px;
+            border-radius: 15px;
             display: none;
-            transition: opacity 0.4s ease;
+            flex-direction: column;
+        }
+
+        #modal-checklist h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-top: 0;
+            font-size: 22px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .item-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #00f0ff;
+        }
+
+        .item-check input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #ff3333;
+        }
+
+        .item-check label {
+            cursor: pointer;
+            font-size: 14px;
             line-height: 1.4;
         }
 
+        .btn-finalizar-check {
+            background-color: #ff3333;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-finalizar-check:hover {
+            background-color: #cc0000;
+            box-shadow: 0 0 15px #ff3333;
+        }
+
+        /* --- RESTANTE DO SEU CSS ORIGINAL --- */
+        #tela-entrada {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #060b13; z-index: 1000; display: flex;
+            align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .moldura-entrada {
+            width: 80%; max-width: 900px; height: 70%; max-height: 450px;
+            border: 3px solid #00f0ff; border-radius: 25px;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;
+        }
+        .intro-entrada { color: #008b8b; font-size: 55px; font-weight: 400; line-height: 1.1; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 15px rgba(0, 139, 139, 0.5); margin: 0 0 10px 0; }
+        .titulo-entrada { color: #00f0ff; font-size: 38px; font-weight: 400; line-height: 1.2; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 25px rgba(0, 240, 255, 0.6); margin: 0 0 25px 0; }
+        .subtitulo-entrada { color: #00f0ff; font-size: 24px; font-weight: 450; letter-spacing: 5px; text-transform: uppercase; margin: 0 0 40px 0; }
+        .creditos-entrada { color: #445566; font-size: 15px; font-weight: 500; margin-bottom: 30px; }
+        .btn-iniciar-lab { background: transparent; border: 2px solid #00f0ff; border-radius: 50px; color: #00f0ff; font-size: 16px; font-weight: bold; text-transform: uppercase; padding: 12px 35px; cursor: pointer; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; animation: pulsarBotao 1.5s infinite; }
+        @keyframes pulsarBotao { 0% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); } 100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } }
+        .balao-informativo { position: absolute; background: rgba(4, 10, 20, 0.95); border-radius: 12px; padding: 15px; color: #fff; font-size: 14px; text-align: center; z-index: 120; pointer-events: none; opacity: 0; display: none; transition: opacity 0.4s ease; line-height: 1.4; }
         #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-conector { width: 210px; top: 16.3%; left: 34%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
@@ -137,172 +119,53 @@
         #balao-cores { width: 230px; top: 68%; left: 4.5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-neutro-norma { width: 260px; top: 34%; left: 23%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
         #balao-neutro-comum { width: 170px; top: 38%; left: 80%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
-
-        .balao-informativo:after {
-            content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
-            border-top: 10px solid transparent; border-bottom: 10px solid transparent;
-        }
-        
+        .balao-informativo:after { content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
         #balao-secao:after, #balao-fase-norma:after, #balao-conector:after { border-left: 10px solid #ffd700; }
         #balao-retorno-cor:after, #balao-retorno-comum:after { border-left: 10px solid #ffa500; }
         #balao-cores:after { border-left: 10px solid #00f0ff; }
         #balao-neutro-norma:after, #balao-neutro-comum:after { border-left: 10px solid #0096ff; }
-
-        .balao-informativo:before {
-            content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
-            border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 8px solid rgba(4, 10, 20, 0.95);
-            z-index: 1;
-        }
-
-        #balao-retorno-comum:before, #balao-neutro-comum:before, #balao-conector:before { border-left: 8px solid rgba(255, 0, 0, 0.95); }
-
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
-
-        /* --- INTERFACE --- */
-        #titulo-sistema {
-            color: #00f0ff; font-size: 40px; font-weight: 400; letter-spacing: 2px;
-            margin-top: 2.5vh; margin-bottom: 1vh; text-align: center;
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6); text-transform: uppercase;
-        }
-
-        #painel-status {
-            width: 100%; max-width: 1200px; margin: 1vh auto 2vh auto; padding: 20px 40px;
-            background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px;
-            text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;
-        }
-
-        #instrucao {
-            font-family: 'Arial Narrow', Arial, sans-serif; color: #ffd700;
-            font-size: 20px; font-weight: bold; text-transform: uppercase;
-            letter-spacing: 1.5px; line-height: 1.4;
-        }
-
+        #titulo-sistema { color: #00f0ff; font-size: 40px; font-weight: 400; letter-spacing: 2px; margin-top: 2.5vh; margin-bottom: 1vh; text-align: center; text-shadow: 0 0 15px rgba(0, 240, 255, 0.6); text-transform: uppercase; }
+        #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto 2vh auto; padding: 20px 40px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; }
+        #instrucao { font-family: 'Arial Narrow', Arial, sans-serif; color: #ffd700; font-size: 20px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.4; }
         .tag-circuito { color: #ff3333; font-weight: 900; }
         .tag-rede { color: #00ff00; font-weight: 900; }
-
-        #projeto-container {
-            position: relative; display: inline-block; margin-bottom: 2vh;
-            border: 2px solid #1f2937; box-shadow: 0 0 40px rgba(0,0,0,0.9);
-        }
-
+        #projeto-container { position: relative; display: inline-block; margin-bottom: 2vh; border: 2px solid #1f2937; box-shadow: 0 0 40px rgba(0,0,0,0.9); }
         .imagem-base { max-width: 95vw; max-height: 70vh; display: block; object-fit: contain; border-radius: 8px; }
         .camada-full { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-
         .tecla-movel, .carga-movel, .acessorio-movel { position: absolute; z-index: 20; user-select: none; }
         .tecla-movel { cursor: pointer; padding: 10px; margin: -10px; }
         #tecla-dg { top: 25.5%; left: 11.8%; width: 6%; }
         #tecla-dr { top: 27.7%; left: 23.2%; width: 7.5%; }
         #tecla-int { top: 53.7%; left: 75.6%; width: 7.7%; z-index: 30; }
-
         #conector-neutro { top: 75.2%; left: 39.5%; width: 9%; display: none; z-index: 15; }
         #conector-neutro-3vias { top: 20%; left: 51.4%; width: 9%; display: none; z-index: 16; transform: rotate(90deg); }
-
         #lampada1 { top: 4.5%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
         #lampada2 { top: 43.8%; left: 68.8%; width: 49.5%; display: none; z-index: 25; filter: drop-shadow(0 0 20px #fff700); }
-
         .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
-
-        /* --- PAINEL DE DISPOSITIVOS --- */
-        #painel-dispositivos {
-            position: absolute;
-            top: 67%;
-            left: 57.3%;
-            width: 170px;
-            background: rgba(4, 10, 20, 0.9);
-            border: 2px solid #1f2937;
-            border-radius: 10px;
-            padding: 12px;
-            z-index: 110;
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        #titulo-dispositivos {
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: #00f0ff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
-        }
-
-        .container-item {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 10px;
-            background: #040a14;
-            border: 1.5px solid #00f0ff;
-            border-radius: 15px;
-            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
-        }
-
-        .label-dispositivo {
-            font-size: 13px;
-            font-weight: 700;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-emoji {
-            font-size: 16px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        #modal-ajuda {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 55%; background: #0a111a; border: 2px solid #00f0ff;
-            border-radius: 12px; padding: 20px; z-index: 200; display: none;
-            flex-direction: column; align-items: center;
-        }
+        #painel-dispositivos { position: absolute; top: 67%; left: 57.3%; width: 170px; background: rgba(4, 10, 20, 0.9); border: 2px solid #1f2937; border-radius: 10px; padding: 12px; z-index: 110; display: none; flex-direction: column; gap: 8px; font-family: 'Segoe UI', Arial, sans-serif; }
+        #titulo-dispositivos { text-align: center; font-size: 12px; font-weight: bold; color: #00f0ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
+        .container-item { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #040a14; border: 1.5px solid #00f0ff; border-radius: 15px; box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1); }
+        .label-dispositivo { font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-emoji { font-size: 16px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        #modal-ajuda { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 55%; background: #0a111a; border: 2px solid #00f0ff; border-radius: 12px; padding: 20px; z-index: 200; display: none; flex-direction: column; align-items: center; }
         .item-ajuda { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #162e3d; color: #fff; padding: 12px; margin-bottom: 10px; cursor: pointer; text-align: left; }
         .btn-fechar-modal { background: #222; color: #aaa; border: 1px solid #444; padding: 10px 40px; cursor: pointer; margin-top: 10px; }
-
-        #placa-concluido {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 60%; height: 38%; background: linear-gradient(135deg, #2c3540 0%, #182026 100%);
-            border: 3px solid #111; border-radius: 10px; z-index: 150;
-            display: none; align-items: center; justify-content: center;
-        }
+        #placa-concluido { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 38%; background: linear-gradient(135deg, #2c3540 0%, #182026 100%); border: 3px solid #111; border-radius: 10px; z-index: 150; display: none; align-items: center; justify-content: center; }
         #texto-concluido { font-size: 4.5vw; font-weight: 700; color: #00ff00; text-shadow: 0 0 20px rgba(0, 255, 0, 0.7); }
-
-        .parafuso {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle at 4px 4px, #a1a1a1, #555555 70%, #222);
-            border-radius: 50%;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.6), inset -1px -1px 2px rgba(0,0,0,0.4);
-        }
-        .parafuso::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 2px;
-            width: 10px;
-            height: 2px;
-            background: #222;
-            box-shadow: 0 1px 1px rgba(255,255,255,0.2);
-        }
+        .parafuso { position: absolute; width: 14px; height: 14px; background: radial-gradient(circle at 4px 4px, #a1a1a1, #555555 70%, #222); border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,0.6), inset -1px -1px 2px rgba(0,0,0,0.4); }
+        .parafuso::after { content: ''; position: absolute; top: 6px; left: 2px; width: 10px; height: 2px; background: #222; box-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .p-tl { top: 12px; left: 12px; }
         .p-tr { top: 12px; right: 12px; }
         .p-bl { bottom: 12px; left: 12px; }
         .p-br { bottom: 12px; right: 12px; }
-
         .ponto-clique { position: absolute; width: 1.8%; aspect-ratio: 1 / 1; border: 0.2vw solid #fff; border-radius: 50%; cursor: pointer; z-index: 100; transform: translate(-50%, -50%); display: none; }
         .ponto-fase { background: rgba(255, 0, 0, 0.7); }
         .ponto-neutro { background: rgba(0, 150, 255, 0.7); }
         .ponto-retorno { background: rgba(255, 165, 0, 0.7); }
         .ponto-clique.verde { background: #00ff00 !important; }
-
         .status-aceso { background: #006400 !important; color: #00ff00 !important; padding: 8px 30px; border-radius: 20px; }
         .status-apagado { background: #b80000 !important; color: #ffffff !important; padding: 8px 30px; border-radius: 20px; }
         .txt-vermelho { color: #ff3333; font-weight: bold; }
@@ -361,6 +224,32 @@
                 <span id="status-int" class="status-emoji" style="color: #ff3333;">✘</span>
             </div>
         </div>
+
+        <div id="modal-checklist">
+            <h2>⚡ Inspeção Técnica NBR 5410</h2>
+            <div class="item-check">
+                <input type="checkbox" id="c1">
+                <label for="c1"><strong>Seccionamento:</strong> A Fase está sendo seccionada pelo interruptor?</label>
+            </div>
+            <div class="item-check">
+                <input type="checkbox" id="c2">
+                <label for="c2"><strong>Identificação:</strong> O condutor Neutro possui isolação Azul Claro?</label>
+            </div>
+            <div class="item-check">
+                <input type="checkbox" id="c3">
+                <label for="c3"><strong>Conexões:</strong> Foram utilizados conectores para as derivações das lâmpadas?</label>
+            </div>
+            <div class="item-check">
+                <input type="checkbox" id="c4">
+                <label for="c4"><strong>Dimensionamento:</strong> A seção dos condutores é de no mínimo 1,5mm²?</label>
+            </div>
+            <div class="item-check">
+                <input type="checkbox" id="c5">
+                <label for="c5"><strong>Segurança:</strong> Bornes e emendas estão isolados e firmes?</label>
+            </div>
+            <button class="btn-finalizar-check" onclick="fecharChecklist()">Emitir Relatório de Conformidade</button>
+        </div>
+
         <div id="placa-concluido">
             <div class="parafuso p-tl"></div>
             <div class="parafuso p-tr"></div>
@@ -416,6 +305,7 @@
         const telaEntrada = document.getElementById('tela-entrada');
         const placaConcluido = document.getElementById('placa-concluido');
         const modalAjuda = document.getElementById('modal-ajuda');
+        const modalChecklist = document.getElementById('modal-checklist');
         const painelDispositivos = document.getElementById('painel-dispositivos');
 
         let etapaAtual = 0;
@@ -528,7 +418,13 @@
         alternarTecla('tecla-int', 'tec_int');
 
         function iniciarEtapa() {
-            if (etapaAtual >= etapas.length) { fiacaoConcluida = true; verificarCircuito(); return; }
+            if (etapaAtual >= etapas.length) { 
+                fiacaoConcluida = true; 
+                verificarCircuito(); 
+                // GATILHO DA LISTA DE CHECAGEM
+                setTimeout(() => { modalChecklist.style.display = "flex"; }, 800);
+                return; 
+            }
             const config = etapas[etapaAtual];
             txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
             pontoA.className = "ponto-clique " + config.cor;
@@ -537,6 +433,12 @@
             pontoB.className = "ponto-clique " + config.cor;
             pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left;
             pontoB.style.display = "none";
+        }
+
+        function fecharChecklist() {
+            modalChecklist.style.display = "none";
+            // Reinicia as instruções para que o usuário saiba que pode testar
+            txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>";
         }
 
         pontoA.onclick = (e) => {
@@ -555,11 +457,8 @@
             imgFio.className = "camada-full";
             camadasFios.appendChild(imgFio);
             
-            // CADÊNCIA AJUSTADA PARA 50MS PARA PERMITIR DESCOMPRESSÃO DE IMAGEM
             const timer = setInterval(() => {
                 const proximoCaminho = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
-                
-                // PRÉ-CARREGAMENTO AGRESSIVO
                 if (quadroAtual + 1 <= config.max) {
                     const pre = new Image();
                     pre.src = config.pasta + "/quadro" + (quadroAtual + 1).toString().padStart(4, '0') + ".png";
