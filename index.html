@@ -21,7 +21,7 @@
             overflow: hidden;
         }
 
-        /* --- ESTILO DO MODAL CHECKLIST AUTOMÁTICO --- */
+        /* --- MODAL CHECKLIST AUTOMÁTICO --- */
         #modal-checklist {
             position: fixed;
             top: 50%;
@@ -29,7 +29,7 @@
             transform: translate(-50%, -50%);
             background-color: rgba(6, 11, 19, 0.98);
             border: 3px solid #ffd700;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
             color: #FFFFFF;
             padding: 25px;
             z-index: 2000;
@@ -37,6 +37,7 @@
             border-radius: 15px;
             display: none; /* Inicia oculto */
             flex-direction: column;
+            cursor: pointer; /* Indica que pode clicar para sair após o fim */
         }
 
         #modal-checklist h2 {
@@ -58,30 +59,22 @@
             background: rgba(255, 255, 255, 0.03);
             border-radius: 8px;
             border-left: 4px solid #222;
-            color: #555; /* Cor apagada inicial */
+            color: #555; /* Apagado */
             transition: all 0.4s ease;
         }
 
-        /* Estado ativo disparado pelo JS */
         .item-check.ativo {
             color: #fff;
-            border-left-color: #00f0ff; /* Cyan accent */
+            border-left-color: #00f0ff;
             background: rgba(0, 240, 255, 0.05);
-        }
-
-        .texto-label {
-            font-size: 14px;
-            line-height: 1.4;
-            padding-right: 10px;
         }
 
         .simbolo-v {
             color: #00ff00;
             font-weight: bold;
-            font-size: 18px;
             opacity: 0;
             transform: scale(0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
         }
 
         .item-check.ativo .simbolo-v {
@@ -89,159 +82,93 @@
             transform: scale(1.2);
         }
 
-        /* Placa Final */
-        #placa-finalizacao {
+        /* PLACA FINALIZADA */
+        #placa-concluido {
             display: none;
             background-color: #ffd700; /* Yellow Gold */
             color: #000;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
             font-weight: 900;
-            font-size: 16px;
-            border-radius: 5px;
+            font-size: 18px;
+            border-radius: 8px;
             margin-top: 15px;
             text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            animation: surgirPlaca 0.5s ease-out forwards;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            animation: bounceIn 0.5s ease;
         }
 
-        @keyframes surgirPlaca {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        /* --- RESTANTE DO LAYOUT --- */
-        #tela-entrada {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #060b13; z-index: 1000; display: flex;
-            align-items: center; justify-content: center;
-        }
-
-        .moldura-entrada {
-            width: 80%; max-width: 900px; padding: 40px;
-            border: 3px solid #00f0ff; border-radius: 25px;
-            text-align: center;
-        }
-
-        .btn-iniciar-lab {
-            background: transparent; border: 2px solid #00f0ff; border-radius: 50px;
-            color: #00f0ff; font-size: 16px; font-weight: bold; text-transform: uppercase;
-            padding: 12px 35px; cursor: pointer; transition: 0.3s;
-        }
-
-        .btn-iniciar-lab:hover { background: rgba(0, 240, 255, 0.1); }
-        
-        #projeto-container { position: relative; margin-top: 20px; }
-        .imagem-base { max-width: 90vw; max-height: 65vh; border-radius: 8px; border: 1px solid #333; }
-
-        /* Botão Temporário de Teste */
-        .btn-teste-trigger {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #222;
-            color: #ffd700;
-            border: 1px solid #ffd700;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
+        /* LAYOUT BASE */
+        .imagem-base { max-width: 90vw; max-height: 70vh; margin-top: 20px; border-radius: 10px; }
+        .btn-teste { margin-top: 20px; padding: 10px 30px; background: #00f0ff; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="tela-entrada">
-        <div class="moldura-entrada">
-            <h1 style="color:#00f0ff">Laboratório SMT Pro</h1>
-            <p>Simulador de Instalações Elétricas</p>
-            <button class="btn-iniciar-lab" onclick="iniciarLaboratorio()">Iniciar Simulação</button>
-        </div>
-    </div>
-
     <div id="projeto-container">
-        <img src="ambiente.jpg" class="imagem-base" alt="Ambiente de Trabalho">
-        
+        <img src="ambiente.jpg" class="imagem-base">
         <div style="text-align: center;">
-            <button class="btn-teste-trigger" onclick="dispararChecklistFinal()">Simular Término da Fiação</button>
+            <button class="btn-teste" onclick="checkAutomatico()">Simular Último Fio (Teste)</button>
         </div>
     </div>
 
     <div id="modal-checklist">
         <h2>⚡ Inspeção NBR 5410</h2>
         
-        <div class="item-check">
-            <div class="texto-label"><strong>Seccionamento:</strong> Fase seccionada no interruptor</div>
-            <span class="simbolo-v">✔</span>
-        </div>
-        <div class="item-check">
-            <div class="texto-label"><strong>Identificação:</strong> Neutro em Azul Claro</div>
-            <span class="simbolo-v">✔</span>
-        </div>
-        <div class="item-check">
-            <div class="texto-label"><strong>Conexões:</strong> Uso de conectores de emenda</div>
-            <span class="simbolo-v">✔</span>
-        </div>
-        <div class="item-check">
-            <div class="texto-label"><strong>Dimensionamento:</strong> Condutores de 1,5mm²</div>
-            <span class="simbolo-v">✔</span>
-        </div>
-        <div class="item-check">
-            <div class="texto-label"><strong>Segurança:</strong> Bornes isolados e firmes</div>
-            <span class="simbolo-v">✔</span>
-        </div>
+        <div class="item-check"><span>Seccionamento da Fase</span> <span class="simbolo-v">✔</span></div>
+        <div class="item-check"><span>Identificação do Neutro</span> <span class="simbolo-v">✔</span></div>
+        <div class="item-check"><span>Conectores de Emenda</span> <span class="simbolo-v">✔</span></div>
+        <div class="item-check"><span>Dimensionamento 1,5mm²</span> <span class="simbolo-v">✔</span></div>
+        <div class="item-check"><span>Segurança e Isolamento</span> <span class="simbolo-v">✔</span></div>
 
-        <div id="placa-finalizacao">
+        <div id="placa-concluido">
             INSTALAÇÃO FINALIZADA.<br>TESTE SEU CIRCUITO.
         </div>
     </div>
 
     <script>
-        let podeFecharChecklist = false;
+        let prontoParaSair = false;
 
-        function iniciarLaboratorio() {
-            document.getElementById('tela-entrada').style.display = 'none';
-        }
-
-        // Esta função deve ser chamada quando o último fio for conectado
-        function dispararChecklistFinal() {
+        function checkAutomatico() {
             const modal = document.getElementById('modal-checklist');
             const itens = document.querySelectorAll('.item-check');
-            const placa = document.getElementById('placa-finalizacao');
-            const tempoEntreItens = 1000; // 1 segundo
-
-            // Reset inicial
-            podeFecharChecklist = false;
+            const placa = document.getElementById('placa-concluido');
+            
+            // Inicialização
+            prontoParaSair = false;
             modal.style.display = 'flex';
             placa.style.display = 'none';
-            itens.forEach(el => el.classList.remove('ativo'));
+            itens.forEach(i => i.classList.remove('ativo'));
 
-            // Sequência automática
+            // Execução "Um a Um"
             itens.forEach((item, index) => {
                 setTimeout(() => {
                     item.classList.add('ativo');
 
-                    // Após o último item
+                    // Quando chegar no último
                     if (index === itens.length - 1) {
                         setTimeout(() => {
                             placa.style.display = 'block';
-                            
-                            // Pequena pausa para garantir que o clique de fechamento não seja imediato
-                            setTimeout(() => {
-                                podeFecharChecklist = true;
-                            }, 300);
-                        }, 600);
+                            // Libera o fechamento após a placa aparecer
+                            setTimeout(() => { prontoParaSair = true; }, 500);
+                        }, 800);
                     }
-                }, index * tempoEntreItens);
+                }, index * 1000); // 1 segundo de intervalo
             });
         }
 
-        // Fecha o modal no primeiro clique em qualquer lugar após a conclusão
+        // Sai no primeiro clique do mouse após o fim
         document.addEventListener('mousedown', () => {
-            if (podeFecharChecklist) {
+            if (prontoParaSair) {
                 document.getElementById('modal-checklist').style.display = 'none';
-                podeFecharChecklist = false;
+                prontoParaSair = false;
             }
         });
     </script>
-
 </body>
 </html>
