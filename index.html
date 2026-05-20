@@ -18,7 +18,7 @@
         .btn-iniciar-lab { background: transparent; border: 2px solid #00f0ff; border-radius: 50px; color: #00f0ff; font-size: 16px; font-weight: bold; text-transform: uppercase; padding: 12px 35px; cursor: pointer; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; animation: pulsarBotao 1.5s infinite; }
         @keyframes pulsarBotao { 0% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { opacity: 1; box-shadow: 0 0 25px rgba(0,240,255,0.6); } 100% { opacity: 0.5; box-shadow: 0 0 10px rgba(0,240,255,0.2); } }
         
-        /* --- DEMAIS ELEMENTOS --- */
+        /* --- DEMAIS ESTILOS --- */
         .balao-informativo { position: absolute; background: rgba(4, 10, 20, 0.95); border-radius: 12px; padding: 15px; color: #fff; font-size: 14px; text-align: center; z-index: 120; pointer-events: none; opacity: 0; display: none; transition: opacity 0.4s ease; line-height: 1.4; }
         #balao-secao { width: 230px; top: 42%; left: 4.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 48%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
@@ -255,12 +255,17 @@
                     <div class="c-item" style="margin:10px 0;">☐ Identificação do Neutro</div>
                     <div class="c-item" style="margin:10px 0;">☐ Uso de Conectores</div>
                 </div>
+                <div id="msg-final" style="display:none; margin-top:20px; color:#00ff00; font-weight:bold; font-size:20px; border:1px solid #00ff00; padding:10px;">
+                    INSTALAÇÃO CONCLUÍDA.<br>CLIQUE PARA TESTAR
+                </div>
             </div>`;
             document.body.appendChild(overlay);
             const itens = overlay.querySelectorAll('.c-item');
+            const msgFinal = overlay.querySelector('#msg-final');
             itens.forEach((it, idx) => {
                 setTimeout(() => { it.textContent = it.textContent.replace('☐', '✔'); it.style.color = '#00ff00'; }, (idx + 1) * 800);
             });
+            setTimeout(() => { msgFinal.style.display = "block"; }, 3000);
             overlay.onclick = () => { overlay.remove(); };
         }
 
