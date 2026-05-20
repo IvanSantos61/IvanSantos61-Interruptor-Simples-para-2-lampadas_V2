@@ -244,13 +244,12 @@
 
         function mostrarBalao(ids) { ids.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => { b.style.opacity = "1"; }, 50); }); }
 
-        // --- LÓGICA DO CHECKLIST FINAL (ATUALIZADA) ---
         function exibirChecklistFinal() {
             const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.2); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;';
-            overlay.innerHTML = `<div style="background:rgba(6, 11, 19, 0.9); border:2px solid #ffd700; padding:25px; border-radius:15px; width:500px; color:#fff; text-align:left; backdrop-filter: blur(5px);">
-                <h2 style="color:#ffd700; text-align:center;">CHECKLIST TÉCNICO</h2>
-                <div id="check-itens" style="font-size:15px; line-height:1.6;">
+            overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;';
+            overlay.innerHTML = `<div style="background:rgba(6, 11, 19, 0.95); border:2px solid #ffd700; padding:40px 30px; border-radius:15px; width:500px; color:#fff; text-align:left; backdrop-filter: blur(8px); box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+                <h2 style="color:#ffd700; text-align:center; margin-bottom:30px; text-transform:uppercase;">Checklist Técnico</h2>
+                <div id="check-itens" style="font-size:16px; line-height:2.5;">
                     <div class="c-item">☐ Fase chegando ao interruptor</div>
                     <div class="c-item">☐ Neutro indo diretamente para as lâmpadas</div>
                     <div class="c-item">☐ Emendas com conectores adequados</div>
@@ -262,7 +261,7 @@
                     <div class="c-item">☐ Verificação de curto-circuito</div>
                     <div class="c-item">☐ Lâmpadas não apresentam cintilação (pisca)</div>
                 </div>
-                <div id="msg-final" style="display:none; margin-top:20px; color:#00ff00; font-weight:bold; font-size:18px; border:2px solid #00ff00; padding:10px; text-align:center;">
+                <div id="msg-final" style="display:none; margin-top:35px; color:#00ff00; font-weight:bold; font-size:18px; border:2px solid #00ff00; padding:15px; text-align:center; border-radius:8px;">
                     INSTALAÇÃO CONCLUÍDA.<br>CLIQUE PARA TESTAR
                 </div>
             </div>`;
@@ -270,7 +269,11 @@
             const itens = overlay.querySelectorAll('.c-item');
             const msgFinal = overlay.querySelector('#msg-final');
             itens.forEach((it, idx) => {
-                setTimeout(() => { it.textContent = it.textContent.replace('☐', '✔'); it.style.color = '#00ff00'; }, (idx + 1) * 600);
+                setTimeout(() => { 
+                    it.textContent = it.textContent.replace('☐', '✔'); 
+                    it.style.color = '#00ff00'; 
+                    it.style.fontWeight = 'bold';
+                }, (idx + 1) * 600);
             });
             setTimeout(() => { msgFinal.style.display = "block"; }, (itens.length + 1) * 600);
             overlay.onclick = () => { overlay.remove(); };
