@@ -244,18 +244,25 @@
 
         function mostrarBalao(ids) { ids.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => { b.style.opacity = "1"; }, 50); }); }
 
-        // --- LÓGICA DO CHECKLIST FINAL ---
+        // --- LÓGICA DO CHECKLIST FINAL (ATUALIZADA) ---
         function exibirChecklistFinal() {
             const overlay = document.createElement('div');
             overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.2); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;';
-            overlay.innerHTML = `<div style="background:rgba(6, 11, 19, 0.8); border:2px solid #ffd700; padding:30px; border-radius:15px; width:400px; color:#fff; text-align:center; backdrop-filter: blur(5px);">
-                <h2 style="color:#ffd700;">CHECKLIST TÉCNICO</h2>
-                <div id="check-itens" style="text-align:left; font-size:18px;">
-                    <div class="c-item" style="margin:10px 0;">☐ Seccionamento da Fase</div>
-                    <div class="c-item" style="margin:10px 0;">☐ Identificação do Neutro</div>
-                    <div class="c-item" style="margin:10px 0;">☐ Uso de Conectores</div>
+            overlay.innerHTML = `<div style="background:rgba(6, 11, 19, 0.9); border:2px solid #ffd700; padding:25px; border-radius:15px; width:500px; color:#fff; text-align:left; backdrop-filter: blur(5px);">
+                <h2 style="color:#ffd700; text-align:center;">CHECKLIST TÉCNICO</h2>
+                <div id="check-itens" style="font-size:15px; line-height:1.6;">
+                    <div class="c-item">☐ Fase chegando ao interruptor</div>
+                    <div class="c-item">☐ Neutro indo diretamente para as lâmpadas</div>
+                    <div class="c-item">☐ Emendas com conectores adequados</div>
+                    <div class="c-item">☐ Instalação do disjuntor de proteção</div>
+                    <div class="c-item">☐ Instalação do dispositivo DR</div>
+                    <div class="c-item">☐ Bitola dos fios adequada</div>
+                    <div class="c-item">☐ Condutores identificados por cores</div>
+                    <div class="c-item">☐ Bornes de dispositivos de proteção apertados</div>
+                    <div class="c-item">☐ Verificação de curto-circuito</div>
+                    <div class="c-item">☐ Lâmpadas não apresentam cintilação (pisca)</div>
                 </div>
-                <div id="msg-final" style="display:none; margin-top:20px; color:#00ff00; font-weight:bold; font-size:20px; border:1px solid #00ff00; padding:10px;">
+                <div id="msg-final" style="display:none; margin-top:20px; color:#00ff00; font-weight:bold; font-size:18px; border:2px solid #00ff00; padding:10px; text-align:center;">
                     INSTALAÇÃO CONCLUÍDA.<br>CLIQUE PARA TESTAR
                 </div>
             </div>`;
@@ -263,9 +270,9 @@
             const itens = overlay.querySelectorAll('.c-item');
             const msgFinal = overlay.querySelector('#msg-final');
             itens.forEach((it, idx) => {
-                setTimeout(() => { it.textContent = it.textContent.replace('☐', '✔'); it.style.color = '#00ff00'; }, (idx + 1) * 800);
+                setTimeout(() => { it.textContent = it.textContent.replace('☐', '✔'); it.style.color = '#00ff00'; }, (idx + 1) * 600);
             });
-            setTimeout(() => { msgFinal.style.display = "block"; }, 3000);
+            setTimeout(() => { msgFinal.style.display = "block"; }, (itens.length + 1) * 600);
             overlay.onclick = () => { overlay.remove(); };
         }
 
