@@ -245,9 +245,13 @@
         function mostrarBalao(ids) { ids.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => { b.style.opacity = "1"; }, 50); }); }
 
         function exibirChecklistFinal() {
+            // Defina aqui as coordenadas para mover a lista conforme sua necessidade
+            const posX = '50%'; // Posição horizontal (ex: '10%', '50%', '80%')
+            const posY = '50%'; // Posição vertical (ex: '20%', '50%', '70%')
+
             const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;';
-            overlay.innerHTML = `<div style="background:rgba(6, 11, 19, 0.95); border:2px solid #ffd700; padding:40px 30px; border-radius:15px; width:500px; color:#fff; text-align:left; backdrop-filter: blur(8px); box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+            overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; display:flex; align-items:center; justify-content:center; cursor:pointer;';
+            overlay.innerHTML = `<div style="position:absolute; left:${posX}; top:${posY}; transform:translate(-50%, -50%); background:rgba(6, 11, 19, 0.95); border:2px solid #ffd700; padding:40px 30px; border-radius:15px; width:500px; color:#fff; text-align:left; backdrop-filter: blur(8px); box-shadow: 0 0 30px rgba(0,0,0,0.5);">
                 <h2 style="color:#ffd700; text-align:center; margin-bottom:30px; text-transform:uppercase;">Checklist Técnico</h2>
                 <div id="check-itens" style="font-size:16px; line-height:2.5;">
                     <div class="c-item">☐ Fase chegando ao interruptor</div>
