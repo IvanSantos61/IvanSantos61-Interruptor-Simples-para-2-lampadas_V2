@@ -96,6 +96,46 @@
         .status-aceso { background: #006400 !important; color: #00ff00 !important; padding: 8px 30px; border-radius: 20px; }
         .status-apagado { background: #b80000 !important; color: #ffffff !important; padding: 8px 30px; border-radius: 20px; }
         .txt-vermelho { color: #ff3333; font-weight: bold; }
+       /* INICIO ----->  AREAS SENSIVEIS */
+/* --- HOTSPOTS INTERATIVOS --- */
+.hotspot {
+    position: absolute;
+    background: transparent;
+    border: 1px dashed rgba(0,240,255,0.25);
+    z-index: 90;
+    cursor: help;
+    transition: all 0.2s ease;
+}
+
+.hotspot:hover {
+    border-color: #00f0ff;
+    background: rgba(0,240,255,0.08);
+    box-shadow: 0 0 12px rgba(0,240,255,0.4);
+}
+
+.hotspot::before {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.92);
+    color: #ffd700;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #00f0ff;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.hotspot:hover::before {
+    opacity: 1;
+}
+    /* FIM ----->  AREAS SENSIVEIS */     
     </style>
 </head>
 <body>
@@ -114,7 +154,47 @@
     <div id="painel-status"><span id="instrucao">CARREGANDO...</span></div>
 
     <div id="projeto-container">
-        <img src="ambiente.jpg" class="imagem-base">
+     <!-- <img src="ambiente.jpg" class="imagem-base">  -->
+<img src="ambiente.jpg" class="imagem-base">
+
+<!-- HOTSPOTS INTERATIVOS -->
+
+<div class="hotspot"
+     style="top:13%; left:11.5%; width:40px; height:150px;"
+     data-name="DISJUNTOR GERAL">
+</div>
+
+<div class="hotspot"
+     style="top:12.5%; left:19.5%; width:88px; height:160px;"
+     data-name="DISPOSITIVO DR">
+</div>
+
+<div class="hotspot"
+     style="top:13%; left:15.8%; width:37px; height:150px;"
+     data-name="DPS">
+</div>
+
+<div class="hotspot"
+     style="top:13%; left:28.5%; width:113px; height:150px;"
+     data-name="DISJUNTORES DOS CIRCUITOS">
+</div>
+
+<div class="hotspot"
+     style="top:9%; left:6.5%; width:22px; height:200px;"
+     data-name="BARRA DE ATERRAMENTO">
+</div>
+
+<div class="hotspot"
+     style="top:9%; left:43.2%; width:22px; height:200px;"
+     data-name="BARRA DE NEUTRO">
+</div>
+
+<div class="hotspot"
+     style="top:50%; left:5%; width:40px; height:180px;"
+     data-name="REDE ELÉTRICA">
+</div>
+<!-- FIM DO HOSTSPOT  -->
+        
         <div id="camadas-fios"></div>
         <div id="balao-secao" class="balao-informativo">A seção mínima dos fios de iluminação é 1,5mm²<span class="txt-norma-vermelho">(Item 6.2.6.1.1 da NBR-5410)</span></div>
         <div id="balao-cores" class="balao-informativo">A fase pode ser de qualquer cor<span class="txt-norma-vermelho">(Item 6.1.5.3.4 da NBR-5410)</span></div>
