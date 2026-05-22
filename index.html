@@ -52,7 +52,27 @@
 }
         
         /* --- DEMAIS ESTILOS --- */
-        .balao-informativo { position: absolute; background: rgba(4, 10, 20, 0.95); border-radius: 12px; padding: 15px; color: #fff; font-size: 14px; text-align: center; z-index: 130; pointer-events: none; opacity: 0; display: none; transition: opacity 0.4s ease; line-height: 1.4; }
+     /* --- BALÕES INFORMATIVOS AJUSTADOS PARA ZOOM --- */
+        .balao-informativo { 
+            position: absolute; 
+            background: rgba(4, 10, 20, 0.95); 
+            border-radius: 12px; 
+            padding: 15px; 
+            color: #fff; 
+            font-size: 14px; 
+            text-align: center; 
+            z-index: 130; 
+            pointer-events: none; 
+            opacity: 0; 
+            display: none; 
+            transition: opacity 0.4s ease; 
+            line-height: 1.4; 
+            
+            /* GURANTIAS CONTRA ZOOM: */
+            box-sizing: border-box; /* Impede que o padding altere a largura do balão */
+        }
+
+        /* Coordenadas e Larguras Fixas (Não mudam com o texto expandido) */
         #balao-secao { width: 230px; top: 42%; left: 2.5%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-fase-norma { width: 210px; top: 39%; left: 46%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         #balao-conector { width: 210px; top: 16.3%; left: 32%; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); background: rgba(255, 0, 0, 0.95); }
@@ -61,13 +81,38 @@
         #balao-cores { width: 230px; top: 68%; left: 2.5%; border: 2px solid #00f0ff; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
         #balao-neutro-norma { width: 260px; top: 34%; left: 21%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); }
         #balao-neutro-comum { width: 170px; top: 38%; left: 80%; border: 2px solid #0096ff; box-shadow: 0 0 20px rgba(0, 150, 255, 0.3); background: rgba(255, 0, 0, 0.95); }
-        .balao-informativo:after { content: ''; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+
+        /* SETA EXTERNA (BORDAS DOS BALÕES) */
+        .balao-informativo:after { 
+            content: ''; 
+            position: absolute; 
+            right: -12px; 
+            top: 50%; 
+            margin-top: -10px; /* Substitui o transform para evitar bugs de renderização no zoom */
+            border-top: 10px solid transparent; 
+            border-bottom: 10px solid transparent; 
+        }
         #balao-secao:after, #balao-fase-norma:after, #balao-conector:after { border-left: 10px solid #ffd700; }
         #balao-retorno-cor:after, #balao-retorno-comum:after { border-left: 10px solid #ffa500; }
         #balao-cores:after { border-left: 10px solid #00f0ff; }
         #balao-neutro-norma:after, #balao-neutro-comum:after { border-left: 10px solid #0096ff; }
-        .balao-informativo:before { content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 8px solid rgba(4, 10, 20, 0.95); z-index: 1; }
-        #balao-retorno-comum:before, #balao-neutro-comum:before, #balao-conector:before { border-left: 8px solid rgba(255, 0, 0, 0.95); }
+
+        /* SETA INTERNA (PREENCHIMENTO DOS BALÕES) */
+        .balao-informativo:before { 
+            content: ''; 
+            position: absolute; 
+            right: -9px; 
+            top: 50%; 
+            margin-top: -8px; /* Substitui o transform para travar alinhamento com o zoom */
+            border-top: 8px solid transparent; 
+            border-bottom: 8px solid transparent; 
+            border-left: 8px solid rgba(4, 10, 20, 0.95); 
+            z-index: 1; 
+        }
+        /* Ajuste das setas internas para os balões de alerta vermelhos */
+        #balao-retorno-comum:before, #balao-neutro-comum:before, #balao-conector:before { 
+            border-left: 8px solid rgba(255, 0, 0, 0.95) !important; 
+        }
         .txt-norma-vermelho { color: #ff3333; font-weight: bold; display: block; margin-top: 10px; font-size: 12px; }
         #titulo-sistema { color: #00f0ff; font-size: 40px; font-weight: 400; letter-spacing: 2px; margin-top: 2.5vh; margin-bottom: 1vh; text-align: center; text-shadow: 0 0 15px rgba(0, 240, 255, 0.6); text-transform: uppercase; }
         #painel-status { width: 100%; max-width: 1200px; margin: 1vh auto 2vh auto; padding: 20px 40px; background: rgba(4, 10, 20, 0.9); border: 1px solid #16222f; border-radius: 12px; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; }
