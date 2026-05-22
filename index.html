@@ -478,11 +478,13 @@
         const placaConcluido = document.getElementById('placa-concluido');
         const modalAjuda = document.getElementById('modal-ajuda');
         const painelDispositivos = document.getElementById('painel-dispositivos');
-        let etapaAtual = 0;
+        */ INICIO DA SUBSTITUIÇÃO 2 /*
+      let etapaAtual = 0;
         let fiacaoConcluida = false;
         let cicloAtivo = false;
         let placaJaExibida = false;
         let timerPlaca;
+        let primeiroTesteRealizado = false; // <-- 1. ADICIONADO AQUI PARA CONTROLAR O RITMO DO TESTE
 
         function iniciarLaboratorio() { telaEntrada.style.opacity = "0"; setTimeout(() => { telaEntrada.style.visibility = "hidden"; iniciarEtapa(); }, 500); }
         function formatarTextoInstrucao(texto) { return texto.replace(/CIRCUITO:/g, '<span class="tag-circuito">CIRCUITO:</span>').replace(/REDE:/g, '<span class="tag-rede">REDE:</span>'); }
@@ -518,17 +520,26 @@
             if (fiacaoConcluida && dg === 'on' && dr === 'on' && int === 'on') {
                 document.getElementById('lampada1').style.display = "block"; document.getElementById('lampada2').style.display = "block";
                 txtInstrucao.innerHTML = "<span class='status-aceso'>LÂMPADAS ACESAS</span>"; cicloAtivo = true;
+                primeiroTesteRealizado = true; // <-- GATILHO: Ligou tudo com sucesso uma vez
             } else {
                 document.getElementById('lampada1').style.display = "none"; document.getElementById('lampada2').style.display = "none";
                 if (fiacaoConcluida) {
                     if (cicloAtivo && !placaJaExibida) {
                         txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>"; placaConcluido.style.display = "flex"; placaJaExibida = true; clearTimeout(timerPlaca);
                         timerPlaca = setTimeout(() => { placaConcluido.style.display = "none"; }, 3000);
-                    } else { txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>"; }
+                    } else { 
+                        // <-- 2. ALTERAÇÃO DA LOGICA AQUI:
+                        if (primeiroTesteRealizado) {
+                            txtInstrucao.innerHTML = "<span class='status-apagado'>LÂMPADAS APAGADAS</span>";
+                        } else {
+                            txtInstrucao.innerHTML = "FIAÇÃO FINALIZADA! <span class='txt-vermelho'>LIGUE O DG, DR E INTERRUPTOR E TESTE O CIRCUITO.</span>"; 
+                        }
+                    }
                 }
             }
         }
-
+ */ FINAL DA SUBSTITUIÇÃO 2
+        
         function alternarTecla(id, prefixo) {
             const el = document.getElementById(id);
             el.onclick = (e) => { e.stopPropagation(); const status = el.getAttribute('data-status'); const novoStatus = status === 'off' ? 'on' : 'off'; el.src = prefixo + "_" + novoStatus + ".png"; el.setAttribute('data-status', novoStatus); if (id === 'tecla-dg' || id === 'tecla-dr') { somDisjuntor.currentTime = 0; somDisjuntor.play(); } else if (id === 'tecla-int') { somInterruptor.currentTime = 0; somInterruptor.play(); } verificarCircuito(); };
