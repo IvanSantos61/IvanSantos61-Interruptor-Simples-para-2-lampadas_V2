@@ -148,6 +148,13 @@
         .btn-controle { position: absolute; border: none; padding: 8px 30px; font-size: 15px; font-weight: 900; text-transform: uppercase; border-radius: 20px; cursor: pointer; z-index: 110; }
         #btn-ajuda { top: 83%; left: 14.5%; background: #004f77; color: #00f0ff; border: 1px solid #00f0ff; }
         #btn-reiniciar { top: 92%; left: 13%; background: #b80000; color: #ffffff; }
+        #btn-checklist { 
+    top: 83%; 
+    left: 45%; 
+    background: #ffcc00; 
+    color: #000; 
+    width: 180px; 
+}
         #painel-dispositivos { position: absolute; top: 67%; left: 57.3%; width: 170px; background: rgba(4, 10, 20, 0.9); border: 2px solid #1f2937; border-radius: 10px; padding: 12px; z-index: 110; display: none; flex-direction: column; gap: 8px; font-family: 'Segoe UI', Arial, sans-serif; }
         #titulo-dispositivos { text-align: center; font-size: 12px; font-weight: bold; color: #00f0ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
         .container-item { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #040a14; border: 1.5px solid #00f0ff; border-radius: 15px; box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1); }
@@ -442,8 +449,9 @@
             <div class="parafuso p-tl"></div><div class="parafuso p-tr"></div><div class="parafuso p-bl"></div><div class="parafuso p-br"></div>
             <div id="texto-concluido">✓ Concluído</div>
         </div>
-        <button id="btn-ajuda" class="btn-controle">Ajuda</button>
-        <button id="btn-reiniciar" class="btn-controle">Reiniciar</button>
+      <button id="btn-ajuda" ...>AJUDA</button>
+<button id="btn-reiniciar" ...>REINICIAR</button>
+<button id="btn-checklist" class="btn-controle" onclick="exibirChecklistFinal()" style="display: none;">📋 VER CHECKLIST</button>
         <div id="modal-ajuda">
             <div id="menu-lista-ajuda" style="width:100%; display:flex; flex-direction:column; align-items:center;">
                 <h3>Ajuda Técnico</h3>
