@@ -154,6 +154,7 @@
     background: #ffcc00; 
     color: #000; 
     width: 180px; 
+     z-index: 9999 !important;
 }
         #painel-dispositivos { position: absolute; top: 67%; left: 57.3%; width: 170px; background: rgba(4, 10, 20, 0.9); border: 2px solid #1f2937; border-radius: 10px; padding: 12px; z-index: 110; display: none; flex-direction: column; gap: 8px; font-family: 'Segoe UI', Arial, sans-serif; }
         #titulo-dispositivos { text-align: center; font-size: 12px; font-weight: bold; color: #00f0ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
@@ -455,15 +456,17 @@
 
 function iniciarEtapa() {
     // Se passamos da última etapa, garantimos a exibição
-    if (etapaAtual >= etapas.length) { 
-        fiacaoConcluida = true; 
-        
-        const btn = document.getElementById('btn-checklist');
-        btn.style.display = 'block'; // Força o display
-        btn.style.zIndex = '9999';   // Força sobreposição
-        
-        verificarCircuito(); 
-        return; 
+   if (etapaAtual >= etapas.length) { 
+    fiacaoConcluida = true; 
+    
+    const btn = document.getElementById('btn-checklist');
+    // Força o display e garante que não seja sobrescrito por outras regras CSS
+    btn.style.setProperty('display', 'block', 'important');
+    btn.style.zIndex = '9999';
+    btn.style.position = 'relative'; // Garante que ele respeite o fluxo
+    
+    verificarCircuito(); 
+    return; 
     }
     
     // ... restante do código original da função
