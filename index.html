@@ -453,41 +453,31 @@
     }
     alternarTecla('tecla-dg', 'al_dg'); alternarTecla('tecla-dr', 'al_dr'); alternarTecla('tecla-int', 'tec_int');
 
-    function iniciarEtapa() {
-        // GATILHO PARA O BOTÃO CHECKLIST APARECER
-        if (etapaAtual >= etapas.length) { 
-            fiacaoConcluida = true; 
-            document.getElementById('btn-checklist').style.display = 'block'; // O BOTÃO APARECE AQUI NO FINAL
-            verificarCircuito(); 
-            return; 
-        }
-        const config = etapas[etapaAtual];
-        txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
-        pontoA.className = "ponto-clique " + config.cor; pontoA.style.top = config.posA.top; pontoA.style.left = config.posA.left; pontoA.style.display = "block";
-        pontoB.className = "ponto-clique " + config.cor; pontoB.style.top = config.posB.top; pontoB.style.left = config.posB.left; pontoB.style.display = "none";
+function iniciarEtapa() {
+    // Se passamos da última etapa, garantimos a exibição
+    if (etapaAtual >= etapas.length) { 
+        fiacaoConcluida = true; 
+        
+        const btn = document.getElementById('btn-checklist');
+        btn.style.display = 'block'; // Força o display
+        btn.style.zIndex = '9999';   // Força sobreposição
+        
+        verificarCircuito(); 
+        return; 
     }
-
-    pontoA.onclick = (e) => { e.stopPropagation(); pontoA.classList.add('verde'); txtInstrucao.innerHTML = formatarTextoInstrucao(etapas[etapaAtual].msgB); pontoB.style.display = "block"; };
-
-    pontoB.onclick = (e) => {
-        e.stopPropagation(); pontoB.classList.add('verde'); let quadroAtual = 0; const config = etapas[etapaAtual]; const imgFio = document.createElement('img'); imgFio.className = "camada-full"; camadasFios.appendChild(imgFio);
-        const timer = setInterval(() => {
-            const proximoCaminho = config.pasta + "/quadro" + quadroAtual.toString().padStart(4, '0') + ".png";
-            if (quadroAtual + 1 <= config.max) { const pre = new Image(); pre.src = config.pasta + "/quadro" + (quadroAtual + 1).toString().padStart(4, '0') + ".png"; }
-            imgFio.src = proximoCaminho;
-            if (quadroAtual >= config.max) {
-                clearInterval(timer); somConexao.currentTime = 0; somConexao.play();
-                if (config.nome === "FASE 1") mostrarBalao(['balao-secao', 'balao-cores']);
-                if (config.nome === "NEUTRO 1") { conectorN2.style.display = "block"; mostrarBalao(['balao-neutro-norma']); }
-                if (config.nome === "NEUTRO 2") { conectorN3.style.display = "block"; mostrarBalao(['balao-conector']); }
-                if (config.nome === "FASE 3") mostrarBalao(['balao-fase-norma']);
-                if (config.nome === "RETORNO 1") mostrarBalao(['balao-retorno-cor']);
-                if (config.nome === "RETORNO 3") mostrarBalao(['balao-retorno-comum']);
-                if (config.nome === "NEUTRO 4") { mostrarBalao(['balao-neutro-comum']); }
-                setTimeout(() => { pontoA.style.display = "none"; pontoB.style.display = "none"; pontoA.classList.remove('verde'); pontoB.classList.remove('verde'); etapaAtual++; iniciarEtapa(); }, 600);
-            } else { quadroAtual++; }
-        }, 50);
-    };
+    
+    // ... restante do código original da função
+    const config = etapas[etapaAtual];
+    txtInstrucao.innerHTML = formatarTextoInstrucao(config.msgA);
+    pontoA.className = "ponto-clique " + config.cor; 
+    pontoA.style.top = config.posA.top; 
+    pontoA.style.left = config.posA.left; 
+    pontoA.style.display = "block";
+    pontoB.className = "ponto-clique " + config.cor; 
+    pontoB.style.top = config.posB.top; 
+    pontoB.style.left = config.posB.left; 
+    pontoB.style.display = "none";
+}
 
     function mostrarBalao(ids) { ids.forEach(id => { const b = document.getElementById(id); b.style.display = "block"; setTimeout(() => { b.style.opacity = "1"; }, 50); }); }
 
